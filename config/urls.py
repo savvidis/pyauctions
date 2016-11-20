@@ -20,9 +20,10 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
+                  url(r'^blog/', include('auctions.blog.urls', namespace='blog')),
+                  url(r'^auctions/', include('auctions.auctionapp.urls', namespace='auctionapp')),
 
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

@@ -70,5 +70,17 @@ INSTALLED_APPS += ('django_extensions', )
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
+# Added
+
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['www', '127.0.0.1', 'testpage.eu'])
+
 # Your local stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+DEFAULT_HOST = 'www'
+
+HOST_SCHEME = 'http'
+
+HOST_SITE_TIMEOUT = 3600
+
+ROOT_HOSTCONF = 'config.hosts'

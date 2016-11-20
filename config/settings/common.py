@@ -45,8 +45,11 @@ THIRD_PARTY_APPS = (
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # custom users app
+
     'auctions.users.apps.UsersConfig',
     # Your stuff: custom apps go here
+    'auctions.blog',
+    'auctions.auctionapp'
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -99,19 +102,19 @@ MANAGERS = ADMINS
 # DATABASE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# DATABASES = {
-#     'default': env.db('DATABASE_URL', default='postgres://localhost/auctions'),
-# }
-# DATABASES['default']['ATOMIC_REQUESTS'] = True
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'newdemo',
-		'USER':'postgres',
-		'PASSWORD':'gt5050gt'
-    }
+    'default': env.db('DATABASE_URL', default='postgres://localhost/auctions'),
 }
+DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'auctions',
+# 		'USER':'sabbidis',
+# 		'PASSWORD':'gt5050gt'
+#     }
+# }
 
 # GENERAL CONFIGURATION
 # ------------------------------------------------------------------------------

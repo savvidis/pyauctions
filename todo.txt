@@ -1,0 +1,5 @@
+I want to Understand
+
+1. WHat are the nessecery steps to integrate a new app correctly
+2. How to setup the tests (already included) and run them
+3. How to use hosts and how do I put the default host in order not to do it manually
