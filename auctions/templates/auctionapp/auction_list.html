@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1> ALL AUctions Are here</h1>
+
+{% for auction in object_list %}
+<p>
+  <a href="/auctions/{{auction.id}}"> {{ auction.name }} </a>
+</p>
+{% endfor %}
+
+
+{% endblock %}
