@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load myfilters %}
+
+{% block content %}
+
+{% include 'auctionapp/__layout/op_navbar.html' %}
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th style="width: 50%">Asset name</th>
+    <th>Price</th>
+    <th>Price / Sq Meter</th>
+    <th>City</th>
+    <th>Area</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for auction in object_list|dictsort:"id"%}
+
+  <tr>
+    <th scope="row">{{auction.id}}</th>
+    <td><a href="/auctions/{{auction.id}}"> {{ auction.title }} </a></td>
+    <td><span>  {{auction.price_num|format_currency}}</span></td>
+    <td><span>  {{auction.price_num| divide:auction.property_area_num|format_currency }}</span></td>
+    <td><span>  {{auction.region}}</span></td>
+    <td><span>  {{auction.city}}</span></td>
+
+  </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+<!-- Pagination -->
+<div class="row">
+  <div class="col-sm-12">
+    <ul class="pagination pagination-lg">
+      <li><a href="#">«</a></li>
+      <li class="active"><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li class="disabled"><a href="#">5</a></li>
+      <li><a href="#">»</a></li>
+    </ul><!-- /.pagination -->
+  </div><!-- /.col -->
+</div><!-- /.row --> <!-- End of pagination -->
+
+
+
+{% endblock %}

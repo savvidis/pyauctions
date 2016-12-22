@@ -29,31 +29,58 @@ class Source(models.Model):
 
 
 class Auction(models.Model):
-    unique_code = models.CharField(editable=False, default="", max_length=255)
-    # slug = models.SlugField(editable=False, unique=True)
-    source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    date_imported = models.DateField(editable=False, default=timezone.now())
-    asset_type = models.IntegerField(choices=TYPE_OF_ASSETS)
-    # Details about the asset
-    asset_city = models.CharField(default="", max_length=255)
-    asset_zip = models.CharField(editable=False, default="", max_length=255)
-    asset_address = models.CharField(editable=False, default="", max_length=255)
-    debtor_name = models.CharField(default="None", max_length=255)
-    debtor_vat_number = models.CharField(editable=False, default="", max_length=255)
-    auctioneer_name = models.CharField(max_length=255)
-    auctioneer_vat_number = models.CharField(editable=False, default="", max_length=255)
-    offer_price = models.IntegerField(default=-1)
-    published_date = models.DateField(default=datetime(2010, 1, 1, 1, 10))
-    auction_date = models.DateField(default=datetime(2010, 1, 1, 1, 10))
-    description = models.TextField(default="")
-    auction_num = models.IntegerField(editable=False, default=1)
-    auction_url = models.URLField("URL", max_length=250, blank=True)
+    # About the entry (Seperate table)
+    asset_type = models.CharField(null=True, default="", max_length=255)  # Car / Properties
+    transaction_type = models.CharField(null=True, default="", max_length=255)  # Buy / Sell / Auction
+    # slug = models.SluygField(editable=False, unique=True)
+    imported_date = models.DateField(null=True, editable=False, default=timezone.now())
+    source = models.CharField(null=True, editable=False, default="", max_length=255)
+    url = models.URLField(max_length=250, blank=True)
+    img_url = models.URLField(null=True, max_length=250, blank=True)
+    # About Asset (Seperate table)
+    unique_id = models.CharField(null=True, editable=False, default="", max_length=255)
+    title = models.CharField(null=True, max_length=255)
+    category = models.CharField(null=True, default="", max_length=255)
+    description = models.TextField(null=True, default="")
+    construction_year_num = models.IntegerField(null=True, default=0)
+    price_num = models.IntegerField(null=True, default=-1)
+    views_num = models.IntegerField(null=True, default=-1)
+    # About Location
+    city = models.CharField(null=True, default="", max_length=255)
+    region = models.CharField(null=True, editable=True, default="", max_length=255)
+    address = models.CharField(null=True, editable=True, default="", max_length=255)
+    neighborhood = models.CharField(null=True, editable=True, default="", max_length=255)
+    longitude = models.FloatField(null=True, default=0)
+    latitude = models.FloatField(null=True, default=0)
+
+    # About Timing
+    on_site_date = models.DateField(null=True, default=datetime(2010, 1, 1, 1, 10))
+    updated_date = models.DateField(null=True, default=datetime(2010, 1, 1, 1, 10))
+    last_update_num = models.IntegerField(null=True, default=-1)
+    # Asset Specific if property or car
+    property_area_num = models.IntegerField(null=True, default=-1)
+    property_rooms_num = models.IntegerField(null=True, default=-1)
+    property_buy_or_rent = models.CharField(null=True, default="", max_length=255)
+    car_kms_num = models.IntegerField(null=True, default=-1)
+    car_cc_num = models.IntegerField(null=True, default=-1)
+    car_fuel = models.CharField(null=True, editable=False, default="", max_length=255)
+    # Specific if Auction
+    debtor_name = models.CharField(null=True, default="n/a", max_length=255)
+    auctioneer_name = models.CharField(null=True, default="n/a", max_length=255)
+    auction_date = models.DateField(null=True, default=datetime(2010, 1, 1, 1, 10))
+    auction_number = models.IntegerField(editable=False, null=True, default=0)
+    # Contact Information (Seperate table)
+    contact_legal_name = models.CharField(default="", null=True, max_length=255)
+    contact_name = models.CharField(default="", null=True, max_length=255)
+    contact_phone = models.CharField(default="", null=True, max_length=255)
+    contact_mobile = models.CharField(default="", null=True, max_length=255)
+    contact_email = models.EmailField(default="", null=True, max_length=255)
+    contact_website = models.URLField(default="", null=True, max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         unique_together = (
-            ("name", "asset_type"),
+            ("title", "asset_type"),
         )

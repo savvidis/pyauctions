@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<section class="wrapper-md">
+  <div class="container">
+    <div class="row">
+      <!-- Main -->
+      <div class="col-sm-12 col-md-12">
+        <!-- /.row -->
+        <div class="row">
+          <article class="post">
+            <div class="col-sm-12 col-md-5">
+              <a href="#link"><img class="img-responsive img-thumbnail"
+                                   src="http://m3.spitogatos.gr/99227726_900x675.jpg?v=20140916"></a>
+            </div><!-- /.col -->
+            <div class="col-sm-12 col-md-7">
+              <h3><a href="#link">{{auction.title}} <span class="text-muted">{{auction.category}}</span></a></h3>
+              <p> {{ auction.description }}</p>
+              <ul class="list-unstyled">
+                <li><i class="fa fa-fw fa-th"></i>Price: {{auction.price_num}} EURO</li>
+
+                <li><i class="fa fa-fw fa-th"></i> Area: {{auction.property_area_num}}<sup>2</sup></li>
+                <li><i class="fa fa-fw fa-columns"></i># of rooms: {{auction.property_rooms_num}}</li>
+                <li><i class="fa fa-fw fa-female"></i>Construction year: {{ auction.construction_year_num}}</li>
+                <li><i class="fa fa-fw fa-truck"></i>Region: {{auction.region}}</li>
+              </ul>
+              <p><a href="{{auction.url}}" class="">source: {{auction.source}} </a></p>
+            </div><!-- /.col -->
+          </article><!-- /.post -->
+        </div><!-- /.row -->
+      </div><!-- /.col --> <!-- End of main -->
+
+      <!-- /.col --> <!-- End of sidebar -->
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+</section>
+{% endblock %}

@@ -36,3 +36,6 @@
 [hidden][style="display: block;"] {
   display: block !important;
 }
+
+
+.monospaced { font-family: 'Ubuntu Mono', monospaced ; }
