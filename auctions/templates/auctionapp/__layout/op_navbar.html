@@ -1,165 +1,71 @@
+{% load crispy_forms_tags %}
+
 <section class="wrapper-xs">
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        <form action="#" method="get" class="form-inline">
+        <div class="form-inline">
           <div class="row">
+          {% for type in types %}
             <div class="col-md-3">
-              <input type="submit" class="btn btn-secondary btn-block btnRE" value="Real estate" name="type">
+            <a href="{% url 'auctionapp:type' type %}">
+              <button class="btn btn-secondary btn-block">{{type}}</button>
+              </a>
             </div><!-- /.col -->
-            <div class="col-md-3">
-              <input type="submit" class="btn btn-secondary btn-block btnRE" value="Auctions" name="type">
-            </div><!-- /.col -->
-            <div class="col-md-3">
-              <input type="submit" class="btn btn-secondary btn-block btnRE" value="Cars" name="type">
-            </div><!-- /.col -->
+            {% endfor %}
           </div>
-        </form>
+        </div>
       </div><!-- /.col -->
     </div><!-- /.row -->
   </div><!-- /.container -->
 </section>
 
+<br>
 
 <section class="wrapper-xs bg-highlight">
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        <form action="" class="form-inline">
+        <form action="#" id="AuctionForm" method="get" class="form-inline">
+ 
           <div class="row">
-            <div class="col-md-3">
-              <label for="">Search:</label>
-              <select class="form-control selectpicker show-tick" title="Choose One" data-style="btn-primary"
-                      style="display: none;">
-                <optgroup label="Personal:">
-                  <option>Apartment</option>
-                  <option>Condo</option>
-                  <option>Villa</option>
-                </optgroup>
-                <optgroup label="Business:">
-                  <option>Office</option>
-                  <option>Warehouse</option>
-                  <option>Studio</option>
-                </optgroup>
+          {% csrf_token %}
+          {{ form|crispy }}
+          
+
+           <div class="col-md-3">
+            <label for="">Category:</label>
+            <select class="selectpicker" name="category" form="AuctionForm" data-style="btn-primary">
+             {% for category in categories %}
+                <option>{{category}}</option>
+              {% endfor %}
               </select>
-              <div class="btn-group bootstrap-select form-control">
-                <button type="button" class="btn dropdown-toggle selectpicker btn-primary" data-toggle="dropdown"
-                        title="Apartment"><span class="filter-option pull-left">Apartment</span>&nbsp;<span
-                  class="caret"></span></button>
-                <div class="dropdown-menu open">
-                  <ul class="dropdown-menu inner selectpicker" role="menu">
-                    <li rel="0" class="selected">
-                      <dt><span class="text">Personal:</span></dt>
-                      <a tabindex="0" class="opt " style=""><span class="text">Apartment</span><i
-                        class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="1"><a tabindex="0" class="opt " style=""><span class="text">Condo</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="2"><a tabindex="0" class="opt " style=""><span class="text">Villa</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="3">
-                      <div class="div-contain">
-                        <div class="divider"></div>
-                      </div>
-                      <dt><span class="text">Business:</span></dt>
-                      <a tabindex="0" class="opt " style=""><span class="text">Office</span><i
-                        class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="4"><a tabindex="0" class="opt " style=""><span class="text">Warehouse</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="5"><a tabindex="0" class="opt " style=""><span class="text">Studio</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                  </ul>
-                </div>
-              </div>
-            </div><!-- /.col -->
-            <div class="col-md-2">
-              <label for="">Status:</label>
-              <select class="form-control selectpicker show-tick" title="Choose One" data-style="btn-primary"
-                      style="display: none;">
-                <optgroup label="Status:">
-                  <option>Buy</option>
-                  <option>Sale</option>
-                  <option>Rent</option>
-                </optgroup>
+            </div>
+
+
+           <div class="col-md-2">
+            <label for="">Status:</label>
+            <select class="selectpicker" name="status" form="AuctionForm" data-style="btn-primary">
+                <option>Buy</option>
+                <option>Rent</option>
+
               </select>
-              <div class="btn-group bootstrap-select form-control show-tick">
-                <button type="button" class="btn dropdown-toggle selectpicker btn-primary" data-toggle="dropdown"
-                        title="Buy"><span class="filter-option pull-left">Buy</span>&nbsp;<span class="caret"></span>
-                </button>
-                <div class="dropdown-menu open">
-                  <ul class="dropdown-menu inner selectpicker" role="menu">
-                    <li rel="0" class="selected">
-                      <dt><span class="text">Status:</span></dt>
-                      <a tabindex="0" class="opt " style=""><span class="text">Buy</span><i
-                        class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="1"><a tabindex="0" class="opt " style=""><span class="text">Sale</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="2"><a tabindex="0" class="opt " style=""><span class="text">Rent</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                  </ul>
-                </div>
-              </div>
-            </div><!-- /.col -->
-            <div class="col-md-3">
-              <label for="">Location:</label>
-              <select class="form-control selectpicker show-tick" title="Choose One" data-live-search="true"
-                      data-style="btn-primary" style="display: none;">
-                <optgroup label="Location:">
-                  <option>Dubai</option>
-                  <option>Changai</option>
-                  <option>Paris</option>
-                </optgroup>
-              </select>
-              <div class="btn-group bootstrap-select form-control show-tick">
-                <button type="button" class="btn dropdown-toggle selectpicker btn-primary" data-toggle="dropdown"
-                        title="Dubai"><span class="filter-option pull-left">Dubai</span>&nbsp;<span
-                  class="caret"></span></button>
-                <div class="dropdown-menu open">
-                  <div class="bootstrap-select-searchbox"><input class="input-block-level form-control" type="text">
-                  </div>
-                  <ul class="dropdown-menu inner selectpicker" role="menu">
-                    <li rel="0" class="selected">
-                      <dt><span class="text">Location:</span></dt>
-                      <a tabindex="0" class="opt " style=""><span class="text">Dubai</span><i
-                        class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="1"><a tabindex="0" class="opt " style=""><span class="text">Changai</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="2"><a tabindex="0" class="opt " style=""><span class="text">Paris</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                  </ul>
-                </div>
-              </div>
-            </div><!-- /.col -->
-            <div class="col-md-2">
-              <label for="">Price:</label>
-              <select class="form-control selectpicker show-tick" title="Choose One" data-style="btn-primary"
-                      style="display: none;">
-                <optgroup label="Price:">
-                  <option>Up to $5.000</option>
-                  <option>Up to $10.000</option>
-                  <option>Up to $20.000</option>
-                </optgroup>
-              </select>
-              <div class="btn-group bootstrap-select form-control show-tick">
-                <button type="button" class="btn dropdown-toggle selectpicker btn-primary" data-toggle="dropdown"
-                        title="Up to $5.000"><span class="filter-option pull-left">Up to $5.000</span>&nbsp;<span
-                  class="caret"></span></button>
-                <div class="dropdown-menu open">
-                  <ul class="dropdown-menu inner selectpicker" role="menu">
-                    <li rel="0" class="selected">
-                      <dt><span class="text">Price:</span></dt>
-                      <a tabindex="0" class="opt " style=""><span class="text">Up to $5.000</span><i
-                        class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="1"><a tabindex="0" class="opt " style=""><span class="text">Up to $10.000</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                    <li rel="2"><a tabindex="0" class="opt " style=""><span class="text">Up to $20.000</span><i
-                      class="glyphicon glyphicon-ok icon-ok check-mark"></i></a></li>
-                  </ul>
-                </div>
-              </div>
-            </div><!-- /.col -->
+            </div>
+
+
+
+            <!-- /.col -->
+                    
+
+                <!-- <div class="fieldWrapper">
+                      <label for="id_name">Name</label>
+                      {{ form.as_p }}
+                  </div> -->
+           <div class="col-md-2">
+           </div>
             <div class="col-md-2">
               <label for="">Ready?</label>
-              <button class="btn btn-primary btn-block">Search</button>
+              <input type="submit" class="btn btn-primary btn-block">Search</input>
             </div>
           </div>
         </form>
@@ -167,3 +73,4 @@
     </div><!-- /.row -->
   </div><!-- /.container -->
 </section>
+

@@ -38,4 +38,6 @@
 }
 
 
-.monospaced { font-family: 'Ubuntu Mono', monospaced ; }
+.maintable {
+  font-size: 0.8rem;
+}
