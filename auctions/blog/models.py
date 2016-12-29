@@ -1,4 +1,7 @@
-from urllib.parse import urlparse
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
 from django.conf import settings
 from django.core.cache import caches
@@ -9,6 +12,7 @@ from django.utils.cache import _generate_cache_header_key
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext_lazy as _
 from django_hosts.resolvers import reverse
+
 from docutils.core import publish_parts
 
 BLOG_DOCUTILS_SETTINGS = {
@@ -22,6 +26,7 @@ BLOG_DOCUTILS_SETTINGS.update(getattr(settings, 'BLOG_DOCUTILS_SETTINGS', {}))
 
 
 class EntryQuerySet(models.QuerySet):
+
     def published(self):
         return self.active().filter(pub_date__lte=timezone.now())
 
@@ -53,7 +58,8 @@ class Entry(models.Model):
             "publication date must be in the past."
         ),
     )
-    content_format = models.CharField(choices=CONTENT_FORMAT_CHOICES, max_length=50)
+    content_format = models.CharField(
+        choices=CONTENT_FORMAT_CHOICES, max_length=50)
     summary = models.TextField()
     summary_html = models.TextField()
     body = models.TextField()
@@ -112,11 +118,13 @@ class Entry(models.Model):
         request = rf.get(url.path, secure=is_secure)
         request.LANGUAGE_CODE = 'en'
         cache = caches[settings.CACHE_MIDDLEWARE_ALIAS]
-        cache_key = _generate_cache_header_key(settings.CACHE_MIDDLEWARE_KEY_PREFIX, request)
+        cache_key = _generate_cache_header_key(
+            settings.CACHE_MIDDLEWARE_KEY_PREFIX, request)
         cache.delete(cache_key)
 
 
 class EventQuerySet(EntryQuerySet):
+
     def past(self):
         return self.filter(date__lte=timezone.now()).order_by('-date')
 

@@ -11,7 +11,19 @@ urlpatterns = [
         view=AuctionListView.as_view(),
         name='list'
     ),
+    url(
+        regex=r'^(?P<asset_type>[A-Za-z]+)/$',
+        view=AuctionTypeView.as_view(),
+        name='type'
+    ),
     # url(
+    #     regex=r'[.+][\?q=\/][.*]$',
+    #     view=AuctionFormView.as_view(),
+    #     name='form'
+    # ),
+    # url(
+    #     regex=r'^(?P<asset_type>[A-Za-z&]*)$',
+
     #     regex=r'^~redirect/$',
     #     view=views.UserRedirectView.as_view(),
     #     name='redirect'
