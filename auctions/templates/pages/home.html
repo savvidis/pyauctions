@@ -1,10 +1,83 @@
 {% extends "base.html" %}
-
+{% load staticfiles i18n%}
 
 {% block content %}
 
+    <div class="wrapper">
+        <div class="header header-filter" style="background-image: url('https://images.unsplash.com/photo-1423655156442-ccc11daa4e99?crop=entropy&dpr=2&fit=crop&fm=jpg&h=750&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1450');">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 style="color: #eee;" class="title">Find the best buy opportunities in Greece</h1>
+                    </div>
+                </div>
+               <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <h2 class="title" style="color: #eee;">Let's talk </h2>
+                            <h5 class="description" style="color: #eee;">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious, otherwise he wouldn't scroll to get here. Add a button if you want the user to see more.</h5>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+            </div>
+        </div>
 
-<h1>Hello taki</h1>
+        <div class="main main-raised">
+            <div class="container">
+                <div class="section text-center section-landing">
+  <div class="features">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="photo-container">
+                        <img src="{% static '/img/iphone.png' %}">
+                    </div>
+                </div>
+                <div class="col-md-6">
 
+                    <br><br>
+                    <!-- Some <br /> tags to push the text to align with the image, you can remove it if you have more text on the right side :-) -->
+
+                    <h2 class="title">Your life will be much easier</h2>
+
+                    <div class="info info-horizontal">
+                        <div class="icon icon-primary">
+                            <i class="material-icons">extension</i>
+                        </div>
+                        <div class="description">
+                            <h4 class="info-title">Hundreds of Components</h4>
+                            <p>The moment you use Material Kit, you know you’ve never felt anything like it. With a single use, this powerfull UI Kit lets you do more than ever before. </p>
+                        </div>
+                    </div>
+
+                    <div class="info info-horizontal">
+                        <div class="icon icon-primary">
+                            <i class="material-icons">child_friendly</i>
+                        </div>
+                        <div class="description">
+                            <h4 class="info-title">Easy to Use</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+
+                    <div class="info info-horizontal">
+                        <div class="icon icon-primary">
+                            <i class="material-icons">watch_later</i>
+                        </div>
+                        <div class="description">
+                            <h4 class="info-title">Fast Prototyping</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+                </div>
+
+            </div>
+
+        </div>
 
 {% endblock%}

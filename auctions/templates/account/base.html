@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
+{% load staticfiles i18n%}
 
 {% block content %}
+<div class="wrapper">
+    <div class="header header-filter" style="background-image: url({% static 'img/city.jpg' %} ); background-size: cover; background-position: top center;">
+<div class="container">
 <div class="row">
-  <div class="col-md-6 offset-md-3">
+  <div class="col-md-4 offset-md-4">
     {% block inner %}{% endblock %}
   </div>
+</div>
+</div>
+</div>
 </div>
 {% endblock %}

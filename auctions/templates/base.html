@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}auctions{% endblock title %}</title>
+    <title>{% block title %}DealLookup{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -26,17 +26,19 @@
     <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
+    <link href="{% static 'css/material-kit.css' %}" rel="stylesheet">
+    <link href="{% static 'css/demo.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     {% endblock %}
 
   </head>
 
   <body>
 
-    <div class="m-b-1">
+   <!--   <div class="m-b-1">-->
       <nav class="navbar navbar-dark navbar-static-top bg-inverse">
         <div class="container">
-          <a class="navbar-brand" href="/">auctions</a>
+          <a class="navbar-brand" href="/">Deal-Lookup</a>
           <button type="button" class="navbar-toggler hidden-sm-up pull-xs-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
             &#9776;
           </button>
@@ -44,43 +46,42 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
+              <li class="nav-item navicon">
+                <a class="nav-link" href="{% url 'auctionapp:list' %}"><i class="material-icons navicon">explore</i><p class="navicon_font">Search</p></a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'auctionapp:list' %}">Auctions</a>
+              <li class="nav-item navicon">
+                <a class="nav-link" href="{% url 'home' %}"><i class="material-icons navicon">group_work</i><p class="navicon_font">Service</p></a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:index' %}">Blog</a>
+              <li class="nav-item navicon">
+                <a class="nav-link" href="{% url 'blog:index' %}"><i class="material-icons navicon">today</i><p class="navicon_font">Blog</p></a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'about' %}">About</a>
+              <li class="nav-item navicon">
+                <a class="nav-link" href="{% url 'about' %}"><i class="material-icons navicon">build</i><p class="navicon_font">About</p></a>
               </li>
             </ul>
 
             <ul class="nav navbar-nav pull-xs-right">
               {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
+                <li class="nav-item navicon">
+                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}"><i class="material-icons navicon">perm_identity</i><p class="navicon_font">{% trans "My Profile" %}</p></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item navicon">
                   <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
                 </li>
               {% else %}
-                <li class="nav-item">
-                  <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                <li class="nav-item navicon">
+                  <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}"><i class="material-icons navicon">face</i><p class="navicon_font">{% trans "Sign Up" %}</p></a>
                 </li>
-                <li class="nav-item">
-                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                <li class="nav-item navicon">
+                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}"><i class="material-icons navicon">fingerprint</i><p class="navicon_font">{% trans "Sign In" %}</p></a>
                 </li>
               {% endif %}
             </ul>
           </div>
         </div>
       </nav>
-    </div>
+   <!--   </div>-->
 
-    <div class="container">
 
       {% if messages %}
           {% for message in messages %}
@@ -93,7 +94,6 @@
       <p>quick start any new project.</p>
       {% endblock content %}
 
-    </div> <!-- /container -->
 
     {% block modal %}{% endblock modal %}
 
@@ -114,6 +114,8 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/material-kit.js' %}"></script>
+    <script src="{% static 'js/material.min.js' %}"></script>
 
     <script src="{% static 'js/project.js' %}"></script>
 

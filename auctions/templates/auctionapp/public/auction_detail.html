@@ -5,14 +5,14 @@
 {% block content %}
 
 
-<section class="wrapper-md">
+<section class="wrapper-md" style="background: #eee;">
   <div class="container">
-    <div class="row">
       <!-- Main -->
       <div class="col-sm-12 col-md-12">
         <!-- /.row -->
+        <br>
         <div class="row">
-          <article class="post">
+          <article class="card" style="padding-top: 20px;">
             <div class="col-sm-12 col-md-5">
               <a href="#link"><img class="img-responsive img-thumbnail"
                                    src="{{auction.img_url|lower}}"></a>
@@ -21,23 +21,22 @@
               <h3><a href="#link">{{auction.title}} <span class="text-muted">{{auction.category}}</span></a></h3>
               <p> {{ auction.description }}</p>
               <ul class="list-unstyled">
-                <li><i class="fa fa-fw fa-th"></i>Price: {{auction.price_num|format_currency}} EURO</li>
-                <li><i class="fa fa-fw fa-female"></i>Latest update: {{ auction.on_site_date}}</li>
-                <li><i class="fa fa-fw fa-th"></i> Area: {{auction.property_area_num}}<sup>2</sup></li>
-                <li><i class="fa fa-fw fa-columns"></i># of rooms: {{auction.property_rooms_num}}</li>
-                <li><i class="fa fa-fw fa-female"></i>Construction year: {{ auction.construction_year}}</li>
-                <li><i class="fa fa-fw fa-truck"></i>City: {{auction.city}}</li>
-                <li><i class="fa fa-fw fa-truck"></i>Neighborhood: {{auction.neighborhood}}</li>
+                <li><i class="fa fa-fw fa-th"></i><b>Price:</b> {{auction.price_num|format_currency}} EURO</li>
+                <li><i class="fa fa-fw fa-female"></i><b>Latest update:</b> {{ auction.on_site_date}}</li>
+                <li><i class="fa fa-fw fa-th"></i><b> Area:</b> {{auction.property_area_num}}<sup>2</sup></li>
+                <li><i class="fa fa-fw fa-columns"></i><b># of rooms:</b> {{auction.property_rooms_num}}</li>
+                <li><i class="fa fa-fw fa-female"></i><b>Construction year:</b> {{ auction.construction_year}}</li>
+                <li><i class="fa fa-fw fa-truck"></i><b>City:</b> {{auction.city}}</li>
+                <li><i class="fa fa-fw fa-truck"></i><b>Neighborhood:</b> {{auction.neighborhood}}</li>
 
               </ul>
-              <p><a href="{{auction.url}}" class="">source: {{auction.source}} </a></p>
+              <p><a href="{{auction.url}}" class=""><b>Source:</b> {{auction.source}} </a></p>
             </div><!-- /.col -->
           </article><!-- /.post -->
         </div><!-- /.row -->
       </div><!-- /.col --> <!-- End of main -->
 
       <!-- /.col --> <!-- End of sidebar -->
-    </div><!-- /.row -->
   </div><!-- /.container -->
 </section>
 {% endblock %}

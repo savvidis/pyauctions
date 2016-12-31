@@ -14,13 +14,13 @@
 </form>
 {% endcomment %}
 
-<ul class="list-news">
+<div class="container fluid list-news">
 
   {% for object in latest %}
   {% include 'blog/news_summary.html' with object=object %}
   {% endfor %}
 
-</ul>
+</div>
 
 {% include 'blog/blog_pagination.html' %}
 
