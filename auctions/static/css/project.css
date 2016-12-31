@@ -40,4 +40,7 @@
 
 .maintable {
   font-size: 0.8rem;
+  min-height: .01%;
+  overflow-x: auto;
+  padding: 15px 20px;
 }
