@@ -60,6 +60,11 @@ class Auction(models.Model):
         null=True, editable=True, default="", max_length=255)
     longitude = models.FloatField(null=True, default=0)
     latitude = models.FloatField(null=True, default=0)
+    fulltext = models.TextField(null=True, default="")
+    other1 = models.TextField(null=True, default="")
+    other1_num = models.IntegerField(null=True, default=-1)
+    other2 = models.TextField(null=True, default="")
+    other2_num = models.IntegerField(null=True, default=-1)
 
     # About Timing
     on_site_date = models.DateField(
@@ -93,7 +98,7 @@ class Auction(models.Model):
     contact_website = models.URLField(default="", null=True, max_length=255)
 
     def __str__(self):
-        return self.title
+        return self.url
 
     class Meta:
         unique_together = (

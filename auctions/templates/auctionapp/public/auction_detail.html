@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load myfilters %}
+{% load staticfiles myfilters %}
+{% load i18n%}
 
 
 {% block content %}
@@ -11,32 +12,95 @@
       <div class="col-sm-12 col-md-12">
         <!-- /.row -->
         <br>
-        <div class="row">
           <article class="card" style="padding-top: 20px;">
+          <div class="row-fluid">
+             <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-12 col-md-8 mainpage_row">
+                    <h4><a href="#link">{{auction.title|ifexists}} <span class="text-muted">{{auction.category}}</span></a></h4>
+                    </div>
             <div class="col-sm-12 col-md-5">
-              <a href="#link"><img class="img-responsive img-thumbnail"
-                                   src="{{auction.img_url|lower}}"></a>
+            <a href="#link">
+            {% if  auction.img_url %}
+              <img class="img-responsive img-thumbnail" src="{{auction.img_url|lower}}">
+            {% else %}
+              <img src="{% static 'img/dummy/map_athens.png' %}" alt="Thumbnail Image" class="img-raised">
+            {% endif %}  
+            </a>
             </div><!-- /.col -->
-            <div class="col-sm-12 col-md-7">
-              <h3><a href="#link">{{auction.title}} <span class="text-muted">{{auction.category}}</span></a></h3>
-              <p> {{ auction.description }}</p>
-              <ul class="list-unstyled">
-                <li><i class="fa fa-fw fa-th"></i><b>Price:</b> {{auction.price_num|format_currency}} EURO</li>
-                <li><i class="fa fa-fw fa-female"></i><b>Latest update:</b> {{ auction.on_site_date}}</li>
-                <li><i class="fa fa-fw fa-th"></i><b> Area:</b> {{auction.property_area_num}}<sup>2</sup></li>
-                <li><i class="fa fa-fw fa-columns"></i><b># of rooms:</b> {{auction.property_rooms_num}}</li>
-                <li><i class="fa fa-fw fa-female"></i><b>Construction year:</b> {{ auction.construction_year}}</li>
-                <li><i class="fa fa-fw fa-truck"></i><b>City:</b> {{auction.city}}</li>
-                <li><i class="fa fa-fw fa-truck"></i><b>Neighborhood:</b> {{auction.neighborhood}}</li>
 
-              </ul>
-              <p><a href="{{auction.url}}" class=""><b>Source:</b> {{auction.source}} </a></p>
+            <div class="col-sm-12 col-md-7">
+                <ul class="list-unstyled top_list">
+
+                <li><i class="fa fa-fw fa-th"></i><b>Price:</b> {{auction.price_num|format_currency}} EURO</li>
+                {% if auction.auction_date %}  
+                  <li><i class="fa fa-fw fa-truck"></i><b>Days left:</b> {{auction.auction_date|days_left}}</li> 
+                {% endif %}
+                <li><span> <b>Attractiveness: </b> {{auction.price_num|random}}</span></li>
+
+                {% if auction.property_area_num %}  
+                 <li> <i class="fa fa-fw fa-truck"></i><b>Price/m3:</b>  {{auction.price_num| divide:auction.property_area_num|format_currency }}</li>
+                {% endif %}
+                </ul>
             </div><!-- /.col -->
+            </div>
+            </div>
+            <div class="row-fluid">
+            <div class="col-sm-12 col-md-12 mainpage_row">
+
+            <div class="col-sm-12 col-md-6">
+              <h4>Description</h4>
+
+              <p> {{ auction.description|ifexists }}</p>
+              <ul class="list-unstyled" style="font-size: 20px;line-height: 1.4em;">
+
+                <li><i class="fa fa-fw fa-th"></i><b>Price:</b> {{auction.price_num|format_currency}} EURO</li>
+
+                <li><i class="fa fa-fw fa-female"></i><b>Latest update:</b> {{ auction.on_site_date}}</li>
+               {% if  auction.property_area_num %}<li><i class="fa fa-fw fa-th"></i><b> Area:</b> {{auction.property_area_num}}<sup>2</sup></li>{% endif %}
+               {% if  auction.property_rooms_num %} <li><i class="fa fa-fw fa-columns"></i><b># of rooms:</b> {{auction.property_rooms_num}}</li>{% endif %}
+               {% if  auction.construction_year %} <li><i class="fa fa-fw fa-female"></i><b>Construction year:</b> {{ auction.construction_year}}</li>{% endif %}
+                <li><i class="fa fa-fw fa-truck"></i><b>City:</b> {{auction.city}}</li>
+               {% if  auction.neighborhood %}  <li><i class="fa fa-fw fa-truck"></i><b>Neighborhood:</b> {{auction.neighborhood}}</li>{% endif %}
+               {% if  auction.auction_date %}  
+                  <li><i class="fa fa-fw fa-truck"></i><b>Auction ID: </b> {{auction.unique_id}}</li>
+                  <li><i class="fa fa-fw fa-truck"></i><b>Debtor Name: </b> {{auction.debtor_name}}</li>
+                  <li><i class="fa fa-fw fa-truck"></i><b>Creditor Name: </b> {{auction.auctioneer_name}}</li>
+                  <li><i class="fa fa-fw fa-truck"></i><b>Days left:</b> {{auction.auction_date|days_left}}</li> 
+               {% endif %}
+              </ul>
+
+
+            </div><!-- /.col -->
+
+            <div class="col-sm-12 col-md-6">
+            <h4>Market</h4>
+
+            <div>
+              <img src="{% static 'img/dummy/graph_zillow.png' %}" alt="Thumbnail Image" class="img-raised">
+            </div>
+            <br>
+             <ul class="list-unstyled">
+             <H4>Running Costs </H4> </li>
+             <li><i class="fa fa-fw fa-truck"></i><b>Property tax (ENFIA) :</b> 1200 / year</li>
+             <li><i class="fa fa-fw fa-truck"></i><b>Local tax: </b> 120/year</li>
+
+             </ul>
+             </div>
+            </div>
+            </div><!-- /.col -->
+            <div class="col-sm-12 col-md-12">
+            <div class="container"
+              <pre>{{auction.fulltext|linebreaks }}</pre>
+              </div>
+            </div>
+            </div> <!-- /.row -->
+
+
           </article><!-- /.post -->
-        </div><!-- /.row -->
       </div><!-- /.col --> <!-- End of main -->
 
       <!-- /.col --> <!-- End of sidebar -->
   </div><!-- /.container -->
 </section>
 {% endblock %}
+              <p><a href="{{auction.url}}" class=""><b>Source:</b> {{auction.source}} </a></p>

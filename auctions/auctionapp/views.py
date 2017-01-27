@@ -13,7 +13,7 @@ import json
 
 categories = ["Apartment", "House", "Maisonette", "Detached House"]
 
-types = ["realestate", "auctions", "cars"]
+types = ["realestate", "auction", "cars"]
 
 
 class AuctionDetailView(DetailView):
@@ -24,7 +24,7 @@ class AuctionDetailView(DetailView):
 class AuctionListView(FilterView):
     model = Auction
     template_name = "auctionapp/public/auction_list.html"
-    paginate_by = 20
+    paginate_by = 10
     filterset_class = AuctionFilter
 
     def get_queryset(self):
@@ -32,6 +32,7 @@ class AuctionListView(FilterView):
         # queryset = self.form_filter(queryset, self.request)
         try:
             queryset = AuctionFilter(request.GET, queryset=queryset)
+            return render_to_response(template_name, {'filter': queryset})
         except:
             pass
         return queryset
@@ -83,8 +84,12 @@ class AuctionTypeView(AuctionListView):
         print(self.kwargs)
         print("-" * 30)
         # queryset = super(AuctionTypeView, self).get_queryset()
-        queryset = self.model.objects.filter(
-            asset_type=self.kwargs['asset_type'])
+        if self.kwargs['asset_type'] == "auction":
+            queryset = self.model.objects.filter(
+                transaction_type=self.kwargs['asset_type'])
+        else:
+            queryset = self.model.objects.filter(
+                asset_type=self.kwargs['asset_type'])
         queryset = self.form_filter(queryset, self.request)
         return queryset
 

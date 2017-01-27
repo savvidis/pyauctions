@@ -3,6 +3,9 @@
 from django import template
 from django.template.defaultfilters import *
 from crispy_forms.layout import Layout, Field
+from datetime import datetime, timedelta
+from random import randint
+
 register = template.Library()
 
 
@@ -23,3 +26,26 @@ def divide(value, arg):
         pass
     else:
         return 0
+
+
+@register.filter
+def days_left(value):
+    try:
+        diff = value - datetime.today().date()
+        return diff.days
+        return
+    except:
+        return None
+
+
+@register.filter
+def ifexists(value):
+    if value:
+        return value
+    else:
+        return ""
+
+
+@register.filter
+def random(v):
+    return randint(1, 5)
