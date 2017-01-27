@@ -35,7 +35,7 @@ class Auction(models.Model):
         null=True, default="", max_length=255)  # Buy / Sell / Auction
     # slug = models.SluygField(editable=False, unique=True)
     imported_date = models.DateField(
-        null=True, editable=False, default=timezone.now())
+        null=True, editable=False, default=timezone.now)
     source = models.CharField(
         null=True, editable=False, default="", max_length=255)
     url = models.URLField(max_length=250, blank=True)
@@ -68,9 +68,9 @@ class Auction(models.Model):
 
     # About Timing
     on_site_date = models.DateField(
-        null=True, default=timezone.now())
+        null=True, default=timezone.now)
     updated_date = models.DateField(
-        null=True, default=timezone.now())
+        null=True, default=timezone.now)
     last_update_num = models.IntegerField(null=True, default=-1)
     # Asset Specific if property or car
     property_area_num = models.IntegerField(null=True, default=-1)
@@ -86,7 +86,7 @@ class Auction(models.Model):
     auctioneer_name = models.CharField(
         null=True, default="n/a", max_length=255)
     auction_date = models.DateField(
-        null=True, default=timezone.now())
+        null=True, default=timezone.now)
     auction_number = models.IntegerField(editable=False, null=True, default=0)
     # Contact Information (Seperate table)
     contact_legal_name = models.CharField(
