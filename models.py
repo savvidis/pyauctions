@@ -1,109 +1,14 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+from __future__ import unicode_literals
+
 from django.db import models
-from datetime import datetime
-from django.utils import timezone
 
-# Create your models here.
-# from auctions.auctionapp.models import *
-# t = Type(**TypeDemo)
-# a = Auction(**AssetDemo)
-
-
-TYPE_OF_ASSETS = ((1, 'Real estate'), (2, 'Cars'))
-TYPE_OF_SOURCES = ((1, 'Bank'), (2, 'Leasing'))
-
-
-class Type(models.Model):
-    asset_type = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.asset_type
-
-
-class Source(models.Model):
-    source_site = models.URLField(max_length=255)
-    source_name = models.CharField(default="", max_length=255)
-    source_type = models.IntegerField(default=1, choices=TYPE_OF_SOURCES)
-
-    def __str__(self):
-        return self.source_site
-
-
-class Auction(models.Model):
-    asset_type = models.CharField(
-        null=True, default="", max_length=255)  # Car / Properties
-    transaction_type = models.CharField(
-        null=True, default="", max_length=255)  # Buy / Sell / Auction
-    # slug = models.SluygField(editable=False, unique=True)
-    imported_date = models.DateField(
-        null=True, editable=False, default=timezone.now)
-    source = models.CharField(
-        null=True, editable=False, default="", max_length=255)
-    url = models.URLField(max_length=250, blank=True)
-    img_url = models.URLField(null=True, max_length=250, blank=True)
-    # About Asset (Seperate table)
-    unique_id = models.CharField(
-        null=True, editable=False, default="", max_length=255)
-    title = models.CharField(null=True, max_length=255)
-    category_major = models.CharField(null=True, default="", max_length=255)
-    category_minor = models.CharField(null=True, default="", max_length=255)
-    description = models.TextField(null=True, default="")
-    construction_year = models.CharField(null=True, default="", max_length=255)
-    price_num = models.IntegerField(null=True, default=-1)
-    views_num = models.IntegerField(null=True, default=-1)
-    # About Location
-    city = models.CharField(null=True, default="", max_length=255)
-    region = models.CharField(null=True, editable=True,
-                              default="", max_length=255)
-    address = models.CharField(
-        null=True, editable=True, default="", max_length=255)
-    neighborhood = models.CharField(
-        null=True, editable=True, default="", max_length=255)
-    longitude = models.FloatField(null=True, default=0)
-    latitude = models.FloatField(null=True, default=0)
-    fulltext = models.TextField(null=True, default="")
-    other1 = models.TextField(null=True, default="")
-    other1_num = models.IntegerField(null=True, default=-1)
-    other2 = models.TextField(null=True, default="")
-    other2_num = models.IntegerField(null=True, default=-1)
-
-    # About Timing
-    on_site_date = models.DateField(
-        null=True, default=timezone.now)
-    updated_date = models.DateField(
-        null=True, default=timezone.now)
-    last_update_num = models.IntegerField(null=True, default=-1)
-    # Asset Specific if property or car
-    property_area_num = models.IntegerField(null=True, default=-1)
-    property_rooms_num = models.IntegerField(null=True, default=-1)
-    property_buy_or_rent = models.CharField(
-        null=True, default="", max_length=255)
-    car_kms_num = models.IntegerField(null=True, default=-1)
-    car_cc_num = models.IntegerField(null=True, default=-1)
-    car_fuel = models.CharField(
-        null=True, editable=False, default="", max_length=255)
-    # Specific if Auction
-    debtor_name = models.CharField(null=True, default="n/a", max_length=255)
-    auctioneer_name = models.CharField(
-        null=True, default="n/a", max_length=255)
-    auction_date = models.DateField(
-        null=True, default=timezone.now)
-    auction_number = models.IntegerField(editable=False, null=True, default=0)
-    # Contact Information (Seperate table)
-    contact_legal_name = models.CharField(
-        default="", null=True, max_length=255)
-    contact_name = models.CharField(default="", null=True, max_length=255)
-    contact_phone = models.CharField(default="", null=True, max_length=255)
-    contact_mobile = models.CharField(default="", null=True, max_length=255)
-    contact_email = models.EmailField(default="", null=True, max_length=255)
-    contact_website = models.URLField(default="", null=True, max_length=255)
-
-    def __str__(self):
-        return self.url
-
-    class Meta:
-        unique_together = (
-            ("title", "asset_type"),
-        )
 
 class Asset(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
@@ -128,6 +33,7 @@ class Asset(models.Model):
 
 
 class AssetCar(models.Model):
+    id = models.AutoField()
     title = models.CharField(max_length=250, blank=True, null=True)
     mainarea_id = models.IntegerField(blank=True, null=True)
     secondarea = models.CharField(max_length=150, blank=True, null=True)
@@ -156,6 +62,7 @@ class AssetCar(models.Model):
 
 
 class AssetProperty(models.Model):
+    id = models.AutoField()
     title = models.CharField(max_length=250, blank=True, null=True)
     mainarea_id = models.IntegerField(blank=True, null=True)
     secondarea = models.CharField(max_length=150, blank=True, null=True)
@@ -166,7 +73,6 @@ class AssetProperty(models.Model):
     suggest_price = models.FloatField(blank=True, null=True)
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
-    category_minor = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
@@ -189,6 +95,58 @@ class AssetPropertyType(models.Model):
     class Meta:
         managed = False
         db_table = 'asset_property_type'
+
+
+class AuctionappAuction(models.Model):
+    id = models.AutoField(blank=True, null=True)
+    asset_type = models.CharField(max_length=255, blank=True, null=True)
+    transaction_type = models.CharField(max_length=255, blank=True, null=True)
+    imported_date = models.DateField(blank=True, null=True)
+    source = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=250)
+    img_url = models.CharField(max_length=250, blank=True, null=True)
+    unique_id = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    category_major = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    construction_year = models.CharField(max_length=255, blank=True, null=True)
+    price_num = models.IntegerField(blank=True, null=True)
+    views_num = models.IntegerField(blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    neighborhood = models.CharField(max_length=255, blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    on_site_date = models.DateField(blank=True, null=True)
+    updated_date = models.DateField(blank=True, null=True)
+    last_update_num = models.IntegerField(blank=True, null=True)
+    property_area_num = models.IntegerField(blank=True, null=True)
+    property_rooms_num = models.IntegerField(blank=True, null=True)
+    property_buy_or_rent = models.CharField(max_length=255, blank=True, null=True)
+    car_kms_num = models.IntegerField(blank=True, null=True)
+    car_cc_num = models.IntegerField(blank=True, null=True)
+    car_fuel = models.CharField(max_length=255, blank=True, null=True)
+    debtor_name = models.CharField(max_length=255, blank=True, null=True)
+    auctioneer_name = models.CharField(max_length=255, blank=True, null=True)
+    auction_date = models.DateField(blank=True, null=True)
+    auction_number = models.IntegerField(blank=True, null=True)
+    contact_legal_name = models.CharField(max_length=255, blank=True, null=True)
+    contact_name = models.CharField(max_length=255, blank=True, null=True)
+    contact_phone = models.CharField(max_length=255, blank=True, null=True)
+    contact_mobile = models.CharField(max_length=255, blank=True, null=True)
+    contact_email = models.CharField(max_length=255, blank=True, null=True)
+    contact_website = models.CharField(max_length=255, blank=True, null=True)
+    category_minor = models.CharField(max_length=255, blank=True, null=True)
+    fulltext = models.TextField(blank=True, null=True)
+    other1 = models.TextField(blank=True, null=True)
+    other1_num = models.IntegerField(blank=True, null=True)
+    other2 = models.TextField(blank=True, null=True)
+    other2_num = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'auctionapp_auction'
 
 
 class Cooperator(models.Model):
@@ -255,6 +213,7 @@ class GeoRegions(models.Model):
 
 
 class PropCommercial(models.Model):
+    id = models.AutoField()
     title = models.CharField(max_length=250, blank=True, null=True)
     mainarea_id = models.IntegerField(blank=True, null=True)
     secondarea = models.CharField(max_length=150, blank=True, null=True)
@@ -265,7 +224,6 @@ class PropCommercial(models.Model):
     suggest_price = models.FloatField(blank=True, null=True)
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
-    category_minor = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
@@ -285,6 +243,7 @@ class PropCommercial(models.Model):
 
 
 class PropEarth(models.Model):
+    id = models.AutoField()
     title = models.CharField(max_length=250, blank=True, null=True)
     mainarea_id = models.IntegerField(blank=True, null=True)
     secondarea = models.CharField(max_length=150, blank=True, null=True)
@@ -314,6 +273,7 @@ class PropEarth(models.Model):
 
 
 class PropResidential(models.Model):
+    id = models.AutoField()
     title = models.CharField(max_length=250, blank=True, null=True)
     mainarea_id = models.IntegerField(blank=True, null=True)
     secondarea = models.CharField(max_length=150, blank=True, null=True)
@@ -324,7 +284,6 @@ class PropResidential(models.Model):
     suggest_price = models.FloatField(blank=True, null=True)
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
-    category_minor = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
@@ -368,6 +327,7 @@ class Sources(models.Model):
 
 
 class TranAuction(models.Model):
+    id = models.AutoField()
     search_id = models.IntegerField(blank=True, null=True)
     asset_id = models.IntegerField(blank=True, null=True)
     title = models.CharField(max_length=250, blank=True, null=True)
@@ -388,6 +348,7 @@ class TranAuction(models.Model):
 
 
 class TranCommercial(models.Model):
+    id = models.AutoField()
     search_id = models.IntegerField(blank=True, null=True)
     asset_id = models.IntegerField(blank=True, null=True)
     title = models.CharField(max_length=250, blank=True, null=True)
