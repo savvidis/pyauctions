@@ -25,32 +25,16 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # Note: This key only used for development and testing.
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='fe6bi(a%na7y=9#!w+h0j*697e7+ol0ue)g3d#zd=0jdi%kr^5')
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'wid_db',
-    #     'USER': 'dascim',
-    #     'PASSWORD': 'l1x#T3am',
-    #     'HOST': 'wid-data-dev.chnsziqcpidr.eu-west-1.rds.amazonaws.com',
-    #     'PORT': 5432
-    # },
-    # 'remote': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'wid_db',
-    #     'USER': 'dascim',
-    #     'PASSWORD': 'l1x#T3am',
-    #     'HOST': 'wid-data-ie.chnsziqcpidr.eu-west-1.rds.amazonaws.com',
-    #     'PORT': 5432
-    # }
-    'default': {
-        'ENGINE':   'django.db.backends.postgresql_psycopg2',
-        'NAME':     'auctions',
-        'USER':     'postgres',
-        'PASSWORD': 'Dbt2bvrgef',
-        'HOST':     'localhost',
-        'PORT': 5432
-    },
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE':   'django.db.backends.postgresql_psycopg2',
+#         'NAME':     'auctions',
+#         'USER':     'postgres',
+#         'PASSWORD': 'Dbt2bvrgef',
+#         'HOST':     'localhost',
+#         'PORT': 5432
+#     },
+# }
 
 # Mail settings
 # ------------------------------------------------------------------------------

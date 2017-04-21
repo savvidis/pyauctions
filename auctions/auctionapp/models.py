@@ -2,6 +2,8 @@ from django.db import models
 from datetime import datetime
 from django.utils import timezone
 
+from django.contrib.postgres.fields import ArrayField
+
 # Create your models here.
 # from auctions.auctionapp.models import *
 # t = Type(**TypeDemo)
@@ -221,11 +223,15 @@ class GeoAreas(models.Model):
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
     city = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
-    crawled_names = models.TextField(blank=True, null=True)  # This field type is a guess.
+    # crawled_names = models.TextField(blank=True, null=True)  # This field type is a guess.
+    crawled_names = ArrayField(models.CharField(max_length=150, blank=True))
 
     class Meta:
         managed = False
         db_table = 'geo_areas'
+
+    def __unicode__(self):
+        return "%s" % self.name
 
 
 class GeoCity(models.Model):
@@ -236,6 +242,8 @@ class GeoCity(models.Model):
         managed = False
         db_table = 'geo_city'
 
+    def __unicode__(self):
+        return "%s" % self.name
 
 class GeoCountries(models.Model):
     name = models.CharField(max_length=250, blank=True, null=True)
@@ -252,6 +260,9 @@ class GeoRegions(models.Model):
     class Meta:
         managed = False
         db_table = 'geo_regions'
+
+    def __unicode__(self):
+        return "%s" % self.name
 
 
 class PropCommercial(models.Model):
