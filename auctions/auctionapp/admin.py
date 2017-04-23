@@ -1,5 +1,11 @@
 from django.contrib import admin
 from .models import *
+from django.http import HttpResponse
+
+def my_view(request, *args, **kwargs):
+    return HttpResponse("Hello!")
+
+admin.site.register_view('somepath', view=my_view)
 
 # Register your models here.
 

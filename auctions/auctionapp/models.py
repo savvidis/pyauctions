@@ -168,7 +168,6 @@ class AssetProperty(models.Model):
     suggest_price = models.FloatField(blank=True, null=True)
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
-    category_minor = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
@@ -176,7 +175,7 @@ class AssetProperty(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.CharField(max_length=20, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
     full_text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
 
@@ -187,6 +186,8 @@ class AssetProperty(models.Model):
 
 class AssetPropertyType(models.Model):
     description = models.CharField(max_length=150, blank=True, null=True)
+    category_major = models.CharField(max_length=150, blank=True, null=True)
+    synonyms = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -276,7 +277,6 @@ class PropCommercial(models.Model):
     suggest_price = models.FloatField(blank=True, null=True)
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
-    category_minor = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
@@ -284,7 +284,7 @@ class PropCommercial(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.CharField(max_length=20, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
     type = models.CharField(max_length=150, blank=True, null=True)
     construction_year = models.CharField(max_length=250, blank=True, null=True)
     full_text = models.TextField(blank=True, null=True)
@@ -313,7 +313,7 @@ class PropEarth(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.CharField(max_length=20, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
     inmap = models.CharField(max_length=50, blank=True, null=True)
     size = models.FloatField(blank=True, null=True)
     full_text = models.TextField(blank=True, null=True)
@@ -335,7 +335,6 @@ class PropResidential(models.Model):
     suggest_price = models.FloatField(blank=True, null=True)
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
-    category_minor = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
@@ -343,7 +342,7 @@ class PropResidential(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.CharField(max_length=20, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
     type = models.CharField(max_length=150, blank=True, null=True)
     bedrooms = models.CharField(max_length=100, blank=True, null=True)
     construction_year = models.CharField(max_length=250, blank=True, null=True)
@@ -357,11 +356,7 @@ class PropResidential(models.Model):
 
 class SearchInfo(models.Model):
     imported_date = models.DateField(blank=True, null=True)
-    category_id = models.IntegerField()
-    nomos_id = models.IntegerField()
-    source_id = models.IntegerField()
-    isoffer = models.NullBooleanField()
-    issold = models.NullBooleanField()
+    number_of_imports = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -409,6 +404,7 @@ class TranCommercial(models.Model):
     source_id = models.IntegerField(blank=True, null=True)
     on_site_date = models.DateField(blank=True, null=True)
     selling_price = models.FloatField(blank=True, null=True)
+    buy_or_rent = models.CharField(max_length=250)
 
     class Meta:
         managed = False
