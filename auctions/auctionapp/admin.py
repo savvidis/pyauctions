@@ -9,8 +9,6 @@ admin.site.register_view('somepath', view=my_view)
 
 # Register your models here.
 
-admin.site.register(Type)
-
 class AuctionAdmin(admin.ModelAdmin):
     # list_display  = [f.name for f in Auction._meta.fields]
     list_display = ('id','asset_type', 'transaction_type', 'imported_date', 'source', 'url', \

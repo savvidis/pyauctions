@@ -14,13 +14,6 @@ TYPE_OF_ASSETS = ((1, 'Real estate'), (2, 'Cars'))
 TYPE_OF_SOURCES = ((1, 'Bank'), (2, 'Leasing'))
 
 
-class Type(models.Model):
-    asset_type = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.asset_type
-
-
 class Source(models.Model):
     source_site = models.URLField(max_length=255)
     source_name = models.CharField(default="", max_length=255)
@@ -175,7 +168,8 @@ class AssetProperty(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.CharField(max_length=150, blank=True, null=True)
     full_text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
 
@@ -185,6 +179,7 @@ class AssetProperty(models.Model):
 
 
 class AssetPropertyType(models.Model):
+    id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=150, blank=True, null=True)
     category_major = models.CharField(max_length=150, blank=True, null=True)
     synonyms = models.TextField(blank=True, null=True)
@@ -284,7 +279,8 @@ class PropCommercial(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.CharField(max_length=150, blank=True, null=True)
     type = models.CharField(max_length=150, blank=True, null=True)
     construction_year = models.CharField(max_length=250, blank=True, null=True)
     full_text = models.TextField(blank=True, null=True)
@@ -313,7 +309,8 @@ class PropEarth(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.CharField(max_length=150, blank=True, null=True)
     inmap = models.CharField(max_length=50, blank=True, null=True)
     size = models.FloatField(blank=True, null=True)
     full_text = models.TextField(blank=True, null=True)
@@ -342,7 +339,8 @@ class PropResidential(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.CharField(max_length=150, blank=True, null=True)
     type = models.CharField(max_length=150, blank=True, null=True)
     bedrooms = models.CharField(max_length=100, blank=True, null=True)
     construction_year = models.CharField(max_length=250, blank=True, null=True)
