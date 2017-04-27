@@ -1,11 +1,15 @@
 from django.contrib import admin
 from .models import *
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 def my_view(request, *args, **kwargs):
-    return HttpResponse("Hello!")
+    # return HttpResponse("Hello!")
+    if request.method == 'POST':
+        # <view logic>
+        return HttpResponseRedirect("synchro.html")
+    return HttpResponseRedirect("synchro.html")
 
-admin.site.register_view('somepath', view=my_view)
+admin.site.register_view('auctionapp/synchro.html', view=my_view)
 
 # Register your models here.
 
@@ -14,8 +18,6 @@ class AuctionAdmin(admin.ModelAdmin):
     list_display = ('id','asset_type', 'transaction_type', 'imported_date', 'source', 'url', \
     'img_url', 'unique_id', 'title')
 admin.site.register(Auction,AuctionAdmin)
-
-admin.site.register(Source)
 
 admin.site.register(Asset)
 admin.site.register(AssetCar)

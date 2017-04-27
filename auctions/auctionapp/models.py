@@ -14,13 +14,13 @@ TYPE_OF_ASSETS = ((1, 'Real estate'), (2, 'Cars'))
 TYPE_OF_SOURCES = ((1, 'Bank'), (2, 'Leasing'))
 
 
-class Source(models.Model):
-    source_site = models.URLField(max_length=255)
-    source_name = models.CharField(default="", max_length=255)
-    source_type = models.IntegerField(default=1, choices=TYPE_OF_SOURCES)
-
-    def __str__(self):
-        return self.source_site
+# class Source(models.Model):
+#     source_site = models.URLField(max_length=255)
+#     source_name = models.CharField(default="", max_length=255)
+#     source_type = models.IntegerField(default=1, choices=TYPE_OF_SOURCES)
+#
+#     def __str__(self):
+#         return self.source_site
 
 
 class Auction(models.Model):

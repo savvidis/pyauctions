@@ -9,6 +9,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .filters import AuctionFilter
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
+from django.template.response import TemplateResponse
+from django.utils.translation import ugettext_lazy as _
+
 # Create your views here.
 
 categories = ["Apartment", "House", "Maisonette", "Detached House"]
@@ -124,3 +129,28 @@ def AuctionListView2(request):
         'object_list': data1
     }
     return HttpResponse(template.render(context, request))
+
+
+@staff_member_required
+def synchro(request):
+    if 'synchro' in request.POST:
+        try:
+            # msg = call_synchronize()
+            print "hello"
+            messages.add_message(request, messages.INFO, msg)
+        except Exception as e:
+            if settings.DEBUG:
+                raise
+            msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
+                                                               'type': e.__class__.__name__}
+            messages.add_message(request, messages.ERROR, msg)
+    elif 'reset' in request.POST and settings.ALLOW_RESET:
+        reset_synchro()
+        msg = _('Synchronization has been reset.')
+        messages.add_message(request, messages.INFO, msg)
+    elif 'bulk_csv' in request.POST:
+        create_bulk_csv()
+        msg = _('CSVs have been created.')
+        messages.add_message(request, messages.INFO, msg)
+
+    return TemplateResponse(request, 'synchro.html')
