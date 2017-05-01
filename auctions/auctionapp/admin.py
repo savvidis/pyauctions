@@ -1,15 +1,14 @@
 from django.contrib import admin
 from .models import *
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views import View
 
-def my_view(request, *args, **kwargs):
+
+def update_database(request, *args, **kwargs):
     # return HttpResponse("Hello!")
-    if request.method == 'POST':
-        # <view logic>
-        return HttpResponseRedirect("synchro.html")
     return HttpResponseRedirect("synchro.html")
 
-admin.site.register_view('auctionapp/synchro.html', view=my_view)
+admin.site.register_view('auctionapp/synchro.html', view=update_database, name='Update database')
 
 # Register your models here.
 
@@ -19,9 +18,13 @@ class AuctionAdmin(admin.ModelAdmin):
     'img_url', 'unique_id', 'title')
 admin.site.register(Auction,AuctionAdmin)
 
-admin.site.register(Asset)
-admin.site.register(AssetCar)
-admin.site.register(AssetProperty)
+class AssetAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in Asset._meta.fields]
+admin.site.register(Asset,AssetAdmin)
+
+class AssetCarAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in AssetCar._meta.fields]
+admin.site.register(AssetCar,AssetCarAdmin)
 
 class AssetPropertyTypeAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in AssetPropertyType._meta.fields]
@@ -59,8 +62,22 @@ class PropResidentialAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in PropResidential._meta.fields]
 admin.site.register(PropResidential,PropResidentialAdmin)
 
-admin.site.register(SearchInfo)
-admin.site.register(Sources)
-admin.site.register(TranAuction)
-admin.site.register(TranCommercial)
-admin.site.register(Transaction)
+class SearchInfoAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in SearchInfo._meta.fields]
+admin.site.register(SearchInfo,SearchInfoAdmin)
+
+class SourcesAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in Sources._meta.fields]
+admin.site.register(Sources,SourcesAdmin)
+
+class TranAuctionAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in TranAuction._meta.fields]
+admin.site.register(TranAuction,TranAuctionAdmin)
+
+class TranCommercialAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in TranCommercial._meta.fields]
+admin.site.register(TranCommercial,TranCommercialAdmin)
+
+class TransactionAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in Transaction._meta.fields]
+admin.site.register(Transaction,TransactionAdmin)

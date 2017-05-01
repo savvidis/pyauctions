@@ -11,14 +11,18 @@ from django.views import defaults as default_views
 from django.contrib import admin
 from adminplus.sites import AdminSitePlus
 
+
 admin.site = AdminSitePlus()
 admin.autodiscover()
+
+from auctions.auctionapp.views import *
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
-    url(r'^admin/auctionapp/synchro.html', TemplateView.as_view(template_name='auctionapp/synchro.html')),
+    # url(r'^admin/auctionapp/', TemplateView.as_view(template_name='auctionapp/synchro.html')),
+    url(r'^admin/auctionapp/synchro.html', synchro, name='synchro'),
 
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),

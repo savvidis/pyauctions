@@ -35,7 +35,7 @@ DJANGO_APPS = (
 
     # Admin
     'django.contrib.admin.apps.SimpleAdminConfig',
-    # 'django.contrib.admin',
+    # 'django.contrib.admin'
     'adminplus',
 )
 THIRD_PARTY_APPS = (

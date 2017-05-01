@@ -14,6 +14,8 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.utils.translation import ugettext_lazy as _
 
+from utility import *
+
 # Create your views here.
 
 categories = ["Apartment", "House", "Maisonette", "Detached House"]
@@ -133,24 +135,68 @@ def AuctionListView2(request):
 
 @staff_member_required
 def synchro(request):
-    if 'synchro' in request.POST:
+    if 'update_properties' in request.POST:
         try:
-            # msg = call_synchronize()
-            print "hello"
+            update_properties()
+            msg = _('Properties tables updated.')
             messages.add_message(request, messages.INFO, msg)
         except Exception as e:
-            if settings.DEBUG:
-                raise
+
             msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
                                                                'type': e.__class__.__name__}
             messages.add_message(request, messages.ERROR, msg)
-    elif 'reset' in request.POST and settings.ALLOW_RESET:
-        reset_synchro()
-        msg = _('Synchronization has been reset.')
-        messages.add_message(request, messages.INFO, msg)
-    elif 'bulk_csv' in request.POST:
-        create_bulk_csv()
-        msg = _('CSVs have been created.')
-        messages.add_message(request, messages.INFO, msg)
 
-    return TemplateResponse(request, 'synchro.html')
+    elif 'delete_properties' in request.POST:
+        try:
+            delete_properties()
+            msg = _('Properties tables deleted.')
+            messages.add_message(request, messages.INFO, msg)
+        except Exception as e:
+            msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
+                                                               'type': e.__class__.__name__}
+            messages.add_message(request, messages.ERROR, msg)
+
+    elif 'update_transactions' in request.POST:
+        try:
+            update_transactions()
+            msg = _('Transaction tables updated.')
+            messages.add_message(request, messages.INFO, msg)
+        except Exception as e:
+
+            msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
+                                                               'type': e.__class__.__name__}
+            messages.add_message(request, messages.ERROR, msg)
+
+    elif 'delete_transactions' in request.POST:
+        try:
+            delete_transactions()
+            msg = _('Transactions tables deleted.')
+            messages.add_message(request, messages.INFO, msg)
+        except Exception as e:
+            msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
+                                                               'type': e.__class__.__name__}
+            messages.add_message(request, messages.ERROR, msg)
+
+
+    elif 'update_search_sources_coops' in request.POST:
+        try:
+            update_search_sources_coops()
+            msg = _('Search, sources, cooperators updated.')
+            messages.add_message(request, messages.INFO, msg)
+        except Exception as e:
+
+            msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
+                                                               'type': e.__class__.__name__}
+            messages.add_message(request, messages.ERROR, msg)
+
+    elif 'delete_search_sources_coops' in request.POST:
+        try:
+            delete_search_sources_coops()
+            msg = _('Search_sources_coops tables deleted.')
+            messages.add_message(request, messages.INFO, msg)
+        except Exception as e:
+            msg = _('An error occured: %(msg)s (%(type)s)') % {'msg': str(e),
+                                                               'type': e.__class__.__name__}
+            messages.add_message(request, messages.ERROR, msg)
+
+    return TemplateResponse(request, 'auctionapp/synchro.html')
