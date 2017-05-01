@@ -126,6 +126,9 @@ class Asset(models.Model):
         managed = False
         db_table = 'asset'
 
+    def __unicode__(self):
+        return "%s" % self.id
+
 
 class AssetCar(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
@@ -204,6 +207,9 @@ class Cooperator(models.Model):
         managed = False
         db_table = 'cooperator'
 
+    def __unicode__(self):
+        return "%s" % self.contact_legal_name
+
 
 class DjangoMigrations(models.Model):
     app = models.CharField(max_length=255)
@@ -249,6 +255,9 @@ class GeoCountries(models.Model):
     class Meta:
         managed = False
         db_table = 'geo_countries'
+
+    def __unicode__(self):
+        return "%s" % self.name
 
 
 class GeoRegions(models.Model):
@@ -373,6 +382,9 @@ class Sources(models.Model):
     class Meta:
         managed = False
         db_table = 'sources'
+
+    def __unicode__(self):
+        return "%s" % self.source_text
 
 
 class TranAuction(models.Model):

@@ -3,7 +3,6 @@ from datetime import datetime
 from django.core.exceptions import MultipleObjectsReturned, ValidationError
 from django.db.models import Manager, Model
 from django.db.models.base import ModelBase
-from reversion.models import Version
 from django.contrib.contenttypes.models import ContentType
 from django.apps import apps
 
@@ -56,7 +55,7 @@ def update_transactions():
     (search_id,asset_id,title,url,contact_legal_id,contact_website,source_id,on_site_date,selling_price,buy_or_rent) \
     (SELECT s.id, ass.id, a.title, a.url, co.id, co.contact_website, so.id, a.on_site_date, a.price_num, a.property_buy_or_rent \
     from auctionapp_auction as a, search_info as s, sources as so, asset as ass, cooperator as co \
-    where ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and a.category_major='commercial' and \
+    where ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and \
     s.imported_date=a.imported_date and a.contact_website=co.contact_website \
     ) on conflict do nothing;"
 
