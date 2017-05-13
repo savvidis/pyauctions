@@ -429,9 +429,10 @@ class TranAuction(models.Model):
     description = models.CharField(max_length=250)
     source_id = models.IntegerField(blank=True, null=True)
     starting_price = models.FloatField(blank=True, null=True)
-    onsight_date = models.DateField(blank=True, null=True)
+    on_site_date = models.DateField(blank=True, null=True)
+    auction_date = models.DateField(blank=True, null=True)
     debtor_name = models.CharField(max_length=150, blank=True, null=True)
-    creditor_name = models.CharField(max_length=150, blank=True, null=True)
+    auctioneer_name = models.CharField(max_length=150, blank=True, null=True)
     auction_number = models.IntegerField(blank=True, null=True)
 
     class Meta:

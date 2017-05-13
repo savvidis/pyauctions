@@ -30,6 +30,9 @@ CREATE TABLE geo_areas (
   city_id integer REFERENCES geo_cities (id)
 );
 
+-------------------- SOURCES ----------------------------
+
+
 CREATE TABLE sources (
   id SERIAL PRIMARY KEY,
   source_text text,
@@ -116,6 +119,11 @@ CREATE TABLE cooperator (
   coo_type integer DEFAULT NULL
 );
 
+CREATE TABLE auctioneer(
+  id serial PRIMARY KEY,
+  name varchar(250)
+);
+
 CREATE TABLE search_info (
   id serial PRIMARY KEY,
   imported_date date,
@@ -123,6 +131,7 @@ CREATE TABLE search_info (
   unique(imported_date)
 );
 
+-------------------- TRANSACTION ----------------------------
 
 CREATE TABLE transaction(
   id serial PRIMARY KEY,
@@ -134,20 +143,28 @@ CREATE TABLE transaction(
   contact_legal_id integer REFERENCES cooperator (id),
   contact_website varchar(250),
   description varchar(250) NOT NULL DEFAULT '',
-  source_id integer REFERENCES sources (id)
+  source_id integer REFERENCES sources (id),
+  unique (search_id,asset_id,title)
 );
 
 CREATE TABLE tran_auction (
   starting_price float,
-  on_site_date date
+  on_site_date date,
+  auction_date date,
+  debtor_name varchar(250),
+  auctioneer_name varchar(250),
+  auction_number integer,
+  unique (search_id,asset_id,title)
 ) INHERITS (transaction);
 
 CREATE TABLE tran_commercial (
   on_site_date date,
-  selling_price float
+  buy_or_rent varchar(250),
+  selling_price float,
+  unique (search_id,asset_id,title)
 ) INHERITS (transaction);
 
-
+-------------------- END OF TRANSACTION ----------------------------
 
 CREATE TABLE asset_property_type (
   id serial PRIMARY KEY,

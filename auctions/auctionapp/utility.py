@@ -32,6 +32,11 @@ def update_search_sources_coops():
     SELECT DISTINCT contact_legal_name, contact_name, contact_phone, contact_email, contact_website \
     from auctionapp_auction \
     ); \
+    INSERT into auctioneer (name) \
+    ( \
+    SELECT DISTINCT auctioneer_name \
+    from auctionapp_auction \
+    ); \
     INSERT into search_info (imported_date) \
     (SELECT DISTINCT(a.imported_date) \
     from auctionapp_auction as a \
@@ -55,16 +60,16 @@ def update_transactions():
     (search_id,asset_id,title,url,contact_legal_id,contact_website,source_id,on_site_date,selling_price,buy_or_rent) \
     (SELECT s.id, ass.id, a.title, a.url, co.id, co.contact_website, so.id, a.on_site_date, a.price_num, a.property_buy_or_rent \
     from auctionapp_auction as a, search_info as s, sources as so, asset as ass, cooperator as co \
-    where a.transaction_type='commercial' and ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and a.transaction='commercial' \
-    s.imported_date=a.imported_ and date and a.contact_website=co.contact_website \
+    where a.transaction_type='commercial' and ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and \
+    s.imported_date=a.imported_date and a.contact_website=co.contact_website \
     ) on conflict do nothing;"
 
     cursor.execute(update_trans)
 
-    update_trans = "INSERT into tran_auction (search_id,asset_id,title,url,contact_legal_id,contact_website,source_id,on_site_date,selling_price,buy_or_rent) \
-    (SELECT s.id, ass.id, a.title, a.url, co.id, co.contact_website, so.id, a.on_site_date, a.price_num, a.property_buy_or_rent \
-    from auctionapp_auction as a, search_info as s, sources as so, asset as ass, cooperator as co \
-    where a.transaction_type='auction' and ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and a.category_major='auction' and s.imported_date=a.imported_date and a.contact_website=co.contact_website \
+    update_trans = "INSERT into tran_auction (search_id,asset_id,title,url,contact_legal_id,source_id,starting_price,on_site_date,auction_date, debtor_name,auctioneer_name, auction_number) \
+    (SELECT s.id, ass.id, a.title, a.url, auc.id, so.id,a.price_num, a.on_site_date, a.auction_date, a.debtor_name, a.auctioneer_name, a.auction_number \
+    from auctionapp_auction as a, search_info as s, sources as so, asset as ass, auctioneer as auc \
+    where a.transaction_type='auction' and ass.unique_id=a.unique_id and s.id=2 and ass.title=a.title and a.source=so.source_text and auc.name=a.auctioneer_name \
     ) on conflict do nothing;"
 
     cursor.execute(update_trans)
