@@ -107,7 +107,7 @@ class Auction(models.Model):
 
 class Asset(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
-    mainarea = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
     percentage = models.CharField(max_length=150, blank=True, null=True)
     img_url = models.CharField(max_length=250, blank=True, null=True)
@@ -132,7 +132,7 @@ class Asset(models.Model):
 
 class AssetCar(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
-    mainarea = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
     percentage = models.CharField(max_length=150, blank=True, null=True)
     img_url = models.CharField(max_length=250, blank=True, null=True)
@@ -158,7 +158,7 @@ class AssetCar(models.Model):
 
 class AssetProperty(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
-    mainarea = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
     percentage = models.CharField(max_length=150, blank=True, null=True)
     img_url = models.CharField(max_length=250, blank=True, null=True)
@@ -185,6 +185,7 @@ class AssetProperty(models.Model):
 
 
 class AssetPropertyType(models.Model):
+    id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=150, blank=True, null=True)
     category_major = models.CharField(max_length=150, blank=True, null=True)
     synonyms = models.TextField(blank=True, null=True)
@@ -193,6 +194,8 @@ class AssetPropertyType(models.Model):
         managed = False
         db_table = 'asset_property_type'
 
+    # def __unicode__(self):
+    #     return "%s" % self.description
 
 class Cooperator(models.Model):
     contact_legal_name = models.CharField(max_length=250, blank=True, null=True)
@@ -226,7 +229,7 @@ class GeoAreas(models.Model):
     postcode = models.CharField(max_length=250, blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    city = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    city = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     crawled_names = models.TextField(blank=True, null=True)  # This field type is a guess.
     # crawled_names = ArrayField(models.CharField(max_length=150, blank=True))
 
@@ -238,13 +241,13 @@ class GeoAreas(models.Model):
         return "%s" % self.name
 
 
-class GeoCity(models.Model):
+class GeoCities(models.Model):
     name = models.CharField(max_length=250, blank=True, null=True)
     region = models.ForeignKey('GeoRegions', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'geo_city'
+        db_table = 'geo_cities'
 
     def __unicode__(self):
         return "%s" % self.name
@@ -274,7 +277,7 @@ class GeoRegions(models.Model):
 
 class PropCommercial(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
-    mainarea = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
     percentage = models.CharField(max_length=150, blank=True, null=True)
     img_url = models.CharField(max_length=250, blank=True, null=True)
@@ -303,7 +306,7 @@ class PropCommercial(models.Model):
 
 class PropEarth(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
-    mainarea = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
     percentage = models.CharField(max_length=150, blank=True, null=True)
     img_url = models.CharField(max_length=250, blank=True, null=True)
@@ -333,7 +336,7 @@ class PropEarth(models.Model):
 
 class PropResidential(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
-    mainarea = models.ForeignKey('GeoCity', models.DO_NOTHING, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
     secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
     percentage = models.CharField(max_length=150, blank=True, null=True)
     img_url = models.CharField(max_length=250, blank=True, null=True)
@@ -360,6 +363,35 @@ class PropResidential(models.Model):
     class Meta:
         managed = False
         db_table = 'prop_residential'
+
+class PropAuction(models.Model):
+    title = models.CharField(max_length=250, blank=True, null=True)
+    mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
+    secondarea = models.ForeignKey('GeoAreas', models.DO_NOTHING, blank=True, null=True)
+    percentage = models.CharField(max_length=150, blank=True, null=True)
+    img_url = models.CharField(max_length=250, blank=True, null=True)
+    unique_id = models.CharField(max_length=250, blank=True, null=True)
+    performance_category = models.CharField(max_length=250, blank=True, null=True)
+    suggest_price = models.FloatField(blank=True, null=True)
+    suggest_income = models.FloatField(blank=True, null=True)
+    category_major = models.CharField(max_length=250, blank=True, null=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+    updated_date = models.DateField(blank=True, null=True)
+    profit_loss_income = models.FloatField(blank=True, null=True)
+    embadon = models.FloatField(blank=True, null=True)
+    other = models.TextField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.CharField(max_length=150, blank=True, null=True)
+    # type = models.CharField(max_length=150, blank=True, null=True)
+
+    # full_text = models.TextField(blank=True, null=True)
+    address = models.CharField(max_length=150, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'prop_auction'
 
 
 class SearchInfo(models.Model):
@@ -438,3 +470,17 @@ class Transaction(models.Model):
     class Meta:
         managed = False
         db_table = 'transaction'
+
+class Poi(models.Model):
+    description = models.CharField(max_length=150, blank=True, null=True)
+    description1 = models.CharField(max_length=150, blank=True, null=True)
+    type = models.CharField(max_length=150, blank=True, null=True)
+    place = models.CharField(max_length=250, blank=True, null=True)
+    area = models.CharField(max_length=250, blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    address = models.CharField(max_length=250, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'poi'

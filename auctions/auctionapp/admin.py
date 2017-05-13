@@ -22,9 +22,18 @@ class AssetAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in Asset._meta.fields]
 admin.site.register(Asset,AssetAdmin)
 
+class PoiAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in Poi._meta.fields]
+admin.site.register(Poi,PoiAdmin)
+
 class AssetCarAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in AssetCar._meta.fields]
 admin.site.register(AssetCar,AssetCarAdmin)
+
+class AssetPropertyAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in AssetProperty._meta.fields]
+    # list_display = ('id','title','asset_type', 'mainarea', 'secondarea', 'unique_id', 'embadon')
+admin.site.register(AssetProperty,AssetPropertyAdmin)
 
 class AssetPropertyTypeAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in AssetPropertyType._meta.fields]
@@ -38,9 +47,9 @@ class GeoAreasAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in GeoAreas._meta.fields]
 admin.site.register(GeoAreas,GeoAreasAdmin)
 
-class GeoCityAdmin(admin.ModelAdmin):
-    list_display  = [f.name for f in GeoCity._meta.fields]
-admin.site.register(GeoCity,GeoCityAdmin)
+class GeoCitiesAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in GeoCities._meta.fields]
+admin.site.register(GeoCities,GeoCitiesAdmin)
 
 class GeoCountriesAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in GeoCountries._meta.fields]
@@ -57,6 +66,10 @@ admin.site.register(PropCommercial,PropCommercialAdmin)
 class PropEarthAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in PropEarth._meta.fields]
 admin.site.register(PropEarth,PropEarthAdmin)
+
+class PropAuctionAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in PropAuction._meta.fields]
+admin.site.register(PropAuction,PropAuctionAdmin)
 
 class PropResidentialAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in PropResidential._meta.fields]

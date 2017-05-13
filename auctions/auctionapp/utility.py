@@ -55,8 +55,16 @@ def update_transactions():
     (search_id,asset_id,title,url,contact_legal_id,contact_website,source_id,on_site_date,selling_price,buy_or_rent) \
     (SELECT s.id, ass.id, a.title, a.url, co.id, co.contact_website, so.id, a.on_site_date, a.price_num, a.property_buy_or_rent \
     from auctionapp_auction as a, search_info as s, sources as so, asset as ass, cooperator as co \
-    where ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and \
-    s.imported_date=a.imported_date and a.contact_website=co.contact_website \
+    where a.transaction_type='commercial' and ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and a.transaction='commercial' \
+    s.imported_date=a.imported_ and date and a.contact_website=co.contact_website \
+    ) on conflict do nothing;"
+
+    cursor.execute(update_trans)
+
+    update_trans = "INSERT into tran_auction (search_id,asset_id,title,url,contact_legal_id,contact_website,source_id,on_site_date,selling_price,buy_or_rent) \
+    (SELECT s.id, ass.id, a.title, a.url, co.id, co.contact_website, so.id, a.on_site_date, a.price_num, a.property_buy_or_rent \
+    from auctionapp_auction as a, search_info as s, sources as so, asset as ass, cooperator as co \
+    where a.transaction_type='auction' and ass.unique_id=a.unique_id and ass.title=a.title and a.source=so.source_text and a.category_major='auction' and s.imported_date=a.imported_date and a.contact_website=co.contact_website \
     ) on conflict do nothing;"
 
     cursor.execute(update_trans)
@@ -76,23 +84,36 @@ def update_properties():
     unique_id,status,updated_date,embadon,other,longitude,latitude,bedrooms,construction_year) ( \
     SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude,a.property_rooms_num,a.construction_year \
     from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
-    where (a.asset_type='realestate' or a.asset_type='real estate') and a.category_major='residential' and CONCAT(a.neighborhood,', ',trim((string_to_array(a.region,'-'))[1]),', Greece')=ANY(g.crawled_names) and a.category_minor=ANY(t.synonyms) \
+    where (a.asset_type='realestate' or a.asset_type='real estate') and a.transaction_type='commercial' and a.category_major='residential' and CONCAT(a.neighborhood,', ',trim((string_to_array(a.region,'-'))[1]),', Greece')=ANY(g.crawled_names) and a.category_minor=ANY(t.synonyms) \
     )on conflict do nothing;"
 
     cursor.execute(update_prop_res)
+
+    update_prop_auction="INSERT into prop_auction (title,mainarea_id,secondarea_id,address,asset_type,img_url, \
+    unique_id,status,updated_date,embadon,other,longitude,latitude) ( \
+    SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude \
+    from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
+    where (a.asset_type='realestate' or a.asset_type='real estate' or a.asset_type='other') and a.transaction_type='auction' and \
+    ( CONCAT(a.city,', Greece')=ANY(g.crawled_names) or a.city=ANY(g.crawled_names) )\
+    )on conflict do nothing;"
+
+    cursor.execute(update_prop_auction)
 
     update_prop_comm = "INSERT into prop_commercial (title,mainarea_id,secondarea_id, address,asset_type,img_url, \
     unique_id,status,updated_date,embadon,other,longitude,latitude,rooms,construction_year) ( SELECT \
     a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,a.longitude,a.latitude,a.property_rooms_num,a.construction_year \
     from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
-    where (a.asset_type='realestate' or a.asset_type='real estate') and a.category_major='commercial' and \
+    where (a.asset_type='realestate' or a.asset_type='real estate') and a.transaction_type='commercial' and a.category_major='commercial' and \
     CONCAT(a.neighborhood,', ',trim((string_to_array(a.region,'-'))[1]),', Greece')=ANY(g.crawled_names) and \
     a.category_minor=ANY(t.synonyms) \
     )on conflict do nothing;"
 
     cursor.execute(update_prop_comm)
 
-    update_prop_land = "INSERT into prop_earth (title,mainarea_id,secondarea_id,address, asset_type,img_url, unique_id,status,updated_date,size,other,longitude,latitude,inmap) ( SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude,'' from auctionapp_auction as a, geo_areas as g, asset_property_type as t where (a.asset_type='realestate' or a.asset_type='real estate') and a.category_major='land' and CONCAT(a.neighborhood,', ',trim((string_to_array(a.region,'-'))[1]),', Greece')=ANY(g.crawled_names) and a.category_minor=ANY(t.synonyms) )on conflict do nothing;"
+    update_prop_land = "INSERT into prop_earth (title,mainarea_id,secondarea_id,address, asset_type,img_url, unique_id,status,updated_date,size,other,longitude,latitude,inmap) ( \
+    SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude,'' from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
+    where (a.asset_type='realestate' or a.asset_type='real estate') and a.transaction_type='commercial' and a.category_major='land' and \
+    CONCAT(a.neighborhood,', ',trim((string_to_array(a.region,'-'))[1]),', Greece')=ANY(g.crawled_names) and a.category_minor=ANY(t.synonyms) )on conflict do nothing;"
 
     cursor.execute(update_prop_land)
 
