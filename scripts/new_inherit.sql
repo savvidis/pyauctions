@@ -30,6 +30,15 @@ CREATE TABLE geo_areas (
   city_id integer REFERENCES geo_cities (id)
 );
 
+CREATE TABLE geo_address (
+  id serial PRIMARY KEY,
+  name varchar(250),
+  longitude float,
+  latitude float,
+  area_id integer REFERENCES geo_areas (id),
+  unique (name)
+);
+
 -------------------- SOURCES ----------------------------
 
 
@@ -70,9 +79,16 @@ CREATE TABLE asset_property (
   other text,
   longitude float,
   latitude float,
-  asset_type integer REFERENCES asset_property_type (id),
-  unique (title,asset_type, unique_id)
+  asset_type_id integer REFERENCES asset_property_type (id),
+  unique (title,asset_type_id, unique_id)
 ) INHERITS (asset);
+
+CREATE TABLE asset_property_type (
+  id serial PRIMARY KEY,
+  description varchar(150) DEFAULT NULL,
+  category_major varchar(150) DEFAULT NULL,
+  synonyms varchar(150)[] DEFAULT NULL
+);
 
 CREATE TABLE asset_car (
   car_kms_num integer,
@@ -92,13 +108,13 @@ CREATE TABLE prop_earth (
 CREATE TABLE prop_residential (
   bedrooms varchar(100),
   construction_year varchar(250),
-  unique (title,asset_type, unique_id)
+  unique (title,asset_type_id, unique_id)
 ) INHERITS (asset_property);
 
 CREATE TABLE prop_commercial (
   rooms integer,
   construction_year varchar(250),
-  unique (title,asset_type, unique_id)
+  unique (title,asset_type_id, unique_id)
 ) INHERITS (asset_property);
 
 CREATE TABLE prop_auction (
@@ -166,25 +182,32 @@ CREATE TABLE tran_commercial (
 
 -------------------- END OF TRANSACTION ----------------------------
 
-CREATE TABLE asset_property_type (
-  id serial PRIMARY KEY,
-  description varchar(150) DEFAULT NULL,
-  category_major varchar(150) DEFAULT NULL,
-  synonyms varchar(150)[] DEFAULT NULL
-)
 
 CREATE TABLE poi (
   id serial PRIMARY KEY,
-  description varchar(150) DEFAULT NULL,
-  description1 varchar(150) DEFAULT NULL,
-  type varchar(150) DEFAULT NULL,
-  place varchar(150) DEFAULT NULL,
-  area varchar(150) DEFAULT NULL,
-  latitude float,
+  full_title varchar(250) DEFAULT NULL,
+  business varchar(250) DEFAULT NULL,
+  category_Minor varchar(250) DEFAULT NULL,
+  category_Major varchar(250) DEFAULT NULL,
+  website varchar(250) DEFAULT NULL,
+  email varchar(150) DEFAULT NULL,
+  phone varchar(150) DEFAULT NULL,
+  recommended integer,
+  score integer,
   longitude float,
-  address varchar(150) DEFAULT NULL,
+  latitude float,
+  postcode integer,
+  address_id integer REFERENCES geo_address (id),
+  source integer,
+  on_map integer,
+  importance integer
 );
 
+CREATE TABLE poi_type (
+  id serial PRIMARY KEY,
+  category_major varchar(150) DEFAULT NULL,
+  category_minor varchar(150)[] DEFAULT NULL
+);
 
 ALTER TABLE prop_commercial
 ADD UNIQUE (title, secondarea, asset_type, embadon, unique_id)

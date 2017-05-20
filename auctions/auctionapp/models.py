@@ -174,8 +174,8 @@ class AssetProperty(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
-    asset_type = models.CharField(max_length=150, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.CharField(max_length=150, blank=True, null=True)
     # full_text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
 
@@ -185,7 +185,6 @@ class AssetProperty(models.Model):
 
 
 class AssetPropertyType(models.Model):
-    id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=150, blank=True, null=True)
     category_major = models.CharField(max_length=150, blank=True, null=True)
     synonyms = models.TextField(blank=True, null=True)
@@ -194,8 +193,8 @@ class AssetPropertyType(models.Model):
         managed = False
         db_table = 'asset_property_type'
 
-    # def __unicode__(self):
-    #     return "%s" % self.description
+    def __unicode__(self):
+        return "%s" % self.description
 
 class Cooperator(models.Model):
     contact_legal_name = models.CharField(max_length=250, blank=True, null=True)
@@ -245,12 +244,13 @@ class GeoCities(models.Model):
     name = models.CharField(max_length=250, blank=True, null=True)
     region = models.ForeignKey('GeoRegions', models.DO_NOTHING, blank=True, null=True)
 
+
     class Meta:
         managed = False
         db_table = 'geo_cities'
 
     def __unicode__(self):
-        return "%s" % self.name
+        return "%s, %s" % (self.name, self.region)
 
 class GeoCountries(models.Model):
     name = models.CharField(max_length=250, blank=True, null=True)
@@ -275,6 +275,19 @@ class GeoRegions(models.Model):
         return "%s" % self.name
 
 
+class GeoAddress(models.Model):
+    name = models.CharField(max_length=250, blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    area = models.ForeignKey(GeoAreas, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'geo_address'
+
+    def __unicode__(self):
+        return "%s" % self.name
+
 class PropCommercial(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
     mainarea = models.ForeignKey('GeoCities', models.DO_NOTHING, blank=True, null=True)
@@ -293,8 +306,8 @@ class PropCommercial(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
-    asset_type = models.CharField(max_length=150, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.CharField(max_length=150, blank=True, null=True)
     construction_year = models.CharField(max_length=250, blank=True, null=True)
     # full_text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
@@ -322,8 +335,8 @@ class PropEarth(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    # asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
-    asset_type = models.CharField(max_length=150, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    # asset_type = models.CharField(max_length=150, blank=True, null=True)
     inmap = models.CharField(max_length=50, blank=True, null=True)
     size = models.FloatField(blank=True, null=True)
     # full_text = models.TextField(blank=True, null=True)
@@ -473,15 +486,31 @@ class Transaction(models.Model):
         db_table = 'transaction'
 
 class Poi(models.Model):
-    description = models.CharField(max_length=150, blank=True, null=True)
-    description1 = models.CharField(max_length=150, blank=True, null=True)
-    type = models.CharField(max_length=150, blank=True, null=True)
-    place = models.CharField(max_length=250, blank=True, null=True)
-    area = models.CharField(max_length=250, blank=True, null=True)
-    latitude = models.FloatField(blank=True, null=True)
+    full_title = models.CharField(max_length=250, blank=True, null=True)
+    business = models.CharField(max_length=250, blank=True, null=True)
+    category_minor = models.CharField(max_length=250, blank=True, null=True)
+    category_major = models.CharField(max_length=250, blank=True, null=True)
+    website = models.CharField(max_length=250, blank=True, null=True)
+    email = models.CharField(max_length=150, blank=True, null=True)
+    phone = models.CharField(max_length=150, blank=True, null=True)
+    recommended = models.IntegerField(blank=True, null=True)
+    score = models.IntegerField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
-    address = models.CharField(max_length=250, blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+    postcode = models.IntegerField(blank=True, null=True)
+    address = models.ForeignKey(GeoAddress, models.DO_NOTHING, blank=True, null=True)
+    source = models.IntegerField(blank=True, null=True)
+    on_map = models.IntegerField(blank=True, null=True)
+    importance = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'poi'
+
+class PoiType(models.Model):
+    category_major = models.CharField(max_length=150, blank=True, null=True)
+    category_minor = ArrayField(models.CharField(max_length=250), blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'poi_type'

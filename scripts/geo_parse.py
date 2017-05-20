@@ -28,9 +28,9 @@ def main():
     cities = []
     areas = []
 
-    # gmaps = googlemaps.Client(key='AIzaSyAceR3rS8GL-yCvtmZ2Yf_zn6U7NHtvKxA')
+    gmaps = googlemaps.Client(key='AIzaSyAceR3rS8GL-yCvtmZ2Yf_zn6U7NHtvKxA')
 
-    gmaps = googlemaps.Client(key='AIzaSyD_WI3cBL-Qw4tuJU5f_J43G9jAmbXbMCE')
+    # gmaps = googlemaps.Client(key='AIzaSyD_WI3cBL-Qw4tuJU5f_J43G9jAmbXbMCE')
     # api_key1 = "AIzaSyAceR3rS8GL-yCvtmZ2Yf_zn6U7NHtvKxA"
     # api_key2 = 'AIzaSyD_4IyrrUGsjScz0bjwhwHcgt7a0iszh-w'
     # 'AIzaSyD_WI3cBL-Qw4tuJU5f_J43G9jAmbXbMCE'
@@ -56,9 +56,10 @@ def main():
     par="auction"
 
     # GENERATE CITIES
-    # cursor.execute("SELECT city,region,neighborhood FROM auctionapp_auction")
-
-    cursor.execute("SELECT region,neighborhood,city FROM auctionapp_auction WHERE region IS NULL and neighborhood IS NULL")
+    if par=="commercial":
+        cursor.execute("SELECT city,region,neighborhood FROM auctionapp_auction")
+    else:
+        cursor.execute("SELECT region,neighborhood,city FROM auctionapp_auction WHERE region IS NULL and neighborhood IS NULL")
 
     ## retrieve the records from the database
     records = cursor.fetchall()
@@ -225,10 +226,12 @@ def main():
                             region = component['long_name']
                             break
 
+
                     if city=="":
                         # city = region
                         # city = city_bef
                         city = area
+
 
                     for component in address_components:
                         if 'country' in component ['types']:

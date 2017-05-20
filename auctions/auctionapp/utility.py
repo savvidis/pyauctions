@@ -85,7 +85,7 @@ def delete_transactions():
 def update_properties():
     cursor = init_connection()
 
-    update_prop_res = "INSERT into prop_residential (title,mainarea_id,secondarea_id,address,asset_type,img_url, \
+    update_prop_res = "INSERT into prop_residential (title,mainarea_id,secondarea_id,address,asset_type_id,img_url, \
     unique_id,status,updated_date,embadon,other,longitude,latitude,bedrooms,construction_year) ( \
     SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude,a.property_rooms_num,a.construction_year \
     from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
@@ -94,7 +94,7 @@ def update_properties():
 
     cursor.execute(update_prop_res)
 
-    update_prop_auction="INSERT into prop_auction (title,mainarea_id,secondarea_id,address,asset_type,img_url, \
+    update_prop_auction="INSERT into prop_auction (title,mainarea_id,secondarea_id,address,asset_type_id,img_url, \
     unique_id,status,updated_date,embadon,other,longitude,latitude) ( \
     SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude \
     from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
@@ -104,7 +104,7 @@ def update_properties():
 
     cursor.execute(update_prop_auction)
 
-    update_prop_comm = "INSERT into prop_commercial (title,mainarea_id,secondarea_id, address,asset_type,img_url, \
+    update_prop_comm = "INSERT into prop_commercial (title,mainarea_id,secondarea_id, address,asset_type_id,img_url, \
     unique_id,status,updated_date,embadon,other,longitude,latitude,rooms,construction_year) ( SELECT \
     a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,a.longitude,a.latitude,a.property_rooms_num,a.construction_year \
     from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
@@ -115,7 +115,7 @@ def update_properties():
 
     cursor.execute(update_prop_comm)
 
-    update_prop_land = "INSERT into prop_earth (title,mainarea_id,secondarea_id,address, asset_type,img_url, unique_id,status,updated_date,size,other,longitude,latitude,inmap) ( \
+    update_prop_land = "INSERT into prop_earth (title,mainarea_id,secondarea_id,address, asset_type_id,img_url, unique_id,status,updated_date,size,other,longitude,latitude,inmap) ( \
     SELECT a.title,g.city_id,g.id,a.address,t.id,a.img_url,a.unique_id,'',now(),a.property_area_num,a.description,g.longitude,g.latitude,'' from auctionapp_auction as a, geo_areas as g, asset_property_type as t \
     where (a.asset_type='realestate' or a.asset_type='real estate') and a.transaction_type='commercial' and a.category_major='land' and \
     CONCAT(a.neighborhood,', ',trim((string_to_array(a.region,'-'))[1]),', Greece')=ANY(g.crawled_names) and a.category_minor=ANY(t.synonyms) )on conflict do nothing;"

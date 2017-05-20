@@ -26,6 +26,10 @@ class PoiAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in Poi._meta.fields]
 admin.site.register(Poi,PoiAdmin)
 
+class PoiTypeAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in PoiType._meta.fields]
+admin.site.register(PoiType,PoiTypeAdmin)
+
 class AssetCarAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in AssetCar._meta.fields]
 admin.site.register(AssetCar,AssetCarAdmin)
@@ -46,6 +50,10 @@ admin.site.register(Cooperator,CooperatorAdmin)
 class GeoAreasAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in GeoAreas._meta.fields]
 admin.site.register(GeoAreas,GeoAreasAdmin)
+
+class GeoAddressAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in GeoAddress._meta.fields]
+admin.site.register(GeoAddress,GeoAddressAdmin)
 
 class GeoCitiesAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in GeoCities._meta.fields]
