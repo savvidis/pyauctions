@@ -33,7 +33,6 @@ def days_left(value):
     try:
         diff = value - datetime.today().date()
         return diff.days
-        return
     except:
         return None
 

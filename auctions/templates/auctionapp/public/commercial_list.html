@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load myfilters %}
+
+{% block content %}
+
+{% include 'auctionapp/__layout/op_navbar.html' %}
+  <br>
+  <div class="content" style="background-color: ##fff; color: #3C4858;">
+
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+<div class="card">
+<table class="maintable table table-hover">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Asset name</th>
+    <th>Area</th>
+    <!-- <th>Asset type</th> -->
+    <th>Price</th>
+    <th>Sale or Rent</th>
+    <th>Imported Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for commercial in object_list|dictsort:"id"%}
+
+    <tr>
+      <th scope="row">{{commercial.id}}</th>
+      <td><a href="{% url 'auctionapp:commercial_detail' commercial.id %} "> {{ commercial.title }} </a></td>
+      <td><span>  {{commercial.asset.secondarea.name}}</span></td>
+      <!-- <td><span>  {{asset_type}}</span></td> -->
+      <td><span>  {{commercial.selling_price}}</span></td>
+      <td><span>  {{commercial.buy_or_rent}}</span></td>
+      <td><span>  {{commercial.on_site_date}}</span></td>
+
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+
+
+<!-- Pagination -->
+
+<nav aria-label="Page navigation" class="text-xs-center">
+
+{% if is_paginated %}{% load paginator %}{% paginator 3 %}{% endif %}
+
+</nav>
+<br>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- End of pagination -->
+
+
+{% endblock %}

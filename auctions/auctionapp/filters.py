@@ -5,12 +5,12 @@ from crispy_forms.helper import FormHelper, Layout
 from crispy_forms.layout import Div
 
 
-cat = Auction.objects.order_by().values_list(
-    'category_major').distinct()  # returns a dictionary
+cat = AssetPropertyType.objects.order_by().values_list('description') # returns a dictionary
+areas = GeoAreas.objects.order_by().values_list('name') # returns a dictionary
 
 CATEGORIES_MAJOR = [(x[0], x[0]) for x in cat]
-print(CATEGORIES_MAJOR)
-
+areas = [(x[0], x[0]) for x in areas]
+# print(CATEGORIES_MAJOR)
 
 class AuctionFilter(django_filters.FilterSet):
 
@@ -24,12 +24,15 @@ class AuctionFilter(django_filters.FilterSet):
                 'category_major', css_class="col-md-3",
             ),
             Div(
-                'city', css_class="col-md-3",
+                'area', css_class="col-md-5",
             )
         )
     category_major = django_filters.ChoiceFilter(choices=CATEGORIES_MAJOR)
-    city = django_filters.CharFilter(lookup_expr='icontains')
+
+    # city = django_filters.CharFilter(lookup_expr='icontains')
+    area = django_filters.ChoiceFilter(choices=areas)
+    # area = django_filters.CharFilter(lookup_expr='icontains')
 
     class Meta:
-        model = Auction
-        fields = ['category_major', 'city', ]
+        model = AssetProperty
+        fields = ['category_major', 'area', ]

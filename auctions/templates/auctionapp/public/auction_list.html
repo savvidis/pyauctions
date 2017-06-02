@@ -16,14 +16,11 @@
   <tr>
     <th>#</th>
     <th>Asset name</th>
-    <th>Price</th>
-    {% if "auction" in request.path%}  
-     <th>Days left</th>
-    {% else %}
-    <th>Price / Sq Meter</th>
-    <th>Neighborhood</th>
-    {% endif %}
-    <th>City</th>
+    <th>Area</th>
+    <th>Starting Price</th>
+    <th>Auction Date</th>
+    <th>Days left</th>
+
   </tr>
   </thead>
   <tbody>
@@ -31,15 +28,13 @@
 
   <tr>
     <th scope="row">{{auction.id}}</th>
-    <td><a href="{% url 'auctionapp:detail' auction.id %} "> {{ auction.title }} </a></td>
-    <td><span>  {{auction.price_num|format_currency}}</span></td>
-    {% if  auction.unique_id %}  
-     <td><span>  {{auction.auction_date|days_left}}</span></td>
-    {% else %}
-    <td><span>  {{auction.price_num| divide:auction.property_area_num|format_currency }}</span></td>
-    <td><span>  {{auction.neighborhood}}</span></td>
-    {% endif %}
-    <td><span>  {{auction.city}}</span></td>
+
+    <td><a href="{% url 'auctionapp:auction_detail' auction.id %} "> {{ auction.title }} </a></td>
+    <td><span>  {{auction.asset.secondarea.name}}</span></td>
+
+    <td><span>  {{auction.starting_price}}</span></td>
+    <td><span>  {{auction.auction_date}}</span></td>
+    <td><span>  {{auction.auction_date|days_left}}</span></td>
 
   </tr>
   {% endfor %}
@@ -50,29 +45,13 @@
 
 <!-- Pagination -->
 
-{% if is_paginated %}
 <nav aria-label="Page navigation" class="text-xs-center">
-  <ul class="pagination">
-    {% if page_obj.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-    {% endif %}
-    {% for i in paginator.page_range %}
-      {% if page_obj.number == i %}
-        <li class="page-item active"> <a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
-      {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-    {% endif %}
-  </ul>
-  </nav>
-{% endif %}
+
+{% if is_paginated %}{% load paginator %}{% paginator 3 %}{% endif %}
+
+</nav>
+<br>
+
 </div>
 </div>
 </div>

@@ -9,43 +9,58 @@
 <section class="wrapper-md" style="background: #eee;">
   <div class="container">
       <!-- Main -->
-      <div class="col-sm-12 col-md-12">
         <!-- /.row -->
         <br>
           <article class="card" style="padding-top: 20px;">
+
           <div class="row-fluid">
              <div class="col-sm-12 col-md-12">
-                    <div class="col-sm-12 col-md-8 mainpage_row">
-                    <h4><a href="#link">{{auction.title|ifexists}} <span class="text-muted">{{auction.category}}</span></a></h4>
-                    </div>
-            <div class="col-sm-12 col-md-5">
-            <a href="#link">
-            {% if  auction.img_url %}
-              <img class="img-responsive img-thumbnail" src="{{auction.img_url|lower}}">
-            {% else %}
-              <img src="{% static 'img/dummy/map_athens.png' %}" alt="Thumbnail Image" class="img-raised">
-            {% endif %}  
-            </a>
-            </div><!-- /.col -->
 
+               <div class="col-sm-12 col-md-12 mainpage_row">
+                    <h4><span class="text-muted">Auction</span>: {{auction.title|ifexists}}</h4>
+                  </div>
+            </div>
+          </div>
+
+          <div class="row-fluid">
+            <div class="col-sm-12 col-md-12">
+              <div class="col-sm-6 col-md-6">
+                <a href="#link">
+                  {% if auction.img_url %}
+                    <img class="img-responsive img-thumbnail" src="{{auction.asset.img_url|lower}}">
+                  {% else %}
+                    <img src="{% static 'img/dummy/map_athens.png' %}" alt="Thumbnail Image" class="img-raised">
+                  {% endif %}
+                </a>
+              </div><!-- /.col -->
+
+              <div class="col-md-6">
+                <div id="map" style="width:500px;height:400px">
+                <!-- <img src="{% static 'img/dummy/graph_zillow.png' %}" alt="Thumbnail Image" class="img-raised"> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row-fluid">
             <div class="col-sm-12 col-md-7">
                 <ul class="list-unstyled top_list">
+                  <li><i class="fa fa-fw fa-euro"></i><b>Price:</b> {{auction.starting_price|format_currency}} EURO</li>
 
-                <li><i class="fa fa-fw fa-th"></i><b>Price:</b> {{auction.price_num|format_currency}} EURO</li>
-                {% if auction.auction_date %}  
-                  <li><i class="fa fa-fw fa-truck"></i><b>Days left:</b> {{auction.auction_date|days_left}}</li> 
-                {% endif %}
-                <li><span> <b>Attractiveness: </b> {{auction.price_num|random}}</span></li>
+                  {% if auction.auction_date %}
+                  <li><i class="fa fa-fw fa-bell"></i><b>Days left:</b> {{auction.auction_date|days_left}}</li>
+                  {% endif %}
+                  <li><span> <b>Attractiveness: </b> {{auction.price_num|random}}</span></li>
 
-                {% if auction.property_area_num %}  
-                 <li> <i class="fa fa-fw fa-truck"></i><b>Price/m3:</b>  {{auction.price_num| divide:auction.property_area_num|format_currency }}</li>
+                {% if auction.property_area_num %}
+                 <li> <i class="fa fa-fw fa-truck"></i><b>Price/m3:</b> {{auction.price_num| divide:auction.property_area_num|format_currency }}</li>
                 {% endif %}
                 </ul>
             </div><!-- /.col -->
-            </div>
-            </div>
-            <div class="row-fluid">
-            <div class="col-sm-12 col-md-12 mainpage_row">
+
+          </div>
+
+          <div class="row-fluid">
 
             <div class="col-sm-12 col-md-6">
               <h4>Description</h4>
@@ -53,19 +68,20 @@
               <p> {{ auction.description|ifexists }}</p>
               <ul class="list-unstyled" style="font-size: 20px;line-height: 1.4em;">
 
-                <li><i class="fa fa-fw fa-th"></i><b>Price:</b> {{auction.price_num|format_currency}} EURO</li>
+                <li><i class="fa fa-fw fa-euro"></i><b>Price:</b> {{auction.starting_price|format_currency}} EURO</li>
 
-                <li><i class="fa fa-fw fa-female"></i><b>Latest update:</b> {{ auction.on_site_date}}</li>
-               {% if  auction.property_area_num %}<li><i class="fa fa-fw fa-th"></i><b> Area:</b> {{auction.property_area_num}}<sup>2</sup></li>{% endif %}
-               {% if  auction.property_rooms_num %} <li><i class="fa fa-fw fa-columns"></i><b># of rooms:</b> {{auction.property_rooms_num}}</li>{% endif %}
-               {% if  auction.construction_year %} <li><i class="fa fa-fw fa-female"></i><b>Construction year:</b> {{ auction.construction_year}}</li>{% endif %}
-                <li><i class="fa fa-fw fa-truck"></i><b>City:</b> {{auction.city}}</li>
-               {% if  auction.neighborhood %}  <li><i class="fa fa-fw fa-truck"></i><b>Neighborhood:</b> {{auction.neighborhood}}</li>{% endif %}
-               {% if  auction.auction_date %}  
-                  <li><i class="fa fa-fw fa-truck"></i><b>Auction ID: </b> {{auction.unique_id}}</li>
-                  <li><i class="fa fa-fw fa-truck"></i><b>Debtor Name: </b> {{auction.debtor_name}}</li>
-                  <li><i class="fa fa-fw fa-truck"></i><b>Creditor Name: </b> {{auction.auctioneer_name}}</li>
-                  <li><i class="fa fa-fw fa-truck"></i><b>Days left:</b> {{auction.auction_date|days_left}}</li> 
+                <li><i class="fa fa-fw fa-calendar"></i><b>Latest update:</b> {{ auction.on_site_date}}</li>
+               {% if auction.property_area_num %}<li><i class="fa fa-fw fa-th"></i><b> Area:</b> {{auction.property_area_num}}<sup>2</sup></li>{% endif %}
+               {% if auction.property_rooms_num %} <li><i class="fa fa-fw fa-columns"></i><b># of rooms:</b> {{auction.property_rooms_num}}</li>{% endif %}
+               {% if auction.construction_year %} <li><i class="fa fa-fw fa-building"></i><b>Construction year:</b> {{ auction.construction_year}}</li>{% endif %}
+                <li><i class="fa fa-fw fa-map"></i><b>City:</b> {{auction.asset.mainarea}}</li>
+                <li><i class="fa fa-fw fa-map-marker"></i><b>Area:</b> {{auction.asset.secondarea}}</li>
+               {% if auction.neighborhood %}  <li><i class="fa fa-fw fa-map-marker"></i><b>Neighborhood:</b> {{auction.neighborhood}}</li>{% endif %}
+               {% if auction.auction_date %}
+                  <li><i class="fa fa-fw fa-asterisk"></i><b>Auction ID: </b> {{auction.id}}</li>
+                  <li><i class="fa fa-fw fa-address-book"></i><b>Debtor Name: </b> {{auction.debtor_name}}</li>
+                  <li><i class="fa fa-fw fa-user"></i><b>Creditor Name: </b> {{auction.auctioneer_name}}</li>
+                  <li><i class="fa fa-fw fa-bell"></i><b>Days left:</b> {{auction.auction_date|days_left}}</li>
                {% endif %}
               </ul>
 
@@ -73,34 +89,57 @@
             </div><!-- /.col -->
 
             <div class="col-sm-12 col-md-6">
-            <h4>Market</h4>
+              <h4>Market</h4>
 
-            <div>
-              <img src="{% static 'img/dummy/graph_zillow.png' %}" alt="Thumbnail Image" class="img-raised">
-            </div>
-            <br>
-             <ul class="list-unstyled">
-             <H4>Running Costs </H4> </li>
-             <li><i class="fa fa-fw fa-truck"></i><b>Property tax (ENFIA) :</b> 1200 / year</li>
-             <li><i class="fa fa-fw fa-truck"></i><b>Local tax: </b> 120/year</li>
-
-             </ul>
-             </div>
-            </div>
-            </div><!-- /.col -->
-            <div class="col-sm-12 col-md-12">
-            <div class="container"
-              <pre>{{auction.fulltext|linebreaks }}</pre>
+              <!-- <div>
+                <img src="{% static 'img/dummy/graph_zillow.png' %}" alt="Thumbnail Image" class="img-raised">
               </div>
+
+              <br> -->
+              <h4>Running Costs </h4>
+              <ul class="list-unstyled">
+                <li><b>Property tax (ENFIA) :</b> 1200 / year</li>
+                <li><b>Local tax: </b> 120/year</li>
+              </ul>
+             </div>
+
+          </div>
+
+          <div class="row-fluid">
+            <div class="col-sm-12 col-md-12">
+
+              <pre>{{auction.fulltext|linebreaks }}</pre>
             </div>
-            </div> <!-- /.row -->
+          </div> <!-- /.row -->
+
+          <div class="row-fluid">
+            <div class="col-md-12">
+                <pre>{{auction.fulltext|linebreaks }}</pre>
+                <p><b>Source: </b>{{auction.source.source_text}} - <a href="{{auction.url}}" class="">{{auction.url}}</a></p>
+            </div>
+
+          </div>
+
+            <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
+            <script>
+              function initMap() {
+                var uluru = {lat: {{latitude}}, lng: {{longitude}}};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 12,
+                  center: uluru
+                });
+                var marker = new google.maps.Marker({
+                  position: uluru,
+                  map: map
+                });
+              }
+            </script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDl-iF1JYlDUod44ydXhmilPg2GVgEYEA&callback=initMap" type="text/javascript"></script>
 
 
           </article><!-- /.post -->
-      </div><!-- /.col --> <!-- End of main -->
 
       <!-- /.col --> <!-- End of sidebar -->
   </div><!-- /.container -->
 </section>
 {% endblock %}
-              <p><a href="{{auction.url}}" class=""><b>Source:</b> {{auction.source}} </a></p>

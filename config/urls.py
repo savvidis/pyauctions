@@ -12,6 +12,7 @@ from django.views import defaults as default_views
 from django.contrib import admin
 from adminplus.sites import AdminSitePlus
 
+import auctions.django_sb_admin
 
 admin.site = AdminSitePlus()
 admin.autodiscover()
@@ -36,7 +37,7 @@ urlpatterns = [
     url(r'^blog/', include('auctions.blog.urls', namespace='blog')),
     url(r'^search/', include('auctions.auctionapp.urls', namespace='auctionapp')),
 
-    url(r'^django-sb-admin/', include('django_sb_admin.urls')),
+    url(r'^django-sb-admin/', include('auctions.django_sb_admin.urls')),
     url(r'^accounts/login/$', auth_views.login,{'template_name': 'django_sb_admin/examples/login.html'}),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

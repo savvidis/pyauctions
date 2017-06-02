@@ -6,13 +6,19 @@
       <div class="col-sm-12">
         <div class="form-inline">
           <div class="row">
-           {% for type in types %}
-            <div class="col-md-4">
-            <a href="{% url 'auctionapp:type' type %}">
-              <button style="background-color: #818a91" class="btn btn-round btn-block">{{type}}</button>
+
+            <div class="col-md-6">
+            <a href="{% url 'auctionapp:commercial_list' %}">
+              <button style="background-color: #818a91" class="btn btn-round btn-block">Commercial</button>
               </a>
             </div><!-- /.col -->
-            {% endfor %}
+
+            <div class="col-md-6">
+            <a href="{% url 'auctionapp:auction_list' %}">
+              <button style="background-color: #818a91" class="btn btn-round btn-block">Auction</button>
+              </a>
+            </div><!-- /.col -->
+
           </div>
         </div>
       </div><!-- /.col -->
@@ -28,9 +34,9 @@
   <div class="card card-raised card-form-horizontal">
     <div class="content" style="padding: 5px;">
 
-   
+
         <form action="#" id="AuctionForm" method="get" class="form-inline">
- 
+
           <div class="row">
           {% crispy filter.form filter.helper %}
 
@@ -67,8 +73,5 @@
               {% endfor %}
 
               </select>
-            </div> 
+            </div>
             -->
-
-
-          

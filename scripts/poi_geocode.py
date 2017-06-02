@@ -86,20 +86,22 @@ def main():
     cursor.execute("truncate poi CASCADE; ALTER SEQUENCE poi_id_seq RESTART WITH 1;truncate geo_address CASCADE; ALTER SEQUENCE geo_address_id_seq RESTART WITH 1;")
 
 
-    df = pd.read_csv('auctionapp_poi_v6.csv')
+    df = pd.read_csv('../../auctionapp_poi_v6.csv')
     df = df.replace(np.nan, '', regex=True)
     df['Postcode']=df['Postcode'].replace('', -1, regex=True)
-    df['Recommended']=df['Recommended'].replace('', -1, regex=True)
+    df['Postcode']=df['Postcode'].replace(' ', '',regex=True)
+    df['Postcode']=df['Postcode'].replace('"', '',regex=True)
+    df['Recommended']=df['Recommended'].replace('', 0, regex=True)
     df['Score']=df['Score'].replace('', -1, regex=True)
     df['On map']=df['On map'].replace('', -1, regex=True)
-    df['Importance']=df['Importance'].replace('', -1, regex=True)
+    df['Importance']=df['Importance'].replace('', 0, regex=True)
     df['ln']=df['ln'].replace('', -1, regex=True)
     df['lt']=df['lt'].replace('', -1, regex=True)
 
     for index, row_file in df.iterrows():
 
         # getPoiType(cursor,row_file)
-
+        postcode = row_file['Postcode']
         address = row_file['Address']
         area = row_file['Area']
         if address and area:
@@ -170,10 +172,13 @@ def main():
                 if row:
                     area_id = row[0][0]
 
+
                     # cursor.execute("INSERT into geo_address (name,latitude,longitude,area_id) VALUES (%s,%s,%s,%s) returning id;" , (address,latitude,longitude,area_id) )
 
                     latitude = row_file['lt']
                     longitude = row_file['ln']
+                    postcode = row_file['Postcode']
+
 
                     cursor.execute("INSERT into geo_address (name,latitude,longitude,area_id) VALUES (%s,%s,%s,%s) returning id;" , (row_file['Address'],row_file['lt'],row_file['ln'],area_id) )
 
@@ -184,7 +189,7 @@ def main():
                     # reverse_geocode_result = gmaps.reverse_geocode((24.146362,41.151096))
                     # print row_file
 
-                    cursor.execute("INSERT into poi (full_title,business,category_minor,category_major,website,email,phone,recommended,score,longitude,latitude,postcode,address_id,source,on_map,importance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" , (row_file['Full_title'],row_file['Business'],row_file['Category_Minor'],row_file['Category_Major'],row_file['Website'],row_file['Email'],row_file['Phone'],row_file['Recommended'],row_file['Score'],longitude,latitude,row_file['Postcode'],address_id,row_file['Source'],row_file['On map'],row_file['Importance'],))
+                    cursor.execute("INSERT into poi (full_title,business,category_minor,category_major,website,email,phone,recommended,score,longitude,latitude,postcode,address_id,source,on_map,importance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" , (row_file['Full_title'],row_file['Business'],row_file['Category_Minor'],row_file['Category_Major'],row_file['Website'],row_file['Email'],row_file['Phone'],row_file['Recommended'],row_file['Score'],longitude,latitude,postcode,address_id,row_file['Source'],row_file['On map'],row_file['Importance'],))
 
             # raw_input("enter")
 

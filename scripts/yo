@@ -1,0 +1,6 @@
+Copy (
+Select gc.name,ga.name,ps.embadon,at.description,ps.bedrooms,ps.construction_year,tc.selling_price
+from tran_commercial as tc, prop_residential as ps, geo_areas as ga, geo_cities as gc, asset_property_type as at
+where tc.asset_id=ps.id and ps.construction_year ~ '^\d+$' and gc.id=ps.mainarea_id and ga.id=ps.secondarea_id and
+ps.asset_type_id=at.id
+) To '/Users/konstantinosskianis/Desktop/test.csv' With CSV DELIMITER ',' HEADER;

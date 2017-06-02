@@ -37,7 +37,7 @@ DJANGO_APPS = (
     'django.contrib.admin.apps.SimpleAdminConfig',
 
     'adminplus',
-    'django_sb_admin',
+
     # 'django.contrib.admin',
 
 )
@@ -55,6 +55,7 @@ LOCAL_APPS = (
     'auctions.users.apps.UsersConfig',
     # Your stuff: custom apps go here
     'auctions.blog',
+    'auctions.django_sb_admin',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
