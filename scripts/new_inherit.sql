@@ -3,21 +3,24 @@
 
 CREATE TABLE geo_countries (
   id serial PRIMARY KEY,
-  name varchar(250)
+  name varchar(250),
+  unique (name)
 );
 
 CREATE TABLE geo_regions (
   id serial PRIMARY KEY,
   name varchar(250),
   country_id integer REFERENCES geo_countries (id),
-  other_names character varying(250)[]
+  other_names character varying(250)[],
+  unique (name)
 );
 
 CREATE TABLE geo_cities (
   id serial PRIMARY KEY,
   name varchar(250),
   region_id integer REFERENCES geo_regions (id),
-  other_names character varying(250)[]
+  other_names character varying(250)[],
+  unique (name)
 );
 
 CREATE TABLE geo_areas (
@@ -27,7 +30,8 @@ CREATE TABLE geo_areas (
   postcode varchar(250),
   longitude float,
   latitude float,
-  city_id integer REFERENCES geo_cities (id)
+  city_id integer REFERENCES geo_cities (id),
+  unique (name)
 );
 
 CREATE TABLE geo_address (
@@ -41,7 +45,6 @@ CREATE TABLE geo_address (
 
 -------------------- SOURCES ----------------------------
 
-
 CREATE TABLE sources (
   id SERIAL PRIMARY KEY,
   source_text text,
@@ -50,6 +53,13 @@ CREATE TABLE sources (
 );
 
 -------------------- ASSET ----------------------------
+
+CREATE TABLE asset_type (
+  id serial PRIMARY KEY,
+  description varchar(150) DEFAULT NULL,
+  category_major varchar(150) DEFAULT NULL,
+  synonyms varchar(150)[] DEFAULT NULL
+);
 
 CREATE TABLE asset (
   id SERIAL PRIMARY KEY,
@@ -67,28 +77,22 @@ CREATE TABLE asset (
   status varchar(20),
   updated_date date,
   profit_loss_income float,
+  asset_type_id integer REFERENCES asset_type (id),
+  category_minor varchar(250),
   imgs varchar(250)[],
   features varchar(200)[],
   geo text,
-  unique (title, unique_id)
+  unique (title, asset_type_id, unique_id)
 );
 
 CREATE TABLE asset_property (
   embadon float,
-  price float,
   other text,
   longitude float,
   latitude float,
-  asset_type_id integer REFERENCES asset_property_type (id),
-  unique (title,asset_type_id, unique_id)
+  unique (title, asset_type_id, unique_id)
 ) INHERITS (asset);
 
-CREATE TABLE asset_property_type (
-  id serial PRIMARY KEY,
-  description varchar(150) DEFAULT NULL,
-  category_major varchar(150) DEFAULT NULL,
-  synonyms varchar(150)[] DEFAULT NULL
-);
 
 CREATE TABLE asset_car (
   car_kms_num integer,
@@ -96,7 +100,7 @@ CREATE TABLE asset_car (
   fuel_type varchar(150),
   first_hand boolean,
   other text,
-  unique (title,unique_id)
+  unique (title, asset_type_id, unique_id)
 ) INHERITS (asset);
 
 CREATE TABLE prop_earth (
@@ -118,7 +122,7 @@ CREATE TABLE prop_commercial (
 ) INHERITS (asset_property);
 
 CREATE TABLE prop_auction (
-  UNIQUE (title,unique_id)
+  unique (title,unique_id)
 ) INHERITS (asset_property);
 
 
@@ -170,6 +174,7 @@ CREATE TABLE tran_auction (
   debtor_name varchar(250),
   auctioneer_name varchar(250),
   auction_number integer,
+  fulltext text,
   unique (search_id,asset_id,title)
 ) INHERITS (transaction);
 
@@ -187,8 +192,8 @@ CREATE TABLE poi (
   id serial PRIMARY KEY,
   full_title varchar(250) DEFAULT NULL,
   business varchar(250) DEFAULT NULL,
-  category_Minor varchar(250) DEFAULT NULL,
-  category_Major varchar(250) DEFAULT NULL,
+  category_major_id integer REFERENCES poi_type (id),
+  category_minor varchar(250) DEFAULT NULL,
   website varchar(250) DEFAULT NULL,
   email varchar(150) DEFAULT NULL,
   phone varchar(150) DEFAULT NULL,

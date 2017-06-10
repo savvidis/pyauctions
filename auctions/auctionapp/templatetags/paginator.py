@@ -24,6 +24,7 @@ def paginator(context, adjacent_pages=2):
 
     return {
         # 'hits': context['hits'],
+        'parameters': context['parameters'],
         'results_per_page': context['results_per_page'],
         'page': context['page'],
         'pages': context['pages'],

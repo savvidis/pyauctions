@@ -4,6 +4,7 @@
 {% block content %}
 
 {% include 'auctionapp/__layout/op_navbar.html' %}
+
   <br>
   <div class="content" style="background-color: ##fff; color: #3C4858;">
 
@@ -15,25 +16,25 @@
   <thead>
   <tr>
     <th>#</th>
-    <th>Asset name</th>
+    <th>Transaction title</th>
     <th>Area</th>
-    <!-- <th>Asset type</th> -->
-    <th>Price</th>
-    <th>Sale or Rent</th>
-    <th>Imported Date</th>
+    <th>Asset type</th>
+    <th><a href="?order_by=-selling_price">Price</a></th>
+    <th>Sale/rent</th>
+    <th>On site date</th>
   </tr>
   </thead>
   <tbody>
-  {% for commercial in object_list|dictsort:"id"%}
+  {% for commercial in object_list %}
 
     <tr>
       <th scope="row">{{commercial.id}}</th>
       <td><a href="{% url 'auctionapp:commercial_detail' commercial.id %} "> {{ commercial.title }} </a></td>
-      <td><span>  {{commercial.asset.secondarea.name}}</span></td>
-      <!-- <td><span>  {{asset_type}}</span></td> -->
-      <td><span>  {{commercial.selling_price}}</span></td>
-      <td><span>  {{commercial.buy_or_rent}}</span></td>
-      <td><span>  {{commercial.on_site_date}}</span></td>
+      <td><span> {{commercial.asset.secondarea.name}}</span></td>
+      <td><span> {{commercial.asset.asset_type}}</span></td>
+      <td><span> {{commercial.selling_price}}</span></td>
+      <td><span> {{commercial.buy_or_rent}}</span></td>
+      <td><span> {{commercial.on_site_date}}</span></td>
 
     </tr>
   {% endfor %}

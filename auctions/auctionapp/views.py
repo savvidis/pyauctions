@@ -16,17 +16,36 @@ from django.utils.translation import ugettext_lazy as _
 
 from utility import *
 
-
 # Create your views here.
 
-categories = ["Apartment", "House", "Maisonette", "Detached House"]
+# categories = ["Apartment", "House", "Maisonette", "Detached House"]
 
 types = ["realestate", "auction"]
 
 class AuctionDetailView(DetailView):
     model = TranAuction
     template_name = "auctionapp/public/auction_detail.html"
-    context_object_name = 'auction'
+    # context_object_name = 'auction'
+
+    def get_context_data(self, **kwargs):
+        context = super(AuctionDetailView, self).get_context_data(**kwargs)
+
+        t = TranAuction.objects.get(pk=self.kwargs['pk'])
+        context['auction'] = t
+
+        a = AssetProperty.objects.get(pk=t.asset_id)
+        context['asset_type'] = a.asset_type
+
+        if a.latitude:
+            context['latitude'] = a.latitude
+            context['longitude'] = a.longitude
+        else:
+            s_id = a.secondarea_id
+            g = GeoAreas.objects.get(pk=s_id)
+            context['latitude'] = g.latitude
+            context['longitude'] = g.longitude
+
+        return context
 
 class AuctionListView(FilterView):
     model = TranAuction
@@ -48,7 +67,9 @@ class AuctionListView(FilterView):
         # print("$" * 30)
         context = super(AuctionListView, self).get_context_data(**kwargs)
 
-        paginator = Paginator(TranAuction.objects.all(), 1)
+        qs = kwargs['object_list']
+        # paginator = Paginator(TranCommercial.objects.all(), 1)
+        paginator = Paginator(qs, 1)
 
         try:
             page_number = int(self.request.GET.get('page'))
@@ -64,18 +85,25 @@ class AuctionListView(FilterView):
         context['results_per_page'] = 10
         context['next'] = page.next_page_number()
 
+        context['has_next'] = page.has_next()
+        context['has_previous'] = page.has_previous()
+
+        if context['has_next']:
+            context['next'] = page.next_page_number()
+        else:
+            context['next'] = 0
+
+        get_copy = self.request.GET.copy()
+        parameters = get_copy.pop('page', True) and get_copy.urlencode()
+        context['parameters'] = parameters
+
         if page_number==1:
             context['previous'] = 0
         else:
             context['previous'] = page.previous_page_number()
 
-        context['has_next'] = page.has_next()
-        context['has_previous'] = page.has_previous()
         context['types'] = types
         # context['page_range'] = page_range
-
-        # context['categories'] = [x[0] for x in cat]
-        # context['cities'] = [x[0] for x in cities]
 
         return context
 
@@ -88,7 +116,7 @@ class AuctionListView(FilterView):
             print(request.GET)
             criterial = request.GET
         if q:
-            return queryset.filter(category_major=criterial['category'])
+            return queryset.filter(asset__category_major=criterial['category'])
         else:
             return queryset
 
@@ -151,23 +179,34 @@ class CommercialDetailView(DetailView):
         a = AssetProperty.objects.get(pk=t.asset_id)
         context['asset_type'] = a.asset_type
         context['asset_embadon'] = a.embadon
-        context['latitude'] = a.latitude
-        context['longitude'] = a.longitude
+
+        if a.latitude:
+            context['latitude'] = a.latitude
+            context['longitude'] = a.longitude
+        else:
+            s_id = a.secondarea_id
+            g = GeoAreas.objects.get(pk=s_id)
+            context['latitude'] = g.latitude
+            context['longitude'] = g.longitude
 
         return context
 
 class CommercialListView(FilterView):
-    # model = Auction
     model = TranCommercial
     template_name = "auctionapp/public/commercial_list.html"
     paginate_by = 10
-    filterset_class = AuctionFilter
+    filterset_class = CommercialFilter
 
     def get_queryset(self):
         queryset = super(CommercialListView, self).get_queryset()
         # queryset = self.form_filter(queryset, self.request)
+
+        if self.request.GET.get('order_by'):
+            order = self.request.GET.get('order_by')
+            queryset = queryset.order_by(order)
+
         try:
-            queryset = AuctionFilter(request.GET, queryset=queryset)
+            queryset = CommercialFilter(request.GET, queryset=queryset)
             return render_to_response(template_name, {'filter': queryset,'page':10})
         except:
             pass
@@ -177,11 +216,19 @@ class CommercialListView(FilterView):
         # print("$" * 30)
         context = super(CommercialListView, self).get_context_data(**kwargs)
 
-        paginator = Paginator(TranCommercial.objects.all(), 1)
+        # paginator = Paginator(TranCommercial.objects.all(), 1)
+
+        # qs = kwargs['object_list']
+        qs = self.get_queryset()
+
+        paginator = Paginator(qs, 1)
 
         try:
             page_number = int(self.request.GET.get('page'))
             page = paginator.page(page_number)
+        # except EmptyPage:
+        #     # If page is out of range (e.g. 9999), deliver last page of results.
+        #     page = paginator.page(paginator.num_pages)
         except:
             page_number = 1
             page = paginator.page(page_number)
@@ -195,10 +242,22 @@ class CommercialListView(FilterView):
         # # Get the index of the current page
         # index = blogs.number - 1  # edited to something easier without index
         # # This value is maximum index of your pages, so the last page - 1
+
         max_index = len(paginator.page_range)
         context['pages'] = max_index
         context['results_per_page'] = 10
-        context['next'] = page.next_page_number()
+
+        context['has_next'] = page.has_next()
+        context['has_previous'] = page.has_previous()
+
+        if context['has_next']:
+            context['next'] = page.next_page_number()
+        else:
+            context['next'] = 0
+
+        get_copy = self.request.GET.copy()
+        parameters = get_copy.pop('page', True) and get_copy.urlencode()
+        context['parameters'] = parameters
 
         if page_number==1:
             context['previous'] = 0
@@ -211,8 +270,8 @@ class CommercialListView(FilterView):
         # # My new page range
         # context['page_numbers'] = paginator.page_range
         # page_range = page_range[start_index:end_index]
-        context['has_next'] = page.has_next()
-        context['has_previous'] = page.has_previous()
+
+
         context['types'] = types
 
         # context['page_range'] = page_range
@@ -225,13 +284,13 @@ class CommercialListView(FilterView):
     @classmethod
     def form_filter(cls, queryset, request):
         q = None
-        if request.GET.get('category'):
+        if request.GET.get('category_major'):
             q = request.GET['category']
             # self.request.GET.pop(u'csrfmiddlewaretoken')
-            print(request.GET)
+            print request.GET
             criterial = request.GET
         if q:
-            return queryset.filter(category_major=criterial['category'])
+            return queryset.filter(asset__title=criterial['category'])
         else:
             return queryset
 
@@ -240,6 +299,19 @@ class DashboardView(DetailView):
     template_name = "auctionapp/sbadmin/sb_admin_dashboard.html"
     # context_object_name = 'commercial'
 
+class CountryAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return GeoAreas.objects.none()
+
+        qs = GeoAreas.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
 
 @staff_member_required
 def synchro(request):

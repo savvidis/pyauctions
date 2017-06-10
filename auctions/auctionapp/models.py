@@ -117,9 +117,10 @@ class Asset(models.Model):
     suggest_income = models.FloatField(blank=True, null=True)
     category_major = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetType', models.DO_NOTHING, blank=True, null=True)
+    category_minor = models.CharField(max_length=250, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     profit_loss_income = models.FloatField(blank=True, null=True)
-    # full_text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
 
     class Meta:
@@ -174,7 +175,7 @@ class AssetProperty(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetType', models.DO_NOTHING, blank=True, null=True)
     # asset_type = models.CharField(max_length=150, blank=True, null=True)
     # full_text = models.TextField(blank=True, null=True)
     address = models.CharField(max_length=150, blank=True, null=True)
@@ -184,14 +185,14 @@ class AssetProperty(models.Model):
         db_table = 'asset_property'
 
 
-class AssetPropertyType(models.Model):
+class AssetType(models.Model):
     description = models.CharField(max_length=150, blank=True, null=True)
     category_major = models.CharField(max_length=150, blank=True, null=True)
     synonyms = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'asset_property_type'
+        db_table = 'asset_type'
 
     def __unicode__(self):
         return "%s" % self.description
@@ -306,7 +307,7 @@ class PropCommercial(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetType', models.DO_NOTHING, blank=True, null=True)
     # asset_type = models.CharField(max_length=150, blank=True, null=True)
     construction_year = models.CharField(max_length=250, blank=True, null=True)
     # full_text = models.TextField(blank=True, null=True)
@@ -335,8 +336,7 @@ class PropEarth(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
-    # asset_type = models.CharField(max_length=150, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetType', models.DO_NOTHING, blank=True, null=True)
     inmap = models.CharField(max_length=50, blank=True, null=True)
     size = models.FloatField(blank=True, null=True)
     # full_text = models.TextField(blank=True, null=True)
@@ -365,7 +365,7 @@ class PropResidential(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetType', models.DO_NOTHING, blank=True, null=True)
     # asset_type = models.CharField(max_length=150, blank=True, null=True)
     # type = models.CharField(max_length=150, blank=True, null=True)
     bedrooms = models.CharField(max_length=100, blank=True, null=True)
@@ -395,7 +395,7 @@ class PropAuction(models.Model):
     other = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    asset_type = models.ForeignKey('AssetPropertyType', models.DO_NOTHING, blank=True, null=True)
+    asset_type = models.ForeignKey('AssetType', models.DO_NOTHING, blank=True, null=True)
     # asset_type = models.CharField(max_length=150, blank=True, null=True)
     # type = models.CharField(max_length=150, blank=True, null=True)
 
@@ -448,6 +448,7 @@ class TranAuction(models.Model):
     debtor_name = models.CharField(max_length=150, blank=True, null=True)
     auctioneer_name = models.CharField(max_length=150, blank=True, null=True)
     auction_number = models.IntegerField(blank=True, null=True)
+    fulltext = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -487,11 +488,20 @@ class Transaction(models.Model):
         managed = False
         db_table = 'transaction'
 
+
+class PoiType(models.Model):
+    category_major = models.CharField(max_length=150, blank=True, null=True)
+    category_minor = ArrayField(models.CharField(max_length=250), blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'poi_type'
+
 class Poi(models.Model):
     full_title = models.CharField(max_length=250, blank=True, null=True)
     business = models.CharField(max_length=250, blank=True, null=True)
+    category_major = models.ForeignKey(PoiType, models.DO_NOTHING, blank=True, null=True)
     category_minor = models.CharField(max_length=250, blank=True, null=True)
-    category_major = models.CharField(max_length=250, blank=True, null=True)
     website = models.CharField(max_length=250, blank=True, null=True)
     email = models.CharField(max_length=150, blank=True, null=True)
     phone = models.CharField(max_length=150, blank=True, null=True)
@@ -508,11 +518,3 @@ class Poi(models.Model):
     class Meta:
         managed = False
         db_table = 'poi'
-
-class PoiType(models.Model):
-    category_major = models.CharField(max_length=150, blank=True, null=True)
-    category_minor = ArrayField(models.CharField(max_length=250), blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'poi_type'

@@ -28,7 +28,7 @@ def main():
     cities = []
     areas = []
 
-    gmaps = googlemaps.Client(key='AIzaSyAceR3rS8GL-yCvtmZ2Yf_zn6U7NHtvKxA')
+    gmaps = googlemaps.Client(key='AIzaSyD_4IyrrUGsjScz0bjwhwHcgt7a0iszh-w')
 
     # gmaps = googlemaps.Client(key='AIzaSyD_WI3cBL-Qw4tuJU5f_J43G9jAmbXbMCE')
     # api_key1 = "AIzaSyAceR3rS8GL-yCvtmZ2Yf_zn6U7NHtvKxA"
@@ -53,6 +53,7 @@ def main():
     # ## ERASE ALL AREAS
     # cursor.execute("truncate geo_areas CASCADE; ALTER SEQUENCE geo_areas_id_seq RESTART WITH 1;truncate geo_cities CASCADE; ALTER SEQUENCE geo_cities_id_seq RESTART WITH 1;truncate geo_regions CASCADE;ALTER SEQUENCE geo_regions_id_seq RESTART WITH 1;truncate geo_countries CASCADE;ALTER SEQUENCE geo_countries_id_seq RESTART WITH 1;")
 
+    # par="commercial"
     par="auction"
 
     # GENERATE CITIES
@@ -81,6 +82,7 @@ def main():
     # geocode_result = gmaps.geocode('Pefka, Thessaloniki, Greece')
     # geocode_result = gmaps.geocode("Peristeri, Athens, Greece")
     # geocode_result = gmaps.geocode("spata, athens, greece")
+    # geocode_result = gmaps.geocode("Vari, Greece")
 
     # print geocode_result
     # area = geocode_result[0]['address_components'][0]['long_name']
@@ -111,7 +113,6 @@ def main():
             crawled_names = []
 
             if "-" in s_un:
-
                 s_cl = s_un.split("-")
                 s_yo = s_cl[0].strip()
 
@@ -147,13 +148,11 @@ def main():
             # raw_input("enter")
 
             if crawled_area:
-
                 print s+": area existing in database"
 
             else:
 
                 # geocode_result = gmaps.geocode(s)
-
                 if "Suburbs" in s or "Com." in s or "Rest Of" in s:
                     # s_without = s_cl[1].strip()
                     s = s.replace("Suburbs","").strip()
@@ -168,12 +167,6 @@ def main():
                 try:
                     address_components = geocode_result[0]['address_components']
 
-                    # for component in address_components:
-                    #     if 'administrative_area_level_3' in geocode_result[0]['types']:
-                    #         city_bool=True
-
-                    #point_of_interest','establishment'
-
                     if set(['neighborhood','locality','political','point_of_interest','establishment']).isdisjoint(geocode_result[0]['types']):
                         s = s_yo+", Greece"
                         geocode_result = gmaps.geocode(s)
@@ -186,23 +179,19 @@ def main():
 
                 ##check if area is already in database
 
-                # s.replace("\"","")
-                # s.replace("\'","")
-
                 cursor.execute("SELECT * FROM geo_areas WHERE (%s)=ANY(crawled_names) or %s=name" , (s,s,))
                 # retrieve the records from the database
                 crawled_area = cursor.fetchall()
 
                 # recheck
                 if crawled_area:
-
                     print s+": area existing in database in 2nd check"
 
                 else:
 
-                    area = address_components[0]['long_name']
+                    area = address_components[0]['long_name'].strip()
                     if RepresentsInt( area.replace(" ","") ):
-                        area = s_yo
+                        area = s_yo.strip()
 
                     postcode = ""
                     city = ""
@@ -217,13 +206,15 @@ def main():
 
                     for component in address_components:
                         if 'locality' in component ['types']:
-                            city = component['short_name']
+                            city = component['short_name'].strip()
                             break
 
 
                     for component in address_components:
                         if 'administrative_area_level_3' in component['types']:
-                            region = component['long_name']
+                            region = component['short_name'].strip()
+                            if region=="":
+                                region = component['long_name'].strip()
                             break
 
 
@@ -236,11 +227,15 @@ def main():
                     for component in address_components:
                         if 'country' in component ['types']:
                             country = component['long_name']
+                            if country=="":
+                                country = component['short_name']
                             break
+
+                    if country=="":
+                        country = "Greece"
 
                     latitude = geocode_result[0]['geometry']['location']['lat']
                     longitude = geocode_result[0]['geometry']['location']['lng']
-
 
                     try:
                         cursor.execute("SELECT crawled_names FROM geo_areas WHERE name=(%s)" , (area+", "+city+", "+country,))
@@ -252,7 +247,7 @@ def main():
                         pass
 
                     found_area = cursor.fetchall()
-
+                    # print "found_area:"+str(found_area)
                     # if crawled area is different but area is already in database
                     if found_area:
                         crawled_names = found_area[0][0]
@@ -266,6 +261,7 @@ def main():
                             cursor.execute("UPDATE geo_areas SET crawled_names=(%s) WHERE name=(%s)" , (crawled_names,area+", "+city+", "+country,))
 
                     else:
+
                         crawled_names.append(s_prev)
 
                         cursor.execute("SELECT name FROM geo_countries")
@@ -334,6 +330,7 @@ def main():
                             city_id = row[0][0]
                             city = row[0][1]
                             other_names = row[0][2]
+
                         else:
                             city_prev = city
                             geocode_result = gmaps.geocode(city+", Greece")
@@ -361,11 +358,32 @@ def main():
                         row = cursor.fetchall()
                         city_id = row[0]
 
-                        # execute our Query
-                        cursor.execute("INSERT into geo_areas (name,crawled_names,postcode,latitude,longitude,city_id) VALUES (%s,%s,%s,%s,%s,%s)" , (area+", "+city+", "+country,crawled_names,postcode,latitude,longitude,city_id))
+
+                        cursor.execute("SELECT crawled_names FROM geo_areas WHERE name=(%s)" , (area+", "+city+", "+country,))
+                        # except:
+                        #     cursor.execute("SELECT crawled_names FROM geo_areas WHERE name=(%s)" , (area+", "+city+", "+country,))
+                        #     pass
+
+                        found_area = cursor.fetchall()
+                        # print "found_area:"+str(found_area)
+                        # if crawled area is different but area is already in database
+                        if found_area:
+                            crawled_names = found_area[0][0]
+                            if s_prev not in crawled_names:
+                                print "found existing crawled_name"
+                                # s_array = found_area[0][0].replace("}","]")
+                                # s_array = s_array.replace("{","[")
+                                # print s_array
+
+                                crawled_names.append(s_prev)
+                                cursor.execute("UPDATE geo_areas SET crawled_names=(%s) WHERE name=(%s)" , (crawled_names,area+", "+city+", "+country,))
+
+                        else:
+
+                            # execute our Query
+                            cursor.execute("INSERT into geo_areas (name,crawled_names,postcode,latitude,longitude,city_id) VALUES (%s,%s,%s,%s,%s,%s)" , (area+", "+city+", "+country,crawled_names,postcode,latitude,longitude,city_id))
 
                         crawled_areas.append(s)
-
 
                 # areas.append(area)
 

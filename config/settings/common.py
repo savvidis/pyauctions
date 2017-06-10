@@ -34,10 +34,13 @@ DJANGO_APPS = (
     # 'django.contrib.humanize',
 
     # Admin
-    'django.contrib.admin.apps.SimpleAdminConfig',
 
+    'django_filters',
     'adminplus',
 
+    'dal',
+    'dal_select2',
+    'django.contrib.admin.apps.SimpleAdminConfig',
     # 'django.contrib.admin',
 
 )
@@ -119,9 +122,11 @@ DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #         'NAME': 'auctions',
-# 		'USER':'sabbidis',
-# 		'PASSWORD':'gt5050gt'
-#     }
+#         'USER':'django',
+#         'PASSWORD':'8F5IE4I68A',
+#         'HOST':     'localhost',
+#         'PORT': 5432
+#      }
 # }
 
 # GENERAL CONFIGURATION

@@ -179,17 +179,18 @@ def main():
                     longitude = row_file['ln']
                     postcode = row_file['Postcode']
 
+                    cursor.execute("SELECT id FROM poi_type WHERE category_major=(%s) or (%s)=ANY(category_minor)" , (row_file['Category_Major'],row_file['Category_Minor'],))
+                    category_major_id = cursor.fetchall()[0]
 
                     cursor.execute("INSERT into geo_address (name,latitude,longitude,area_id) VALUES (%s,%s,%s,%s) returning id;" , (row_file['Address'],row_file['lt'],row_file['ln'],area_id) )
-
-
                     address_id = cursor.fetchall()[0][0]
+
                     # print address_id
                     # Look up an address with reverse geocoding
                     # reverse_geocode_result = gmaps.reverse_geocode((24.146362,41.151096))
                     # print row_file
 
-                    cursor.execute("INSERT into poi (full_title,business,category_minor,category_major,website,email,phone,recommended,score,longitude,latitude,postcode,address_id,source,on_map,importance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" , (row_file['Full_title'],row_file['Business'],row_file['Category_Minor'],row_file['Category_Major'],row_file['Website'],row_file['Email'],row_file['Phone'],row_file['Recommended'],row_file['Score'],longitude,latitude,postcode,address_id,row_file['Source'],row_file['On map'],row_file['Importance'],))
+                    cursor.execute("INSERT into poi (full_title,business,category_major_id,category_minor,website,email,phone,recommended,score,longitude,latitude,postcode,address_id,source,on_map,importance) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" , (row_file['Full_title'],row_file['Business'],category_major_id,row_file['Category_Minor'],row_file['Website'],row_file['Email'],row_file['Phone'],row_file['Recommended'],row_file['Score'],longitude,latitude,postcode,address_id,row_file['Source'],row_file['On map'],row_file['Importance'],))
 
             # raw_input("enter")
 

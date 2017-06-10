@@ -3,6 +3,7 @@
 {% load i18n admin_modify %}
 
 {% block coltype %}colMS{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "css/admin-extra.css" %}" />{% endblock %}
 
 {% block title %}{% trans "Synchronization" %}{{ block.super }}{% endblock %}
 
@@ -19,13 +20,14 @@
 <form method="post">
     {% csrf_token %}
     <!-- <br>{% trans 'Last synchro time' %}: {{ last }}. -->
-    <input type="submit" name="update_search_sources_coops" value="{% trans 'Update search, soure, coo' %}"> <input style="background-color:#f0ad4e" type="submit" name="delete_search_sources_coops" value="{% trans 'Delete search, source, coo' %}">
-    <br><br><input type="submit" name="update_properties" value="{% trans 'Update properties' %}"> <input style="background-color:#f0ad4e" type="submit" name="delete_properties" value="{% trans 'Delete properties' %}">
-    <br><br><input type="submit" name="update_transactions" value="{% trans 'Update transactions' %}"> <input style="background-color:#f0ad4e" type="submit" name="delete_transactions" value="{% trans 'Delete transactions' %}">
+    <input class="media-object" type="submit" name="update_search_sources_coops" value="{% trans 'Update search, soure, coo' %}"> <input class="media-object" style="background-color:#f0ad4e" type="submit" name="delete_search_sources_coops" value="{% trans 'Delete search, source, coo' %}">
+    <br><br><input class="media-object" type="submit" name="update_properties" value="{% trans 'Update properties' %}"> <input class="media-object" style="background-color:#f0ad4e" type="submit" name="delete_properties" value="{% trans 'Delete properties' %}">
+    <br><br><input class="media-object" type="submit" name="update_transactions" value="{% trans 'Update transactions' %}"> <input class="media-object" style="background-color:#f0ad4e" type="submit" name="delete_transactions" value="{% trans 'Delete transactions' %}">
     <br><br>
+
     <h3>{% trans "Geolocation" %}</h3>
-    <br><input type="submit" name="search_areas" value="{% trans 'Search for new areas' %}">
-    <br><br><input type="submit" name="add_pois" value="{% trans 'Add pois' %}">
+    <br><input class="media-object" type="submit" name="search_areas" value="{% trans 'Search for new areas' %}">
+    <br><br><input class="media-object" type="submit" name="add_pois" value="{% trans 'Add pois' %}">
 
     <!-- <br><br><input type="submit" name="reset" value="{% trans 'Reset synchronization' %}"
         onclick="return confirm('{% trans "All changes from last synchronization up to now will be forgotten and won't be synchronized in the future. Are you sure you want to proceed?" %}');"> -->

@@ -39,9 +39,9 @@ class AssetPropertyAdmin(admin.ModelAdmin):
     # list_display = ('id','title','asset_type', 'mainarea', 'secondarea', 'unique_id', 'embadon')
 admin.site.register(AssetProperty,AssetPropertyAdmin)
 
-class AssetPropertyTypeAdmin(admin.ModelAdmin):
-    list_display  = [f.name for f in AssetPropertyType._meta.fields]
-admin.site.register(AssetPropertyType,AssetPropertyTypeAdmin)
+class AssetTypeAdmin(admin.ModelAdmin):
+    list_display  = [f.name for f in AssetType._meta.fields]
+admin.site.register(AssetType,AssetTypeAdmin)
 
 class CooperatorAdmin(admin.ModelAdmin):
     list_display  = [f.name for f in Cooperator._meta.fields]
@@ -92,7 +92,7 @@ class SourcesAdmin(admin.ModelAdmin):
 admin.site.register(Sources,SourcesAdmin)
 
 class TranAuctionAdmin(admin.ModelAdmin):
-    list_display  = [f.name for f in TranAuction._meta.fields]
+    list_display  = [f.name for f in TranAuction._meta.fields[:-1]]
 admin.site.register(TranAuction,TranAuctionAdmin)
 
 class TranCommercialAdmin(admin.ModelAdmin):
