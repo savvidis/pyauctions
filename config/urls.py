@@ -23,8 +23,6 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
-    url(r'^admin/', include(admin.site.urls)),
-
     # url(r'^admin/auctionapp/', TemplateView.as_view(template_name='auctionapp/synchro.html')),
     url(r'^admin/auctionapp/synchro.html', synchro, name='synchro'),
 
@@ -53,6 +51,8 @@ urlpatterns = [
         view=GeoAreasAutocomplete.as_view(),
         name='areas-autocomplete',
     ),
+
+    url(r'^admin/', include(admin.site.urls)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

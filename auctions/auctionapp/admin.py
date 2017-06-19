@@ -6,7 +6,7 @@ from django.forms import ModelForm
 from django.utils.encoding import force_text
 
 # admin.site.index_template = 'admin/index.html'
-# admin.autodiscover()
+admin.autodiscover()
 
 def update_database(request, *args, **kwargs):
     # return HttpResponse("Hello!")

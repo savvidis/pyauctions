@@ -112,20 +112,21 @@ class AuctionFilter(django_filters.FilterSet):
 
     def filter_auction_date(self, queryset, name, value):
         date_today = datetime.date.today()
-        print value
+        
         if value=="1":
             queryset = queryset.filter(auction_date__gte=date_today)
         else:
             queryset = queryset.filter(auction_date__lt=date_today)
 
         return queryset
+
     # def get_queryset(self):
     #     # project_id may be None
     #     return self.queryset.filter(buy_or_rent=self.kwargs.get('buy_or_rent'))
 
     class Meta:
         model = TranAuction
-        fields = ['asset_type','area','starting_price','auction_date']
+        fields = ['city','area','asset_type','asset_type_minor','starting_price','auction_date']
 
 
 class CommercialFilter(django_filters.FilterSet):
