@@ -2,7 +2,11 @@ from django.contrib import admin
 from .models import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
+from django.forms import ModelForm
+from django.utils.encoding import force_text
 
+# admin.site.index_template = 'admin/index.html'
+# admin.autodiscover()
 
 def update_database(request, *args, **kwargs):
     # return HttpResponse("Hello!")
@@ -16,6 +20,22 @@ class AuctionAdmin(admin.ModelAdmin):
     # list_display  = [f.name for f in Auction._meta.fields]
     list_display = ('id','asset_type', 'transaction_type', 'imported_date', 'source', 'url', \
     'img_url', 'unique_id', 'title')
+
+    def response_change(self, request, obj):
+        """
+        Determines the HttpResponse for the change_view stage.
+        """
+        if request.POST.has_key("_viewnext"):
+            msg = (('The %(name)s "%(obj)s" was changed successfully.') %
+                   {'name': force_text(obj._meta.verbose_name),
+                    'obj': force_text(obj)})
+            next = obj.__class__.objects.filter(updated=False,id__gt=obj.id).order_by('id')[:1]
+            if next:
+                self.message_user(request, msg)
+                return HttpResponseRedirect("../../%s/" % next[0].pk)
+
+        return super(AuctionAdmin, self).response_change(request, obj)
+
 admin.site.register(Auction,AuctionAdmin)
 
 class AssetAdmin(admin.ModelAdmin):

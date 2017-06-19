@@ -20,6 +20,7 @@ def paginator(context, adjacent_pages=2):
     """
     page_numbers = [n for n in range(context['page'] - adjacent_pages, context['page'] + adjacent_pages + 1) \
                     if n > 0 and n <= context['pages']]
+
     # page_numbers = context['page_numbers']
 
     return {

@@ -109,7 +109,7 @@ MEDIA_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 
 # Added because it couldn't find static files
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # EMAIL

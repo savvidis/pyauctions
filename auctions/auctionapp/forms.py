@@ -2,7 +2,7 @@ from django import forms
 
 from .models import Auction
 
-CATEGORIES = [(1, "Apartment"), (2, "House"), (3, "Villara")]
+CATEGORIES = [(1, "Apartment"), (2, "House"), (3, "Villa")]
 
 
 class AuctionForm(forms.ModelForm):

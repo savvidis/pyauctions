@@ -55,6 +55,9 @@ class AuctionListView(FilterView):
 
     def get_queryset(self):
         queryset = super(AuctionListView, self).get_queryset()
+
+        # order = self.request.GET.get('order_by')
+
         # queryset = self.form_filter(queryset, self.request)
         try:
             queryset = AuctionFilter(request.GET, queryset=queryset)
@@ -68,8 +71,10 @@ class AuctionListView(FilterView):
         context = super(AuctionListView, self).get_context_data(**kwargs)
 
         qs = kwargs['object_list']
+        # qs = self.get_queryset()
+
         # paginator = Paginator(TranCommercial.objects.all(), 1)
-        paginator = Paginator(qs, 1)
+        paginator = Paginator(qs, 10)
 
         try:
             page_number = int(self.request.GET.get('page'))
@@ -80,7 +85,8 @@ class AuctionListView(FilterView):
 
         context['page'] = page_number
 
-        max_index = len(paginator.page_range)
+        max_index = paginator.num_pages
+
         context['pages'] = max_index
         context['results_per_page'] = 10
         context['next'] = page.next_page_number()
@@ -146,23 +152,23 @@ class AuctionTypeView(AuctionListView):
         return queryset
 
 
-class AuctionFormView(AuctionDetailView):
-
-    def get_queryset(self):
-        queryset = super(AuctionFormView, self).get_queryset()
-        q = self.request.GET.get("q")
-        if q:
-            return queryset.filter(category=q)
-        else:
-            return queryset
-
-
-class ActionSearch(FormView):
-    # template_name = 'auctionapp/public/auction_list.html'
-    form_class = AuctionForm
-
-    def form_valid(self, form):
-        return super(ActionSearch, self).form_valid(form)
+# class AuctionFormView(AuctionDetailView):
+#
+#     def get_queryset(self):
+#         queryset = super(AuctionFormView, self).get_queryset()
+#         q = self.request.GET.get("q")
+#         if q:
+#             return queryset.filter(category=q)
+#         else:
+#             return queryset
+#
+#
+# class ActionSearch(FormView):
+#     # template_name = 'auctionapp/public/auction_list.html'
+#     form_class = AuctionForm
+#
+#     def form_valid(self, form):
+#         return super(ActionSearch, self).form_valid(form)
 
 
 class CommercialDetailView(DetailView):
@@ -191,11 +197,13 @@ class CommercialDetailView(DetailView):
 
         return context
 
+
 class CommercialListView(FilterView):
     model = TranCommercial
     template_name = "auctionapp/public/commercial_list.html"
     paginate_by = 10
     filterset_class = CommercialFilter
+
 
     def get_queryset(self):
         queryset = super(CommercialListView, self).get_queryset()
@@ -207,33 +215,40 @@ class CommercialListView(FilterView):
 
         try:
             queryset = CommercialFilter(request.GET, queryset=queryset)
+            print yo
             return render_to_response(template_name, {'filter': queryset,'page':10})
         except:
             pass
+
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         # print("$" * 30)
-        context = super(CommercialListView, self).get_context_data(**kwargs)
 
+        context = super(CommercialListView, self).get_context_data(**kwargs)
         # paginator = Paginator(TranCommercial.objects.all(), 1)
 
-        # qs = kwargs['object_list']
-        qs = self.get_queryset()
+        qs = kwargs['object_list']
+        # qs = self.get_queryset()
 
-        paginator = Paginator(qs, 1)
+        paginator = Paginator(qs, 10)
+        max_index = len(paginator.page_range)
 
         try:
             page_number = int(self.request.GET.get('page'))
             page = paginator.page(page_number)
-        # except EmptyPage:
-        #     # If page is out of range (e.g. 9999), deliver last page of results.
-        #     page = paginator.page(paginator.num_pages)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            page_number = max_index
+            page = paginator.page(paginator.num_pages)
         except:
             page_number = 1
             page = paginator.page(page_number)
 
         context['page'] = page_number
+
+        # context['form'] = self.filterset.form
+
         # try:
         #     blogs = paginator.page(page)
         # except(EmptyPage):
@@ -243,7 +258,7 @@ class CommercialListView(FilterView):
         # index = blogs.number - 1  # edited to something easier without index
         # # This value is maximum index of your pages, so the last page - 1
 
-        max_index = len(paginator.page_range)
+
         context['pages'] = max_index
         context['results_per_page'] = 10
 
@@ -271,7 +286,6 @@ class CommercialListView(FilterView):
         # context['page_numbers'] = paginator.page_range
         # page_range = page_range[start_index:end_index]
 
-
         context['types'] = types
 
         # context['page_range'] = page_range
@@ -280,6 +294,7 @@ class CommercialListView(FilterView):
         # context['cities'] = [x[0] for x in cities]
 
         return context
+
 
     @classmethod
     def form_filter(cls, queryset, request):
@@ -299,14 +314,31 @@ class DashboardView(DetailView):
     template_name = "auctionapp/sbadmin/sb_admin_dashboard.html"
     # context_object_name = 'commercial'
 
-class CountryAutocomplete(autocomplete.Select2QuerySetView):
+class GeoCitiesAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
         if not self.request.user.is_authenticated():
+            return GeoCities.objects.none()
+
+        qs = GeoCities.objects.all().order_by('name')
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+class GeoAreasAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
             return GeoAreas.objects.none()
 
-        qs = GeoAreas.objects.all()
+        qs = GeoAreas.objects.all().order_by('name')
+
+        city = self.forwarded.get('city', None)
+
+        if city:
+            qs = qs.filter(city=city)
 
         if self.q:
             qs = qs.filter(name__istartswith=self.q)

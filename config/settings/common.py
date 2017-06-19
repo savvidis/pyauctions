@@ -172,6 +172,7 @@ TEMPLATES = [
             # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
             # https://docs.djangoproject.com/en/dev/ref/templates/api/#loader-types
             'loaders': [
+                'apptemplates.Loader',
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
             ],

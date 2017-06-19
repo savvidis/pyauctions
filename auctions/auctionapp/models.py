@@ -24,8 +24,7 @@ TYPE_OF_SOURCES = ((1, 'Bank'), (2, 'Leasing'))
 
 
 class Auction(models.Model):
-    asset_type = models.CharField(
-        null=True, default="", max_length=255)  # Car / Properties
+    asset_type = models.CharField(null=True, default="", max_length=255)  # Car / Properties
     transaction_type = models.CharField(
         null=True, default="", max_length=255)  # Buy / Sell / Auction
     # slug = models.SluygField(editable=False, unique=True)
@@ -39,70 +38,62 @@ class Auction(models.Model):
     unique_id = models.CharField(
         null=True, editable=False, default="", max_length=255)
     title = models.CharField(null=True, max_length=255)
-    category_major = models.CharField(null=True, default="", max_length=255)
-    category_minor = models.CharField(null=True, default="", max_length=255)
-    description = models.TextField(null=True, default="")
-    construction_year = models.CharField(null=True, default="", max_length=255)
-    price_num = models.IntegerField(null=True, default=-1)
-    views_num = models.IntegerField(null=True, default=-1)
+    category_major = models.CharField(null=True, default="", max_length=255,blank=True)
+    category_minor = models.CharField(null=True, default="", max_length=255,blank=True)
+    description = models.TextField(null=True, default="",blank=True)
+    construction_year = models.CharField(null=True, default="", max_length=255,blank=True)
+    price_num = models.IntegerField(null=True, default=-1,blank=True)
+    views_num = models.IntegerField(null=True, default=-1,blank=True)
     # About Location
-    city = models.CharField(null=True, default="", max_length=255)
-    region = models.CharField(null=True, editable=True,
-                              default="", max_length=255)
+    city = models.CharField(null=True, default="", max_length=255,blank=True)
+    region = models.CharField(null=True, editable=True,default="", max_length=255,blank=True)
     address = models.CharField(
-        null=True, editable=True, default="", max_length=255)
+        null=True, editable=True, default="", max_length=255,blank=True)
     neighborhood = models.CharField(
-        null=True, editable=True, default="", max_length=255)
-    longitude = models.FloatField(null=True, default=0)
-    latitude = models.FloatField(null=True, default=0)
-    fulltext = models.TextField(null=True, default="")
-    other1 = models.TextField(null=True, default="")
-    other1_num = models.IntegerField(null=True, default=-1)
-    other2 = models.TextField(null=True, default="")
-    other2_num = models.IntegerField(null=True, default=-1)
+        null=True, editable=True, default="", max_length=255,blank=True)
+    longitude = models.FloatField(null=True, default=0,blank=True)
+    latitude = models.FloatField(null=True, default=0,blank=True)
+    fulltext = models.TextField(null=True, default="",blank=True)
+    other1 = models.TextField(null=True, default="",blank=True)
+    other1_num = models.IntegerField(null=True, default=-1,blank=True)
+    other2 = models.TextField(null=True, default="",blank=True)
+    other2_num = models.IntegerField(null=True, default=-1,blank=True)
 
     # About Timing
-    on_site_date = models.DateField(
-        null=True, default=timezone.now)
-    updated_date = models.DateField(
-        null=True, default=timezone.now)
-    last_update_num = models.IntegerField(null=True, default=-1)
+    on_site_date = models.DateField(null=True, default=timezone.now,blank=True)
+    updated_date = models.DateField(null=True, default=timezone.now,blank=True)
+    last_update_num = models.IntegerField(null=True, default=-1,blank=True)
     # Asset Specific if property or car
-    property_area_num = models.IntegerField(null=True, default=-1)
-    property_rooms_num = models.IntegerField(null=True, default=-1)
-    property_buy_or_rent = models.CharField(
-        null=True, default="", max_length=255)
-    car_kms_num = models.IntegerField(null=True, default=-1)
-    car_cc_num = models.IntegerField(null=True, default=-1)
-    car_fuel = models.CharField(
-        null=True, editable=False, default="", max_length=255)
+    property_area_num = models.IntegerField(null=True, default=-1,blank=True)
+    property_rooms_num = models.IntegerField(null=True, default=-1,blank=True)
+    property_buy_or_rent = models.CharField(null=True, default="", max_length=255,blank=True)
+    car_kms_num = models.IntegerField(null=True, default=-1,blank=True)
+    car_cc_num = models.IntegerField(null=True, default=-1,blank=True)
+    car_fuel = models.CharField(null=True, editable=False, default="", max_length=255,blank=True)
     # Specific if Auction
-    debtor_name = models.CharField(null=True, default="n/a", max_length=255)
-    auctioneer_name = models.CharField(
-        null=True, default="n/a", max_length=255)
-    auction_date = models.DateField(
-        null=True, default=timezone.now)
-    auction_number = models.IntegerField(editable=False, null=True, default=0)
+    debtor_name = models.CharField(null=True, default="n/a", max_length=255,blank=True)
+    auctioneer_name = models.CharField(null=True, default="n/a", max_length=255,blank=True)
+    auction_date = models.DateField(null=True, default=timezone.now,blank=True)
+    auction_number = models.IntegerField(editable=False, null=True, default=0,blank=True)
     # Contact Information (Seperate table)
-    contact_legal_name = models.CharField(
-        default="", null=True, max_length=255)
-    contact_name = models.CharField(default="", null=True, max_length=255)
-    contact_phone = models.CharField(default="", null=True, max_length=255)
-    contact_mobile = models.CharField(default="", null=True, max_length=255)
-    contact_email = models.EmailField(default="", null=True, max_length=255)
-    contact_website = models.URLField(default="", null=True, max_length=255)
+    contact_legal_name = models.CharField(default="", null=True, max_length=255,blank=True)
+    contact_name = models.CharField(default="", null=True, max_length=255,blank=True)
+    contact_phone = models.CharField(default="", null=True, max_length=255,blank=True)
+    contact_mobile = models.CharField(default="", null=True, max_length=255,blank=True)
+    contact_email = models.EmailField(default="", null=True, max_length=255,blank=True)
+    contact_website = models.URLField(default="", null=True, max_length=255,blank=True)
     # ADDED 29 APRIL 2017
     imgs = ArrayField(models.URLField(max_length=250), blank=True, null=True)
-    features = ArrayField(models.CharField(
-        max_length=200), blank=True, null=True)
-    geo = models.TextField(null=True, default="")
+    features = ArrayField(models.CharField(max_length=200), blank=True, null=True)
+    geo = models.TextField(null=True, default="",blank=True)
+    updated = models.BooleanField()
 
-    def __str__(self):
-        return self.url
+    def __unicode__(self):
+        return self.title
 
     class Meta:
         unique_together = (
-            ("title", "asset_type"),
+            ("asset_type","title", "url"),
         )
 
 class Asset(models.Model):

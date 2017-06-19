@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
+    url(r'^admin/', include(admin.site.urls)),
+
     # url(r'^admin/auctionapp/', TemplateView.as_view(template_name='auctionapp/synchro.html')),
     url(r'^admin/auctionapp/synchro.html', synchro, name='synchro'),
 
@@ -39,6 +41,18 @@ urlpatterns = [
 
     url(r'^django-sb-admin/', include('auctions.django_sb_admin.urls')),
     url(r'^accounts/login/$', auth_views.login,{'template_name': 'django_sb_admin/examples/login.html'}),
+
+    url(
+        regex=r'^cities-autocomplete/$',
+        view=GeoCitiesAutocomplete.as_view(),
+        name='cities-autocomplete',
+    ),
+
+    url(
+        regex=r'^areas-autocomplete/$',
+        view=GeoAreasAutocomplete.as_view(),
+        name='areas-autocomplete',
+    ),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

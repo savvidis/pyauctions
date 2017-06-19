@@ -10,23 +10,23 @@ import dal
 from dal import widgets
 import dal_select2
 
-cat = AssetType.objects.order_by('description').values_list('description') # returns a dictionary
+cat = AssetType.objects.order_by('category_major').values_list('category_major').distinct()  # returns a dictionary
 
-areas = GeoAreas.objects.order_by('name').values_list('name').distinct() # returns a dictionary
-cities = GeoCities.objects.order_by('name').values_list('name')
+# areas = GeoAreas.objects.order_by('name').values_list('name').distinct() # returns a dictionary
+# cities = GeoCities.objects.order_by('name').values_list('name')
+# areas = [(x[0], x[0]) for x in areas]
+# cities = [(x[0], x[0]) for x in cities]
 
 CATEGORIES_MAJOR = [(x[0], x[0]) for x in cat]
-areas = [(x[0], x[0]) for x in areas]
-cities = [(x[0], x[0]) for x in cities]
+
 dates_choices = [(1,'Active'),(0,'Passive')]
 
 CATEGORIES_MINOR = []
 
-cat_minor = AssetType.objects.order_by('synonyms').values_list('synonyms')
+cat_minor = AssetType.objects.order_by('description').values_list('description')
 for y in cat_minor:
     for x in y:
-        for w in x:
-            CATEGORIES_MINOR.append((w, w))
+        CATEGORIES_MINOR.append((x, x))
 
 # print(CATEGORIES_MAJOR)
 
@@ -39,10 +39,16 @@ class AuctionFilter(django_filters.FilterSet):
         self.helper.field_class = 'selectpicker'
         self.helper.layout = Layout(
             Div(
-                'asset_type', css_class="col-md-2",
+                'asset_type', css_class="col-md-1",
             ),
             Div(
-                'area', css_class="col-md-5",
+                'asset_type_minor', css_class="col-md-2",
+            ),
+            Div(
+                'city', css_class="col-md-3",
+            ),
+            Div(
+                'area', css_class="col-md-3",
             ),
             Div(
                 'starting_price', css_class="col-md-2",
@@ -63,11 +69,40 @@ class AuctionFilter(django_filters.FilterSet):
         queryset = queryset.filter(asset_id__in=cat_assets)
         return queryset
 
-    area = django_filters.ChoiceFilter(choices=areas,label="Area",method='filter_area')
+    asset_type_minor = django_filters.ChoiceFilter(choices=CATEGORIES_MINOR,label='Minor type', method='filter_minor_category')
+
+    def filter_minor_category(self, queryset, name, value):
+        # cat = AssetType.objects.filter(synonyms__contains=value)
+        # print cat
+        cat_assets = Asset.objects.filter(category_minor=value).values_list('id')
+        # print cat_assets['id']
+        queryset = queryset.filter(asset_id__in=cat_assets)
+        return queryset
+
+    city = django_filters.ModelChoiceFilter(label="City",queryset=GeoCities.objects.all(),
+        widget=autocomplete.ModelSelect2(url='cities-autocomplete'),method='filter_city'
+    )
+
+    def filter_city(self, queryset, name, value):
+        id = self.request.GET.get('city')
+        city = GeoCities.objects.get(id=id)
+
+        area_assets = AssetProperty.objects.filter(mainarea_id=city).values_list('id')
+        # print cat_assets['id']
+        queryset = queryset.filter(asset_id__in=area_assets)
+        return queryset
+
+    # area = django_filters.CharFilter(lookup_expr='icontains',label="Area")
+    # area = django_filters.ChoiceFilter(choices=areas,label="Area",method='filter_area')
+    area = django_filters.ModelChoiceFilter(label="Area",queryset=GeoAreas.objects.all(),
+        widget=autocomplete.ModelSelect2(url='areas-autocomplete',forward=['city']),method='filter_area'
+    )
 
     def filter_area(self, queryset, name, value):
-        areas = GeoAreas.objects.get(name=value).id
+        id = self.request.GET.get('area')
+        areas = GeoAreas.objects.get(id=id)
         area_assets = AssetProperty.objects.filter(secondarea_id=areas).values_list('id')
+        # print cat_assets['id']
         queryset = queryset.filter(asset_id__in=area_assets)
         return queryset
 
@@ -105,54 +140,57 @@ class CommercialFilter(django_filters.FilterSet):
         self.helper.field_class = 'selectpicker'
         self.helper.layout = Layout(
             Div(
-                'asset_type', css_class="col-md-2",
+                'asset_type', css_class="col-md-1",
             ),
             Div(
-                'asset_type_minor', css_class="col-md-3",
+                'asset_type_minor', css_class="col-md-2",
             ),
             Div(
                 'city', css_class="col-md-3",
             ),
             Div(
-                'area', css_class="col-md-5",
+                'area', css_class="col-md-4",
             ),
-            Div(
-                'buy_or_rent', css_class="col-md-2",
-            )
+            # Div(
+            #     'buy_or_rent', css_class="col-md-1",
+            # )
         )
 
-        if self.request.GET.get('asset_type'):
+        # if self.request.GET.get('asset_type'):
+        #
+        #     cat_minor = AssetType.objects.filter(category_major=self.request.GET.get('asset_type'))
+        #     print cat_minor
+        #     # cat_minor = AssetType.objects.get(id=cat_id).synonyms
+        #     # CATEGORIES_MINOR = [(x[0], x[0]) for x in y for y in cat_minor]
+        #
+        #     self.CATEGORIES_MINOR.append(('', 'Any'))
+        #     for y in cat_minor:
+        #         self.CATEGORIES_MINOR.append((y.description, y.description))
+        #
+        #     self.form.fields['asset_type_minor'].choices = self.CATEGORIES_MINOR
+        #
+        #
+        # if self.request.GET.get('city'):
+        #
+        #     city_id = GeoCities.objects.get(name=self.request.GET.get('city'))
+        #     areas = GeoAreas.objects.filter(city_id=city_id)
+        #     # cat_minor = AssetType.objects.get(id=cat_id).synonyms
+        #     # CATEGORIES_MINOR = [(x[0], x[0]) for x in y for y in cat_minor]
+        #
+        #     self.areas.append(('', 'Any'))
+        #     for y in areas:
+        #         self.areas.append((y, y))
+        #
+        #     self.form.fields['area'].choices = self.areas
 
-            cat_minor = AssetType.objects.get(description=self.request.GET.get('asset_type')).synonyms
-            # cat_minor = AssetType.objects.get(id=cat_id).synonyms
-            # CATEGORIES_MINOR = [(x[0], x[0]) for x in y for y in cat_minor]
-
-            self.CATEGORIES_MINOR.append(('', 'Any'))
-            for y in cat_minor:
-                self.CATEGORIES_MINOR.append((y, y))
-
-            self.form.fields['asset_type_minor'].choices = self.CATEGORIES_MINOR
-
-
-        if self.request.GET.get('city'):
-
-            city_id = GeoCities.objects.get(name=self.request.GET.get('city'))
-            areas = GeoAreas.objects.filter(city_id=city_id)
-            # cat_minor = AssetType.objects.get(id=cat_id).synonyms
-            # CATEGORIES_MINOR = [(x[0], x[0]) for x in y for y in cat_minor]
-
-            self.areas.append(('', 'Any'))
-            for y in areas:
-                self.areas.append((y, y))
-
-            self.form.fields['area'].choices = self.areas
 
     asset_type = django_filters.ChoiceFilter(choices=CATEGORIES_MAJOR,label='Major type', method='filter_major_category')
 
     def filter_major_category(self, queryset, name, value):
         # construct the full lookup expression.
-        cat = AssetType.objects.get(description=value).id
-        cat_assets = AssetProperty.objects.filter(asset_type_id=cat).values_list('id')
+        cat = AssetType.objects.filter(category_major=value)
+
+        cat_assets = AssetProperty.objects.filter(asset_type_id__in=cat).values_list('id')
         queryset = queryset.filter(asset_id__in=cat_assets)
         return queryset
 
@@ -167,10 +205,15 @@ class CommercialFilter(django_filters.FilterSet):
         queryset = queryset.filter(asset_id__in=cat_assets)
         return queryset
 
-    city = django_filters.ChoiceFilter(choices=cities,label="City",method='filter_city')
+    # city = django_filters.ChoiceFilter(choices=cities,label="City",method='filter_city')
+    # city = django_filters.CharFilter(lookup_expr='iexact',label="City")
+    city = django_filters.ModelChoiceFilter(label="City",queryset=GeoCities.objects.all(),
+        widget=autocomplete.ModelSelect2(url='cities-autocomplete'),method='filter_city'
+    )
 
     def filter_city(self, queryset, name, value):
-        city = GeoCities.objects.get(name=value).id
+        id = self.request.GET.get('city')
+        city = GeoCities.objects.get(id=id)
 
         area_assets = AssetProperty.objects.filter(mainarea_id=city).values_list('id')
         # print cat_assets['id']
@@ -178,10 +221,14 @@ class CommercialFilter(django_filters.FilterSet):
         return queryset
 
     # area = django_filters.CharFilter(lookup_expr='icontains',label="Area")
-    area = django_filters.ChoiceFilter(choices=areas,label="Area",method='filter_area')
+    # area = django_filters.ChoiceFilter(choices=areas,label="Area",method='filter_area')
+    area = django_filters.ModelChoiceFilter(label="Area",queryset=GeoAreas.objects.all(),
+        widget=autocomplete.ModelSelect2(url='areas-autocomplete',forward=['city']),method='filter_area'
+    )
 
     def filter_area(self, queryset, name, value):
-        areas = GeoAreas.objects.get(name=value).id
+        id = self.request.GET.get('area')
+        areas = GeoAreas.objects.get(id=id)
         area_assets = AssetProperty.objects.filter(secondarea_id=areas).values_list('id')
         # print cat_assets['id']
         queryset = queryset.filter(asset_id__in=area_assets)
@@ -195,7 +242,7 @@ class CommercialFilter(django_filters.FilterSet):
         queryset = queryset.filter(buy_or_rent=value)
         return queryset
 
-
     class Meta:
         model = TranCommercial
+        # dal_fields = {'city': 'country-autocomplete'}
         fields = ['city','area','asset_type','asset_type_minor','buy_or_rent']
