@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-9 bgWhite">
+          {% include 'auctionapp/__layout/op_navbar.html' %}
+          {% include 'auctionapp/__layout/result_table.html' %}
+        </div>
+        <div class="col-3 bg-faded ">
+          {% include 'auctionapp/__layout/right_userbar.html' %}
+        </div>
+      </div>
+
+
+<!-- End of pagination -->
+
+
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% load myfilters %}
+
+
+<div class="col-10 pl-5 mb-5">
+    <table id="dashBoardTable " class="maintable table table-sm text-nowrap">
+    <thead class="">
+        <tr class="">
+            <th class="pl-0 border-0"  colspan="1"><span class="bold"> Yield rate</span></th>
+            <th class=" border-0"  colspan="1"><span class="bold pl-2">#</span></th>
+            <th class="pl-0 border-0"  colspan="1"><span class="bold">Type and place</span></th>
+            <th class="pl-0 border-0"  colspan="1"><span class="bold">Price</span></th>
+            <th class="border-0 text-center"  colspan="1"><span class="bold"> Rating</span></th>
+            <th class="text-right border-0 pl-0"  colspan="1"><span class="bold">Availability</span></th>
+        </tr>
+    </thead>
+    
+
+    <tbody>
+    {% for auction in object_list|dictsort:"id"%}
+    <tr class=" tableRow">
+        <td class=""  colspan="1">
+            <span class="text-success bold h3Heading"><i class="fa fa-caret-up" aria-hidden="true"></i> 4,3&#37;</span>
+        </td>
+        <td colspan="1" class="">
+            <span class="btn btn-simple btn-icon"><i class="fa fa-home" aria-hidden="true"></i></span>
+        </td>
+        <td class=" "  colspan="1">
+            <span class="bold h3Heading ">{{auction.id}}</span>
+            <div class="underlines small text-nowrap">{{auction.asset.secondarea.name}}</div>
+        </td>
+        <td class=""  colspan="1">
+            <span class="h3Heading bold">{{auction.starting_price}}</span>
+            <div class="underlines small text-nowrap">38&#37; lower than market price</div>
+        </td>
+        <td colspan="1" class="text-center">
+            <span class="text-center h3Heading"><i class="fa fa-trophy" aria-hidden="true"></i>B+</span>
+        </td>
+        <td class=" text-right" colspan="1">
+            <span class="text-success h3Heading"><i class="fa fa-hourglass-half  " aria-hidden="true"></i>{{auction.auction_date|days_left}} days online</span>
+        </td>
+    </tr>
+  {% endfor %}
+
+
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation" class="text-xs-center mt-5">
+        <div class="row  d-flex justify-content-center pt-2">
+            <div class="">
+             {% if is_paginated %}{% load paginator %}{% paginator 3 %}{% endif %}
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+      

@@ -1,65 +1,345 @@
 {% extends "base.html" %}
-{% load myfilters %}
+{% load staticfiles i18n%}
+
 
 {% block content %}
-
-{% include 'auctionapp/__layout/op_navbar.html' %}
-  <br>
-  <div class="content" style="background-color: ##fff; color: #3C4858;">
-
+<section class="wrapper">
 <div class="container-fluid">
-<div class="row">
-<div class="col-md-12">
-<div class="card">
-<table class="maintable table table-hover">
-  <thead>
-  <tr>
-    <th>#</th>
-    <th>Asset name</th>
-    <th>Area</th>
-    <th>Starting Price</th>
-    <th>On Site Date</th>
-    <th>Auction Date</th>
-    <th>Days left</th>
+    <div class="row">
+        <div class="col-9 bgWhite">
+            <div class="container pl-5 pt-5  mb-5 ">
+                <div class="row p-0 m-0 d-flex inline-flex">
+                    <div class="col-5 p-0 m-0 searchbuttons">
+                        <a href="/search/realestate/" class="p-2">
+                            <button class="col-10 btn btn-simple p-0 m-0 "><i class="material-icons pull-left">business_center</i> <span class="pull-left pl-5">Commercial Assets</span></button>
+                        </a>
+                    </div>
+                    <div class="col-5 p-0 m-0 searchbuttons">
+                        <a href="/search/auction/" class="p-2">
+                            <button class="col-10 btn btn-simple  p-0 m-0"><i class="material-icons  pull-left">gavel</i><span class="pull-left pl-5">Assets from Auction</span></button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="container pl-5 mb-5">
+                <div class="d-flex flex-row  p-0 mb-5">
+                    <div class="col-2 d-flex flex-row align-items-start pl-0  mr-5">
+                        <span class="h1Heading"><i class="fa fa-calendar-check-o dashIcon" aria-hidden="true"></i></span>
+                        <div class="d-flex flex-column justify-content-end pb-2 pl-2">
+                            <span class="dashIconGrey extraSmall text-nowrap">new properties this week</span>
+                            <span class="h2Heading  dashIcon m-0">250</span>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex flex-row align-items-start  mr-5">
+                        <span class="h1Heading"><i class="fa fa-money dashIcon " aria-hidden="true"></i></span>
+                        <div class="d-flex flex-column justify-content-end pb-2  pl-2  mr-5">
+                            <span class="dashIconGrey extraSmall text-nowrap">find the best offers</span>
+                            <span class="h2Heading  dashIcon m-0">&#36;&#36;&#36;</span>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex flex-row align-items-start mr-5">
+                        <span class="h1Heading"><i class="fa fa-line-chart dashIcon" aria-hidden="true"></i></span>
+                        <div class="d-flex flex-column justify-content-end pb-2 pl-2">
+                            <span class="dashIconGrey extraSmall text-nowrap">change from last week</span>
+                            <span class="h2Heading  dashIcon m-0">7&#37;</span>
+                        </div>
+                    </div>
+                    <div class="col-2 d-flex flex-row align-items-start">
+                        <span class="h1Heading"><i class="fa fa-area-chart dashIcon" aria-hidden="true"></i></span>
+                        <div class="d-flex flex-column justify-content-end pb-2  pl-2">
+                            <span class="dashIconGrey extraSmall text-nowrap">assets value per month</span>
+                            <span class="h2Heading  dashIcon m-0">New</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-10 pl-5 mb-5">
+                <div class=" d-flex inline-flex">
+                    <form action="#" id="AuctionForm" method="get" class="form-inline justify-content-between  pt-2 pb-4">
+                        <div class="col-2 p-0 m-auto ">
+                            <div id="div_id_asset_type" class="form-group is-empty label-floating ">
+                                <label for="id_asset_type " class="form-control-label control-label nice-blue ">
+                                    Major type
+                                </label>
+                                <div class="selectpicker ">
+                                    <select class="select form-control " id="id_asset_type" name="asset_type">
+                                        <option value="" selected="selected"></option>
+                                        <option value="Commercial"><small>Commercial</small></option>
+                                        <option value="Land"><small>Land</small></option>
+                                        <option value="other"><small>other</small></option>
+                                        <option value="Residential"><small>Residential</small></option>
+                                    </select>
+                                </div>
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-2 pl-0 m-auto">
+                            <div id="div_id_asset_type_minor" class="form-group is-empty label-floating ">
+                                <label for="id_asset_type_minor" class="form-control-label control-label nice-blue">
+                                    Minor type
+                                </label>
+                                <div class="selectpicker ">
+                                    <select class="select form-control" id="id_asset_type_minor" name="asset_type_minor">
+                                        <option value="" selected="selected"></option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Business_Bulding">Business_Bulding</option>
+                                        <option value="Field">Field</option>
+                                        <option value="Hotel">Hotel</option>
+                                        <option value="Industrial">Industrial</option>
+                                        <option value="Maisonette">Maisonette</option>
+                                        <option value="Office">Office</option>
+                                        <option value="Other">Other</option>
+                                        <option value="Other_Commercial">Other_Commercial</option>
+                                        <option value="Other_Residential">Other_Residential</option>
+                                        <option value="Parcel">Parcel</option>
+                                        <option value="Store">Store</option>
+                                        <option value="Villa">Villa</option>
+                                    </select>
+                                </div> <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-4 pl-2 m-auto">
+                            <div id="div_id_city" class="form-group is-empty">
+                                <label for="id_city" class="form-control-label control-label" ></label>
+                                <div class="selectpicker">
+                                    <select class="modelselect2 form-control select2-hidden-accessible" data-autocomplete-light-function="select2" data-autocomplete-light-url="/cities-autocomplete/" id="id_city" name="city" tabindex="-1" aria-hidden="true">
+                                        <option value="" selected="selected">------</option>
+                                    </select>
+                                    <span class="selection">
+                                        <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-id_city-container">
+                                            <span class="select2-selection__rendered" id="select2-id_city-container">
+                                                <span class="select2-selection__placeholder"></span>
+                                            </span>
+                                            <span class="select2-selection__arrow" role="presentation">
+                                                <b role="presentation"></b>
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                </div>
+                                <span class="material-input"></span>
+                            </div>
+                        </div>
+                        <div class="col-2 pl-0  m-auto">
+                            <label class="control-label" for=""></label>
+                            <button type="submit" class="btn btn-info formButton">filter
+                                <span class="form-group-addon">
+                                    <i class="material-icons">search</i>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-10 pl-5 mb-5">
+                    <table id="dashBoardTable " class="maintable table table-hover table-sm text-nowrap dashBoardTable">
+                    <thead class="dashBoardheadings">
+                        <tr class="h3Heading">
+                            <th class="pl-0 border-0"  colspan="1"><span class=""> yield rate</span></th>
+                            <th class=" border-0   "  colspan="1"><span class="pl-2 pr-2">#</span></th>
+                            <th class="pl-0 border-0"  colspan="1"><span class="">type and place</span></th>
+                            <th class="pl-0 border-0"  colspan="1"><span class="">price</span></th>
+                            <th class="border-0 text-center"  colspan="1"><span class=""> rating</span></th>
+                            <th class="border-0 pl-3"  colspan="1"><span class="">availability</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-href="#" class=" tableRow">
+                            <td class=""  colspan="1">
+                                <span class="text-success bold h2Heading"><i class="fa fa-caret-up" aria-hidden="true"></i> 4,3&#37;</span>
+                            </td>
+                            <td colspan="1" class=" ">
+                                <span class=" h2Heading nice-blue pl-2 pr-2"><i class="fa fa-home " aria-hidden="true"></i></span>
+                            </td>
+                            <td class=" "  colspan="1">
+                                <span class="bold h3Heading ">Appartment</span>
+                                <div class="underlines small text-nowrap">Kiffisia, Athens</div>
+                            </td>
+                            <td class=""  colspan="1">
+                                <span class="h3Heading bold">200.000 USD</span>
+                                <div class="underlines small text-nowrap">38&#37; lower than market price</div>
+                            </td>
+                            <td colspan="1" class="text-center">
+                                <span class="text-center h2Heading"><i class="fa fa-trophy" aria-hidden="true"></i>B+</span>
+                            </td>
+                            <td class=" " colspan="1">
+                                <span class="text-success h3Heading pl-3"><i class="material-icons md-18 pr-3">access_time</i>12 days online</span>
+                            </td>
+                        </tr>
+                        <tr data-href="#" class=" tableRow ">
+                            <td class=""  colspan="1">
+                                <span class="bold  h2Heading"><i class="fa fa-caret-down " aria-hidden="true"></i> 4,3&#37;</span>
+                            </td>
+                            <td colspan="1" class="">
+                                <span class=" h2Heading nice-blue pl-2 pr-2"><i class="fa fa-industry" aria-hidden="true"></i></span>
+                            </td>
+                            <td class=" "  colspan="1">
+                                <span class="h3Heading bold">Factory Equipment</span>
+                                <div class="underlines small text-nowrap ">Kiffisia, Athens</div>
+                            </td>
+                            <td class=""  colspan="1">
+                                <span class="h3Heading  bold">90.000 USD</span>
+                                <div class="underlines  small text-nowrap">38&#37; lower than market price</div>
+                            </td>
+                            <td colspan="1" class="text-center ">
+                                <span class="text-center text-success h2Heading "><i class="fa fa-trophy" aria-hidden="true"></i>A+</span>
+                            </td>
+                            <td class=" " colspan="1">
+                                <span class=" text-danger h3Heading pl-3"><i class="material-icons md-18 pr-3">hourglass_full</i>46 Days:3 Hours</span>
+                            </td>
+                        </tr>
+                        <tr data-href="#" class=" tableRow">
+                            <td class=""  colspan="1">
+                                <span class="text-success bold h2Heading"><i class="fa fa-caret-up" aria-hidden="true"></i> 4,3&#37;</span>
+                            </td>
+                            <td colspan="1" class="">
+                                <span class=" h2Heading nice-blue pl-2 pr-2"><i class="fa fa-home " aria-hidden="true"></i></span>
+                            </td>
+                            <td class=" "  colspan="1">
+                                <span class="bold h3Heading ">Appartment</span>
+                                <div class="underlines small text-nowrap">Kiffisia, Athens</div>
+                            </td>
+                            <td class=""  colspan="1">
+                                <span class="h3Heading bold">200.000 USD</span>
+                                <div class="underlines small text-nowrap">38&#37; lower than market price</div>
+                            </td>
+                            <td colspan="1" class="text-center">
+                                <span class="text-center h2Heading "><i class="fa fa-trophy" aria-hidden="true"></i>B+</span>
+                            </td>
+                            <td class="" colspan="1">
+                                <span class="text-success h3Heading pl-3"><i class="material-icons md-18 pr-3">access_time</i>12 days online</span>
+                            </td>
+                        </tr>
+                        <tr data-href="#" class=" tableRow ">
+                            <td class=""  colspan="1">
+                                <span class="bold  h2Heading"><i class="fa fa-caret-down " aria-hidden="true"></i> 4,3&#37;</span>
+                            </td>
+                            <td colspan="1" class="">
+                                <span class=" h2Heading nice-blue pl-2 pr-2"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                            </td>
+                            <td class=" "  colspan="1">
+                                <span class="h3Heading bold">Factory Equipment</span>
+                                <div class="underlines small text-nowrap ">Kiffisia, Athens</div>
+                            </td>
+                            <td class=""  colspan="1">
+                                <span class="h3Heading  bold">90.000 USD</span>
+                                <div class="underlines  small text-nowrap">38&#37; lower than market price</div>
+                            </td>
+                            <td colspan="1" class="text-center ">
+                                <span class="text-center text-success h2Heading "><i class="fa fa-trophy" aria-hidden="true"></i>A+</span>
+                            </td>
+                            <td class=" " colspan="1">
+                                <span class=" text-danger h3Heading pl-3"><i class="material-icons md-18 pr-3">hourglass_full</i>46 Days:3 Hours</span>
+                            </td>
+                        </tr>
+                        <tr data-href="#" class=" tableRow">
+                            <td class=""  colspan="1">
+                                <span class="text-success bold h2Heading"><i class="fa fa-caret-up" aria-hidden="true"></i> 4,3&#37;</span>
+                            </td>
+                            <td colspan="1" class="">
+                                <span class=" h2Heading nice-blue pl-2 pr-2"><i class="fa fa-home " aria-hidden="true"></i></span>
+                            </td>
+                            <td class=" "  colspan="1">
+                                <span class="bold h3Heading ">Appartment</span>
+                                <div class="underlines small text-nowrap">Kiffisia, Athens</div>
+                            </td>
+                            <td class=""  colspan="1">
+                                <span class="h3Heading bold">200.000 USD</span>
+                                <div class="underlines small text-nowrap">38&#37; lower than market price</div>
+                            </td>
+                            <td colspan="1" class="text-center">
+                                <span class="text-center h2Heading"><i class="fa fa-trophy" aria-hidden="true"></i>B+</span>
+                            </td>
+                            <td class="" colspan="1">
+                                <span class="text-success h3Heading pl-3"><i class="material-icons md-18 pr-3">access_time</i>12 days online</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="text-xs-center mt-5">
+                    <div class="row  d-flex justify-content-center pt-2">
+                        <div class="">
+                            <ul class="pagination pagination-info">
+                                <li><a href="?page=1&amp;">< Previous </a></li>
+                                <li><a href="?page=1&amp;">1</a></li>
+                                <li><a href="?page=2&amp;">2</a></li>
+                                <li class="active"><a href="?page=3&amp;">3</a></li>
+                                <li><a href="?page=4&amp;">4</a></li>
+                                <li><span class="ellipsis">...</span></li>
+                                <li><a href="?page=10653&amp;">10653</a></li>
+                                <li><a href="?page=2&amp;">Next &gt;</a></li>
+                            </ul>
+                        </div>
 
-  </tr>
-  </thead>
-  <tbody>
-  {% for auction in object_list|dictsort:"id"%}
-
-  <tr>
-    <th scope="row">{{auction.id}}</th>
-
-    <td><a href="{% url 'auctionapp:auction_detail' auction.id %} "> {{ auction.title }} </a></td>
-    <td><span>  {{auction.asset.secondarea.name}}</span></td>
-
-    <td><span>  {{auction.starting_price}}</span></td>
-    <td><span>  {{auction.on_site_date}}</span></td>
-    <td><span>  {{auction.auction_date}}</span></td>
-    <td><span>  {{auction.auction_date|days_left}}</span></td>
-
-  </tr>
-  {% endfor %}
-
-  </tbody>
-</table>
-
-
-<!-- Pagination -->
-
-<nav aria-label="Page navigation" class="text-xs-center">
-
-{% if is_paginated %}{% load paginator %}{% paginator 3 %}{% endif %}
-
-</nav>
-<br>
-
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="col-3 p-0 m-0 bg-faded ">
+            <div class="d-flex flex-column p-0 m-0">
+                <div class=" d-flex flex-column text-white pl-5 pr-5 pt-4  bgTopSidebar">
+                    <div class="flex-row d-flex h1andhalfHeading">Good Afternoon </div>
+                    <div class="flex-row pt-3">
+                        <span class="h1andhalfHeading ">Spyros</span>
+                    </div>
+                    <div class="date pt-5 pb-4">
+                        <span class="h1Heading">26</span>
+                        <span class="h3Heading">Wed</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column pl-5 pr-5  pt-3">
+                    <h5 class=" bold">Profile Quality &#38; Stats</h5>
+                    <div class="p-0 m-0 sidebarProfile">
+                        <span class="right-border pr-2 h3Heading"><i class="material-icons md-18 pr-3 m-0">card_membership</i>Member Since</span>
+                        <span class=" m-0 pl-2 em">Oct 2016</span>
+                    </div>
+                    <div class=" p-0 m-0 sidebarProfile">
+                        <span class="right-border pr-2 h3Heading"><i class="material-icons md-18 pr-3 m-0">info_outline</i>Requested info</span>
+                        <span class=" m-0 pl-2 em">35</span>
+                    </div>
+                </div>
+            <nav class="col-12 pt-4 pl-5 pr-5">
+                <h5 class="bold">Quick links</h5>
+                <ul class="nav nav-pills flex-column sidebarNavList ">
+                    <li class=" pb-2 sidebarNavListBorderBottom">
+                        <a class="nav-link p-1 btn-block d-flex " href="#"><i class="material-icons md-24 p-0 m-0 ">account_box</i><span class="h2Heading pl-3">Profile </span> <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class=" pt-2 pb-2 sidebarNavListBorderBottom">
+                        <a class="nav-link p-1 btn-block d-flex " href="#"><i class="material-icons md-24 p-0 m-0">map</i><span class="h2Heading pl-3">Portfolio</span> </a>
+                    </li>
+                    <li class=" pt-2 pb-4 ">
+                        <a class="nav-link p-1 btn-block d-flex " href="#"><i class="material-icons md-24 p-0 m-0">map</i><span class="h2Heading pl-3">Region Reports</span></a>
+                    </li>
+                </ul>
+                <h5 class="bold ">Live Updates</h5>
+                <ul class=" p-0 m-0 updatesList">
+                    <li class=" "><span class=""><i class="material-icons md-18 pr-2">rss_feed</i>News</span>
+                        <div class="mb-2">
+                            <a class="small" href="#">Property tax increased - capital.gr </a>
+                        </div>
+                    </li>
+                    <li class=" p-0 m-0 "><span class=""><i class="material-icons md-18 pr-2">email</i>Messages</span>
+                        <div class="mb-2">
+                            <a class="small " href="#">You have 1 new message</a>
+                        </div>
+                    </li>
+                    <li class=" "><span class=""><i class="material-icons md-18 pr-2">rss_feed</i>News</span>
+                        <div class="mb-2">
+                            <a class="small" href="#">Property tax increased - capital.gr </a>
+                        </div>
+                    </li>
+                    <li class=" p-0 m-0 "><span class=""><i class="material-icons md-18 pr-2">email</i>Messages</span>
+                        <div class="mb-2">
+                            <a class="small " href="#">You have 1 new message</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<!-- End of pagination -->
+</section>
 
 
 {% endblock %}

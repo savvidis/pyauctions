@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load staticfiles i18n%}
+
+{% block content %}
+
+  <!-- header -->
+    <div class="container-fluid bgWhite pb-5">
+
+        <div class="row landingHeader justify-content-center mb-5">
+            <div class="col-lg-3 col-md-12 col-sm-12">
+                <div class="pl-3 pt-2"><h3 class="LandingMoto">Find opportunities and mitigate risks with the richest company information</h3> </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-sm-12 mb-5" id="laptop">
+                <div>                
+                  <img class="img-fluid" src="{% static 'img/dummy/laptopImg.png'%}" alt="">
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!--end header -->
+<!-- powerful tool -->
+    <div class="container-fluid bg-inverse" style="padding-bottom: 8rem;padding-top: 2rem;">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <img class="img-fluid" src="{% static 'img/dummy/gather-data-01.png'%}" alt="">
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-12">
+                <div class="pr-3 pt-2">
+                    <h3 class="LandingMoto text-white">Powerful tool can help your team</h3>
+                </div>
+                <div class="pt-2">
+                    <ul class="toolList text-white pl-0">
+                        <li class="">Phising</li>
+                        <li class="">Brute Force</li>
+                        <li class="">Bucket Brigade</li>
+                        <li class="">Server Breach</li>
+                        <li class="">Password reuse attack</li>
+                        <li class="">Password Breach</li>
+                        <li class="">Keylogging</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--end powerful tool -->
+
+<!--Connect -->
+    <div class="container-fluid bgWhite pb-5 pt-5">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-10">
+                    <h2 class="">Connect</h2>
+                    <span class="spanlines pull-left m-0"></span>
+                    <ul  class="connectList mt-5 pl-0">
+                        <li class=" pt-2 pb-2">
+                            <div class="h2Heading pl-0"><i class="material-icons nice-blue pr-2 p-0 ">find_in_page</i>DueDil Connect</div>
+                            <div class="h3Heading pt-2">Identify desicion-makers and leverage warm connections through mutually shared contacts, at companies across the Uk and Ireland.</div>
+                        </li>
+                        <li class=" pt-2 pb-2">
+                            <div class="h2Heading"><i class="material-icons nice-blue pr-2 p-0 ">contact_mail</i>Contact information</div>
+                            <div class="h3Heading pt-2">Access the information you need to reach out to businesses and individuals through social media profiles, direct mail, email or phone.</div>
+                        </li>
+                        <li class=" pt-2 pb-2">
+                            <div class="h2Heading"><i class="material-icons nice-blue pr-2 p-0 ">supervisor_account</i>Director Profiles</div>
+                            <div class="h3Heading pt-2">Undersand the directors behind a company, including nationality, date of birth and directorship history.</div>
+                        </li>
+                    </ul>
+            </div>
+
+            <div class="col-lg-5 col-md-5 col-sm-0">
+                <img class="imgConnect img-fluid" src="{% static 'img/dummy/data-home_v2.png'%}" alt="">
+            </div>
+        </div>
+    </div>
+<!-- end Connect -->
+<!-- Sales marketing etc -->
+<!--     <div class="container-fluid bgWhite pt-5">
+        <div class="row   pb-0 mb-0">
+            <div class="col-12 d-flex flex-row justify-content-between">
+                <div class="d-flex flex-column">
+                    <div class="">
+                        <i class="material-icons  md-72">business_center</i>
+                        <span class="h2Heading">Sales</span>
+                    </div>
+                    <div class="">
+                        <img class="img1" src="{% static 'img/dummy/graph.png'%}" alt="">
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="">
+                        <img class="img3" src="{% static 'img/dummy/house.png'%}" alt="">
+                    </div>
+                    <div class="">
+                        <i class="material-icons  md-72">do_not_disturb_alt</i>
+                        <span class="h2Heading">Credit Risk</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container ">
+            <div class="d-flex flex-row justify-content-center">
+                <div class="middleimg">
+                    <i class="material-icons  md-72">language</i>
+                    <span class="h2Heading">Marketing</span>
+                </div>
+                <div class="">
+                    <img class="text-center img2" src="{% static 'img/dummy/map.png'%}" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <span class="col-12" style="height:150px;"></span>
+        </div>
+    </div>
+ -->
+
+
+<!-- end Sales marketing etc -->
+
+{% endblock%}

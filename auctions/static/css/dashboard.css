@@ -1,0 +1,173 @@
+/**{
+    border: 1px solid red;
+}*/
+
+
+/*text_text_text*/
+.h3Heading{
+    font-size: 1.2em;
+}
+.h2Heading{
+    font-size: 1.5em;
+}
+.h1andhalfHeading{
+    font-size: 2.3em;
+}
+.h1Heading{
+    font-size: 3em;
+}
+.extraSmall{
+    font-size: 0.7em;
+}
+
+/*end text_text_text*/
+
+
+/*navbar stuff*/
+#bs-navbar-collapse-1 .form-control {
+    width: auto;
+}
+#bs-navbar-collapse-1 .centerNavs h5:hover{
+    border-bottom: 1px solid #5BC0DE;
+    margin: 0;
+}
+#bs-navbar-collapse-1 .rightsNavs h5:hover{
+    border-bottom: 1px solid black;
+    margin: 0;
+}
+#bs-navbar-collapse-1 .form-group {
+    margin: 0;
+}
+#bs-navbar-collapse-1 .nav-link{
+    text-transform: capitalize;
+}
+.navbar-bg {
+    background-color:#fff!important;
+}
+/*end navbar stuff*/
+/*searchCard*/
+.searchbuttons a:hover{
+    border-bottom: 3px solid #5BC0DE;
+    margin: 0;
+}
+.searchbuttons a {
+    border-bottom: 3px solid #D0D0D0;
+}
+.searchbuttons a:active {
+    -webkit-box-shadow: 0px 6px 10px -2px rgba(102,102,102,0.7);
+    -moz-box-shadow: 0px 6px 10px -2px rgba(102,102,102,0.7);
+    box-shadow: 0px 6px 10px -2px rgba(102,102,102,0.7);
+}
+.searchbuttons button{
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #000!important;
+    font-size: 0.9em;
+    cursor: pointer!important;
+}
+.dashIcon {
+    color: #5382be;
+}
+.dashIconGrey {
+    color: #c1cbce;
+}
+#div_id_asset_type select,
+#div_id_asset_type_minor select {
+    width: 130px!important;
+    padding: 0!important;
+    margin: 0!important;
+    height: 38px!important;
+
+}
+
+.selectpicker,
+.select2-selection,
+.select2-search{
+    width: 80%!important;
+    height: 38px!important;
+    border-radius: 0!important;
+
+}
+.select2-dropdown {
+    width: 80%!important;
+    border-radius: 0!important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    height: 40px !important;
+    right: 70px!important;
+}
+.searchformBorder{
+    border: 2px solid #c1cbce;
+
+}
+.formButton {
+    border-radius: 0!important;
+    text-transform: capitalize!important;
+    padding: 10px 30px 11px 30px !important;
+    line-height: 16px!important;
+    margin-bottom: 7px!important;
+}
+/*End searchCard*/
+.dashBoardheadings th{
+    text-transform: capitalize;
+}
+table tr[data-href] {
+    cursor: pointer;
+}
+.dashBoardTable tbody tr:first-of-type td{
+    border-top: 2px solid #D0D0D0;
+}
+.tableRow td{
+    line-height: 30px!important;
+    vertical-align: text-top!important;
+    overflow: hidden;
+    padding: 0!important;
+    margin: 0!important;
+}
+.underlines{
+    line-height: 1px!important;
+    margin-bottom: 15px!important;
+}
+.tableRow td:first-of-type, td:nth-child(2) {
+    border-top: none!important;
+}
+.tableRow td:last-of-type i {
+    vertical-align: text-top!important;
+}
+
+.bgWhite{
+    background-color: #fff;
+}
+/*sidebar*/
+.bgTopSidebar{
+    background: rgb(206,219,233);
+    background: rgb(206,219,233); /* Old browsers */
+    background: -moz-linear-gradient(45deg, rgba(206,219,233,1) 0%, rgba(170,197,222,1) 17%, rgba(97,153,199,1) 50%, rgba(58,132,195,1) 51%, rgba(65,154,214,1) 59%, rgba(75,184,240,1) 71%, rgba(58,139,194,1) 84%, rgba(38,85,139,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, rgba(206,219,233,1) 0%,rgba(170,197,222,1) 17%,rgba(97,153,199,1) 50%,rgba(58,132,195,1) 51%,rgba(65,154,214,1) 59%,rgba(75,184,240,1) 71%,rgba(58,139,194,1) 84%,rgba(38,85,139,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, rgba(206,219,233,1) 0%,rgba(170,197,222,1) 17%,rgba(97,153,199,1) 50%,rgba(58,132,195,1) 51%,rgba(65,154,214,1) 59%,rgba(75,184,240,1) 71%,rgba(58,139,194,1) 84%,rgba(38,85,139,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', endColorstr='#26558b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.sidebarNavList .nav-link{
+    border-radius: 0!important;
+    text-transform: capitalize;
+    color: #555555;
+}
+.sidebarNavListBorderBottom{
+    border-bottom: 1px solid #D0D0D0;
+    padding-bottom: 20px;
+}
+
+.sidebarNavList .nav-link:hover{
+    color: #5BC0DE;
+    background: #fff!important;
+}
+.sidebarProfile i{
+    vertical-align: sub;
+}
+.updatesList {
+    list-style: none;
+}
+.updatesList i {
+    vertical-align: sub;
+}

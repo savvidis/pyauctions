@@ -1,0 +1,124 @@
+/**{
+    border: 1px solid red;
+}*/
+/*navbar stuff*/
+#bs-navbar-collapse-1 .form-control {
+    width: auto;
+}
+
+#bs-navbar-collapse-1 .form-group {
+    margin: 0;
+}
+#bs-navbar-collapse-1 .nav-link{
+    text-transform: capitalize;
+}
+.navbar-bg {
+    background-color:#fff!important;
+}
+/*end navbar stuff*/
+/*header*/
+.landingHeader{
+    padding-top: 2rem;
+}
+.LandingMoto{
+    line-height: 90%;
+}
+
+/*end header*/
+/*powerful tool*/
+.toolList,
+.connectList{
+    list-style: none;
+}
+.toolList li::before{
+    content:"\2714\0020";
+}
+.powerTool{
+    padding-bottom: 8rem;
+    padding-top: 2rem;
+}
+/*powerful tool*/
+/*connect*/
+.connectList{
+    list-style: none;
+}
+.connectList i{
+    vertical-align: middle;
+}
+.imgConnect{
+    position: absolute;
+    height: auto;
+    transform: translate(0%,-35%);
+
+}
+
+.dataResult img:nth-child(2){
+    position: relative;
+    right: -20%;
+}
+.dataResult img:nth-child(3){
+    position: relative;
+    left: -30%;
+}
+/*end connect*/
+/*sales marketing etc*/
+
+
+/*end sales marketing etc
+/*footer*/
+.footerList{
+    display: flex;
+    flex-direction: column;
+}
+.footerLinks{
+    color: grey;
+    font-size: 0.8em;
+}
+.footerLogo:hover,
+.footerIcons:hover,
+.footerLinks:hover{
+    color: #fff;
+}
+.footerList .footerLinks {
+    padding-bottom: 0;
+}
+.footerIcons {
+    padding-left: 0;
+}
+.grey {
+    color: grey;
+}
+.darkBlueBG {
+    background: #1F2837;
+}
+/*end footer*/
+/*media screens*/
+@media only screen and (min-width: 992px){
+    #bs-navbar-collapse-1 .centerNavs h5:hover{
+        border-bottom: 1px solid #5BC0DE;
+        margin: 0;
+    }
+    #bs-navbar-collapse-1 .rightsNavs h5:hover{
+        border-bottom: 1px solid black;
+        margin: 0;
+    }
+}
+@media only screen and (max-width: 991px){
+    .collapsedNavs{
+        display: block!important;
+    }
+
+    .collapsedNavs li{
+        padding-top: 10px;
+    }
+
+}
+@media only screen and (max-width: 767px){
+
+    .imgConnect{
+        display: none;
+    }
+    .landingHeader{
+        text-align: center;
+    }
+}

@@ -1,85 +1,162 @@
 {% load crispy_forms_tags %}
 
-<section class="wrapper-xs">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="form-inline">
-          <div class="row">
 
-            <div class="col-md-6">
-            <a href="{% url 'auctionapp:commercial_list' %}">
-              <button style="background-color: #818a91" class="btn btn-round btn-block">Commercial</button>
-              </a>
-            </div><!-- /.col -->
+<!-- Cards  -->
 
-            <div class="col-md-6">
-            <a href="{% url 'auctionapp:auction_list' %}">
-              <button style="background-color: #818a91" class="btn btn-round btn-block">Auction</button>
-              </a>
-            </div><!-- /.col -->
+<!-- <div class="container pl-5  mb-5 ">
 
-          </div>
-        </div>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container -->
-</section>
-
-<br>
-
-<section class="wrapper-xs bg-highlight">
-  <div class="container-fluid">
-  <div class="row">
-   <div class="col-md-12">
-  <div class="card card-raised card-form-horizontal">
-    <div class="content" style="padding: 5px;">
-
-
-        <form action="#" id="AuctionForm" method="get" class="form-inline">
-
-          <div class="row">
-          {% crispy filter.form filter.helper %}
-
-            <div class="col-md-1">
-              <label class="control-label" for="">Ready?</label>
-              <input type="submit" class="btn btn-primary btn-block btn-sm"></input>
-            </div>
-          </div>
-        </form>
-        <!-- <form action="" method="post">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <input type="submit" />
-        </form> -->
-
+      <div class="nav-center">
+          <ul class="nav nav-pills nav-pills-warning nav-pills-icons" role="tablist">
+ 
+              <li>
+                  <a href="#description-1" role="tab" data-toggle="tab">
+                      <i class="material-icons">info</i> Description
+                  </a>
+              </li>
+              <li class="active">
+                  <a href="#schedule-1" role="tab" data-toggle="tab">
+                      <i class="material-icons">location_on</i> Location
+                  </a>
+              </li>
+              <li>
+                  <a href="#tasks-1" role="tab" data-toggle="tab">
+                      <i class="material-icons">gavel</i> Legal Info
+                  </a>
+              </li>
+              <li>
+                  <a href="#tasks-2" role="tab" data-toggle="tab">
+                      <i class="material-icons">help_outline</i> Help Center
+                  </a>
+              </li>
+          </ul>
       </div>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container -->
+</div> -->
+<!-- 
+<div class="container pl-5  mb-5 ">
+    <div class="col-8">
+<div class="card">
+<div class="card-header card-header-tabs" data-background-color="rose">
+      <div class="nav-tabs-navigation">
+          <div class="nav-tabs-wrapper">
+              <span class="nav-tabs-title">Tasks:</span>
+              <ul class="nav nav-tabs" data-tabs="tabs">
+                  <li class="">
+                      <a href="#profile" data-toggle="tab" aria-expanded="false">
+                          <i class="material-icons">bug_report</i> Bugs
+                          <div class="ripple-container"></div>
+                      </a>
+                  </li>
+                  <li class="active">
+                      <a href="#messages" data-toggle="tab" aria-expanded="true">
+                          <i class="material-icons">code</i> Website
+                          <div class="ripple-container"></div>
+                      </a>
+                  </li>
+                  <li class="">
+                      <a href="#settings" data-toggle="tab">
+                          <i class="material-icons">cloud</i> Server
+                          <div class="ripple-container"></div>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
 </div>
-</section>
+</div>
+</div>
+ -->
+<div class="container pl-5  mb-2 ">
+    <div class="col-12 p-0 m-0 d-flex inline-flex">
+        <div class="col-6 p-0 m-0 searchbuttons" style=" text-align: left;font-size: 1.0em;font-weight: 100;">
+            <a href="{% url 'auctionapp:commercial_list' %}" class=" pb-1">
+                <i class="material-icons">card_travel</i><button class="col-10 btn btn-simple btn-style" style="    text-align: left;
+    font-size: 1.0em;
+    font-weight: 100;">Commercial assets</button>
+            </a>
+        </div>
+        <div class="col-6 p-0 m-0 searchbuttons" style="    text-align: left;
+    font-size: 1.0em;
+    font-weight: 100;">
+            <a href="{% url 'auctionapp:auction_list' %}" class="pb-1">
+               <i class="material-icons">gavel</i> <button class="col-10 btn btn-simple" style="    text-align: left;
+    font-size: 1.0em;
+    font-weight: 100;">Assets from auctions</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Search Form  -->
+
+<div class="container pl-5 mb-5">
+    <div class="col-12  d-flex inline-flex p-0 m-0">
+      <form action="#" id="AuctionForm" method="get" class="form-inline nice-blue p-0 m-0">
+          {% crispy filter.form filter.helper %}
+        </form>
+    </div>
+</div>
 
 
 
 
-<!--           <div class="col-md-3">
-            <label class="control-label"  style="margin:0px" for="">Category:</label>
-            <select class="selectpicker" name="category" form="AuctionForm" data-style="btn-simple  btn-sm btn-primary">
-             {% for category in categories %}
-                <option>{{category}}</option>
-              {% endfor %}
-              </select>
+
+
+<!-- Stats  -->
+
+<div class="container pl-5 mb-5">
+    <div class="d-flex flex-row  card p-0 mb-5">
+
+        <div class="col-2 d-flex flex-row align-items-start pl-0  mr-5">
+            <div class="card-header card-header-icon" data-background-color="grey">
+                  <i class="material-icons">monetization_on</i>
+            </div>
+            <div class="d-flex flex-column justify-content-end pb-2 pl-2">
+                <span class="nice-blue extraSmall text-nowrap">new properties </span>
+                <span class="h2Heading bold nice-blue m-0">250</span>
             </div>
 
+        </div>
 
-           <div class="col-md-2">
-            <label class="control-label"  style="margin:0px" for="">City:</label>
-            <select class="selectpicker" name="status" form="AuctionForm" data-style="btn-simple btn-sm btn-primary">
-            {% for city in cities %}
-                <option>{{city}}</option>
-              {% endfor %}
-
-              </select>
+        <div class="col-2 d-flex flex-row align-items-start pl-0  mr-5">
+            <div class="card-header card-header-icon" data-background-color="blue">
+                  <i class="material-icons">equalizer</i>
             </div>
-            -->
+            <div class="d-flex flex-column justify-content-end pb-2 pl-2">
+                <span class="nice-blue extraSmall text-nowrap">new properties </span>
+                <span class="h2Heading bold nice-blue m-0">250</span>
+            </div>
+        </div>
+
+        <div class="col-2 d-flex flex-row align-items-start pl-0  mr-5">
+            <div class="card-header card-header-icon" data-background-color="grey">
+                  <i class="material-icons">monetization_on</i>
+            </div>
+            <div class="d-flex flex-column justify-content-end pb-2 pl-2">
+                <span class="nice-blue extraSmall text-nowrap">new properties </span>
+                <span class="h2Heading bold nice-blue m-0">250</span>
+            </div>
+
+        </div>
+
+        <div class="col-2 d-flex flex-row align-items-start pl-0  mr-5">
+            <div class="card-header card-header-icon" data-background-color="blue">
+                  <i class="material-icons">equalizer</i>
+            </div>
+            <div class="d-flex flex-column justify-content-end pb-2 pl-2">
+                <span class="nice-blue extraSmall text-nowrap">new properties </span>
+                <span class="h2Heading bold nice-blue m-0">250</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
